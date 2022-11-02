@@ -9,17 +9,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComprasView extends javax.swing.JInternalFrame {
 
-
 	private FlatSVGIcon iconoVentana;
 	
-        @Autowired
+	@Autowired
 	private UtilService utilidades;
         
-        @PostConstruct
-        private void init(){
-            this.iconoVentana = utilidades.get16x16Icon("/icons/comprasIcono.svg");
-            setFrameIcon(iconoVentana);
-        }
+	@PostConstruct
+	private void init(){
+		this.iconoVentana = utilidades.get16x16Icon("/icons/comprasIcono.svg");
+		setFrameIcon(iconoVentana);
+	}
 		
 	public ComprasView() {
 		

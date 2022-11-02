@@ -12,21 +12,21 @@ public class VentasView extends javax.swing.JInternalFrame {
 
 	private FlatSVGIcon iconoVentana;
 	
-        @Autowired
-        private VentasService ventasService;
-        
-        @Autowired
+	@Autowired
+	private VentasService ventasService;
+
+	@Autowired
 	private UtilService utilidades;
 		
 	public VentasView() {	
 		initComponents();
 	}
         
-        @PostConstruct
-        private void init(){
-            this.iconoVentana = utilidades.get16x16Icon("/icons/ventasIcono.svg");
-            setFrameIcon(iconoVentana);
-        }
+	@PostConstruct
+	private void init(){
+		this.iconoVentana = utilidades.get16x16Icon("/icons/ventasIcono.svg");
+		setFrameIcon(iconoVentana);
+	}
 	
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

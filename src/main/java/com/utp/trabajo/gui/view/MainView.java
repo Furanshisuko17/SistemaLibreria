@@ -14,23 +14,24 @@ public class MainView extends javax.swing.JFrame {
 	
 	//TODO: Implementar un menu principal
 
-        private FlatSVGIcon iconoVentana;
-        @Autowired
-        private ApplicationContext context;
-        
-        @Autowired 
-        private UtilService utilidades;
+	private FlatSVGIcon iconoVentana;
+	
+	@Autowired
+	private ApplicationContext context;
+
+	@Autowired 
+	private UtilService utilidades;
 
 	public MainView() {
 		initComponents();
 	}
         
-        @PostConstruct
-        private void init(){
-            this.iconoVentana = utilidades.get16x16Icon("/icons/iconoPrincipal.svg");
-            setIconImage(iconoVentana.getImage());
-            setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        }
+	@PostConstruct
+	private void init(){
+		this.iconoVentana = utilidades.get16x16Icon("/icons/iconoPrincipal.svg");
+		setIconImage(iconoVentana.getImage());
+		setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+	}
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

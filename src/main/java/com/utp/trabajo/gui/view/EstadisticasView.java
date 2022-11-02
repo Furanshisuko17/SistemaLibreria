@@ -11,17 +11,16 @@ public class EstadisticasView extends javax.swing.JInternalFrame {
 
 	private FlatSVGIcon iconoVentana;
 	
-        @Autowired
+	@Autowired
 	private UtilService utilidades;
         
-        @PostConstruct
-        private void init(){
-            this.iconoVentana = utilidades.get16x16Icon("/icons/estadisticasIcono.svg");
-            setFrameIcon(iconoVentana);
-        }
+	@PostConstruct
+	private void init(){
+		this.iconoVentana = utilidades.get16x16Icon("/icons/estadisticasIcono.svg");
+		setFrameIcon(iconoVentana);
+	}
 		
 	public EstadisticasView() {
-		
 		initComponents();
 	}
 
@@ -48,7 +47,6 @@ public class EstadisticasView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

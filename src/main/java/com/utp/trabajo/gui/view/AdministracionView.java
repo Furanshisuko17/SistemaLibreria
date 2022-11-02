@@ -11,15 +11,14 @@ public class AdministracionView extends javax.swing.JInternalFrame {
 
 	private FlatSVGIcon iconoVentana;
 	
-        @Autowired
+	@Autowired
 	private UtilService utilidades = new UtilService();
         
-         @PostConstruct
-        private void init(){
-            this.iconoVentana = utilidades.get16x16Icon("/icons/administracionIcono.svg");
-            setFrameIcon(iconoVentana);
-        }
-	
+	@PostConstruct
+	private void init(){
+		this.iconoVentana = utilidades.get16x16Icon("/icons/administracionIcono.svg");
+		setFrameIcon(iconoVentana);
+	}
 		
 	public AdministracionView() {
 		
