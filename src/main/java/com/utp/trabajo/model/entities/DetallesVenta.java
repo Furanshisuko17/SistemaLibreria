@@ -39,5 +39,5 @@ public class DetallesVenta implements Serializable {
 	
 	@Column(precision = 12, scale=2)
 	private BigInteger total;
-	
+	//Total se calcula en el programa
 }
