@@ -1,7 +1,8 @@
 package com.utp.trabajo.gui.view;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.utp.trabajo.model.entities.services.UtilService;
+import com.utp.trabajo.model.entities.services.util.IconService;
+import com.utp.trabajo.model.entities.services.util.UtilService;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,15 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AlmacenView extends javax.swing.JInternalFrame {
 
-	private FlatSVGIcon iconoVentana;
-	
 	@Autowired
 	private UtilService utilidades;
+	
+	@Autowired
+	private IconService iconos;
         
 	@PostConstruct
 	private void init(){
-		this.iconoVentana = utilidades.get16x16Icon("/icons/almacenIcono.svg");
-		setFrameIcon(iconoVentana);
+		setFrameIcon(iconos.iconoAlmacen);
 	}
 		
 	public AlmacenView() {

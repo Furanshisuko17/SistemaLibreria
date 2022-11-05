@@ -1,8 +1,12 @@
 package com.utp.trabajo.gui.view;
 
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.utp.trabajo.model.entities.services.UtilService;
+import com.utp.trabajo.model.entities.services.util.IconService;
+import com.utp.trabajo.model.entities.services.util.UtilService;
+import java.awt.event.ItemEvent;
 import javax.annotation.PostConstruct;
+import javax.swing.UIManager;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +18,14 @@ public class MainView extends javax.swing.JFrame {
 	
 	//TODO: Implementar un menu principal
 
-	private FlatSVGIcon iconoVentana;
-	
 	@Autowired
 	private ApplicationContext context;
 
 	@Autowired 
 	private UtilService utilidades;
+	
+	@Autowired 
+	private IconService iconos;
 
 	public MainView() {
 		initComponents();
@@ -28,17 +33,31 @@ public class MainView extends javax.swing.JFrame {
         
 	@PostConstruct
 	private void init(){
-		this.iconoVentana = utilidades.get16x16Icon("/icons/iconoPrincipal.svg");
-		setIconImage(iconoVentana.getImage());
+		iconInit();
 		setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+	}
+	
+	private void iconInit() {
+		setIconImage(iconos.iconoPrincipal.getImage()); // Icono de la ventana principal
+		openVentasWindowButton.setIcon(iconos.iconoVentas);
+		openComprasWindowButton.setIcon(iconos.iconoCompras);
+		openAlmacenWindowButton.setIcon(iconos.iconoAlmacen);
+		openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas);
+		openAdministracionWindowButton.setIcon(iconos.iconoAdministracion);
+		
+		exitMenuItem.setIcon(iconos.iconoExit);
+		appearanceButton.setIcon(iconos.iconoDarkMode);
+		lightModeButton.setIcon(iconos.iconoLightMode);
+		darkModeButton.setIcon(iconos.iconoDarkMode);
+		
+		
 	}
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        alphaPainter1 = new org.jdesktop.swingx.painter.AlphaPainter();
-        alphaPainter2 = new org.jdesktop.swingx.painter.AlphaPainter();
+        appearanceButtonGroup = new javax.swing.ButtonGroup();
         panelPrincipal = new javax.swing.JDesktopPane();
         jToolBar1 = new javax.swing.JToolBar();
         openVentasWindowButton = new javax.swing.JButton();
@@ -53,6 +72,9 @@ public class MainView extends javax.swing.JFrame {
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
+        appearanceButton = new javax.swing.JMenu();
+        darkModeButton = new javax.swing.JRadioButtonMenuItem();
+        lightModeButton = new javax.swing.JRadioButtonMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -74,8 +96,8 @@ public class MainView extends javax.swing.JFrame {
 
         openVentasWindowButton.setText("Ventas");
         openVentasWindowButton.setFocusable(false);
-        openVentasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        openVentasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openVentasWindowButton.setHideActionText(true);
+        openVentasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         openVentasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openVentasWindowButtonActionPerformed(evt);
@@ -85,8 +107,7 @@ public class MainView extends javax.swing.JFrame {
 
         openComprasWindowButton.setText("Compras");
         openComprasWindowButton.setFocusable(false);
-        openComprasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        openComprasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openComprasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         openComprasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openComprasWindowButtonActionPerformed(evt);
@@ -96,8 +117,7 @@ public class MainView extends javax.swing.JFrame {
 
         openAlmacenWindowButton.setText("Almacén");
         openAlmacenWindowButton.setFocusable(false);
-        openAlmacenWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        openAlmacenWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openAlmacenWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         openAlmacenWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openAlmacenWindowButtonActionPerformed(evt);
@@ -107,8 +127,7 @@ public class MainView extends javax.swing.JFrame {
 
         openEstadisticasWindowButton.setText("Estadísticas");
         openEstadisticasWindowButton.setFocusable(false);
-        openEstadisticasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        openEstadisticasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openEstadisticasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         openEstadisticasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openEstadisticasWindowButtonActionPerformed(evt);
@@ -118,7 +137,7 @@ public class MainView extends javax.swing.JFrame {
 
         openAdministracionWindowButton.setText("Administración");
         openAdministracionWindowButton.setFocusable(false);
-        openAdministracionWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openAdministracionWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         openAdministracionWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openAdministracionWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +175,25 @@ public class MainView extends javax.swing.JFrame {
 
         editMenu.setMnemonic('e');
         editMenu.setText("Editar");
+
+        appearanceButton.setText("Apariencia");
+
+        appearanceButtonGroup.add(darkModeButton);
+        darkModeButton.setSelected(true);
+        darkModeButton.setText("Oscuro");
+        darkModeButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                darkModeButtonItemStateChanged(evt);
+            }
+        });
+        appearanceButton.add(darkModeButton);
+
+        appearanceButtonGroup.add(lightModeButton);
+        lightModeButton.setText("Claro");
+        appearanceButton.add(lightModeButton);
+
+        editMenu.add(appearanceButton);
+
         menuBar.add(editMenu);
 
         helpMenu.setMnemonic('h');
@@ -190,11 +228,9 @@ public class MainView extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
 		System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
-
+	
     private void openVentasWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openVentasWindowButtonActionPerformed
-        
 		VentasView ventanaVentas = context.getBean(VentasView.class);
-       
 		
 		ventanaVentas.addInternalFrameListener(new InternalFrameListener() {
 			@Override
@@ -322,16 +358,46 @@ public class MainView extends javax.swing.JFrame {
 		administracionView.setVisible(true);
 		openAdministracionWindowButton.setEnabled(false);
     }//GEN-LAST:event_openAdministracionWindowButtonActionPerformed
+
+    private void darkModeButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_darkModeButtonItemStateChanged
+		if(evt.getStateChange() == ItemEvent.SELECTED){
+            FlatAnimatedLafChange.showSnapshot();
+			appearanceButton.setIcon(iconos.iconoDarkMode);
+            try {
+                UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
+            } catch (Exception ex) {
+                // MessageHandler.exceptionMessage(ex);
+				System.out.println("Fail changing feel color to dark");
+            }
+			
+            com.formdev.flatlaf.FlatLaf.updateUI();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        }else if(evt.getStateChange() == ItemEvent.DESELECTED){
+            FlatAnimatedLafChange.showSnapshot();
+			appearanceButton.setIcon(iconos.iconoLightMode);
+            try {
+                UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+            } catch (Exception ex) {
+                // MessageHandler.exceptionMessage(ex);
+				System.out.println("Fail changing feel color to light");
+            }
+            com.formdev.flatlaf.FlatLaf.updateUI();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        }
+		
+    }//GEN-LAST:event_darkModeButtonItemStateChanged
 	
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private org.jdesktop.swingx.painter.AlphaPainter alphaPainter1;
-    private org.jdesktop.swingx.painter.AlphaPainter alphaPainter2;
+    private javax.swing.JMenu appearanceButton;
+    private javax.swing.ButtonGroup appearanceButtonGroup;
+    private javax.swing.JRadioButtonMenuItem darkModeButton;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JRadioButtonMenuItem lightModeButton;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton openAdministracionWindowButton;
     private javax.swing.JButton openAlmacenWindowButton;

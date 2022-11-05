@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Venta implements Serializable {
 	
 	private Timestamp fechaEmision;
 	
-	@OneToMany(mappedBy = "venta", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "venta", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private List<DetallesVenta> detallesVenta;
 	
 	@OneToOne
@@ -43,16 +44,13 @@ public class Venta implements Serializable {
 	@Column(nullable = false, precision = 12, scale=2)
 	private BigInteger precioTotal;
 	
-	//references empleado//
-	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "idEmpleado", referencedColumnName = "idEmpleado")
-	private Empleado empleado;
+	private Empleado empleado; //references empleado//
 	
-	//references cliente
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "idCliente", referencedColumnName = "idCliente")
-	private Cliente cliente;	
+	private Cliente cliente;	//references cliente
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "idMetodoPagoVenta", referencedColumnName = "idMetodoPago")

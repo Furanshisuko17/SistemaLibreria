@@ -2,9 +2,7 @@
 
 <Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="org.jdesktop.swingx.painter.AlphaPainter" name="alphaPainter1">
-    </Component>
-    <Component class="org.jdesktop.swingx.painter.AlphaPainter" name="alphaPainter2">
+    <Component class="javax.swing.ButtonGroup" name="appearanceButtonGroup">
     </Component>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <SubComponents>
@@ -51,6 +49,35 @@
             <Property name="mnemonic" type="int" value="101"/>
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="appearanceButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Apariencia"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="darkModeButton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="appearanceButtonGroup"/>
+                    </Property>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Oscuro"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="darkModeButtonItemStateChanged"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="lightModeButton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="appearanceButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Claro"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
@@ -134,8 +161,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ventas"/>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
+            <Property name="hideActionText" type="boolean" value="true"/>
+            <Property name="horizontalAlignment" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openVentasWindowButtonActionPerformed"/>
@@ -145,8 +172,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Compras"/>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
+            <Property name="horizontalAlignment" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openComprasWindowButtonActionPerformed"/>
@@ -156,8 +182,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Almac&#xe9;n"/>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
+            <Property name="horizontalAlignment" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openAlmacenWindowButtonActionPerformed"/>
@@ -167,8 +192,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Estad&#xed;sticas"/>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
+            <Property name="horizontalAlignment" type="int" value="10"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openEstadisticasWindowButtonActionPerformed"/>
@@ -178,7 +202,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Administraci&#xf3;n"/>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="horizontalAlignment" type="int" value="10"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
