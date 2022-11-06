@@ -1,4 +1,4 @@
-package com.utp.trabajo.model.entities.services.util;
+package com.utp.trabajo.services.util;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.springframework.stereotype.Service;

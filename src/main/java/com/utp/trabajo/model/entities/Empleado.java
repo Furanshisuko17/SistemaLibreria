@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,9 +24,9 @@ public class Empleado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idEmpleado;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idCargo", referencedColumnName = "idCargo")
-	private Cargo cargo;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "idRol", referencedColumnName = "idRol", nullable = true)
+	private RolAcceso rolAcceso;
 	
 	@Column(nullable = false)
 	private String nombres;
@@ -53,5 +54,12 @@ public class Empleado implements Serializable {
 	
 	@Column(nullable = false)
 	private String tipoContratacion;
+	
+	@Column(unique = true)
+	private String username;
+
+	@Column(length = 70)
+	private String encryptedPassword;
+	
 	
 }

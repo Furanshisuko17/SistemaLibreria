@@ -1,9 +1,10 @@
 package com.utp.trabajo.gui.view;
 
+import com.utp.trabajo.gui.view.ventas.VentasView;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.utp.trabajo.model.entities.services.util.IconService;
-import com.utp.trabajo.model.entities.services.util.UtilService;
+import com.utp.trabajo.services.util.IconService;
+import com.utp.trabajo.services.util.UtilService;
 import java.awt.event.ItemEvent;
 import javax.annotation.PostConstruct;
 import javax.swing.UIManager;
@@ -49,8 +50,6 @@ public class MainView extends javax.swing.JFrame {
 		appearanceButton.setIcon(iconos.iconoDarkMode);
 		lightModeButton.setIcon(iconos.iconoLightMode);
 		darkModeButton.setIcon(iconos.iconoDarkMode);
-		
-		
 	}
 
 	@SuppressWarnings("unchecked")

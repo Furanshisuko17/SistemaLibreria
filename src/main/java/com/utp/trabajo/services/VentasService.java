@@ -1,4 +1,4 @@
-package com.utp.trabajo.model.entities.services;
+package com.utp.trabajo.services;
 
 import com.utp.trabajo.model.dao.VentaDao;
 import com.utp.trabajo.model.entities.Venta;
@@ -31,7 +31,6 @@ public class VentasService {
 			values[7] = venta.getCliente();
 			ventasReturned.addRow(values);
 		}
-		
 		return ventasReturned;
 		
 	} 
