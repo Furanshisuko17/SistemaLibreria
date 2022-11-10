@@ -41,6 +41,7 @@ public class VentasView extends javax.swing.JInternalFrame {
         tabbedPane = new javax.swing.JTabbedPane();
 
         setClosable(true);
+        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Ventas");
@@ -62,6 +63,8 @@ public class VentasView extends javax.swing.JInternalFrame {
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
+        tabbedPane.add("Nueva venta" , getNuevaVentaTabInstance());
+        tabbedPane.add("Ventas", getVentasTabInstance());
         tabbedPane.add("Clientes", getClientesTabInstance());
         setVisible(true);
     }
@@ -75,6 +78,20 @@ public class VentasView extends javax.swing.JInternalFrame {
     
     public ClientesTab getClientesTabInstance() {
         return clientesTabObjectFactory.getObject();
+    }
+    
+    @Autowired
+    private ObjectFactory<VentasTab> ventasTabObjectFactory;
+    
+    public VentasTab getVentasTabInstance() {
+        return ventasTabObjectFactory.getObject();
+    }
+    
+    @Autowired
+    private ObjectFactory<NuevaVentaTab> nuevaVentaTabObjectFactory;
+    
+    public NuevaVentaTab getNuevaVentaTabInstance() {
+        return nuevaVentaTabObjectFactory.getObject();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
