@@ -1,10 +1,8 @@
-
 package com.utp.trabajo.configuration;
 
 import com.utp.trabajo.gui.view.ventas.ClientesTab;
 import com.utp.trabajo.gui.view.ventas.NuevaVentaTab;
 import com.utp.trabajo.gui.view.ventas.VentasTab;
-import com.utp.trabajo.gui.view.ventas.VentasView;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.cloud.context.restart.RestartEndpoint;
 import org.springframework.context.annotation.Bean;
