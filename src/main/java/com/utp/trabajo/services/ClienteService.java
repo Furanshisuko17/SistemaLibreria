@@ -3,6 +3,9 @@ package com.utp.trabajo.services;
 import com.utp.trabajo.model.dao.ClienteDao;
 import com.utp.trabajo.model.entities.Cliente;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +16,31 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteDao clienteDao;
-	
-	@Transactional(readOnly = true)
-	public DefaultTableModel listarClientes() {
-		var clientes = clienteDao.findAll();
-		
-		DefaultTableModel tablaClientes = new DefaultTableModel();
-		for(Cliente cliente : clientes) { //TODO: find better way to retrieve all data
-			Object[] values = new Object[9];
-			values[0] = cliente.getIdCliente();
-			values[1] = cliente.getNombre();
-			values[2] = cliente.getDireccion();
-			values[3] = cliente.getIdentificacion();
-			values[4] = cliente.getTelefono();
-			values[5] = cliente.getRazonSocial();
-			tablaClientes.addRow(values);
-		}
-		return tablaClientes;
-	}
+	   
+    @Transactional(readOnly = true)
+    public List<Cliente> streamClientes(Long lastId, Long limit) {
+        try(Stream<Cliente> streamedClientes = clienteDao.findByIdClienteGreaterThan(lastId)) {
+            return streamedClientes.limit(limit)
+                    .collect(Collectors.toList());
+        }   
+    } 
+    
+    @Transactional(readOnly = true)
+    public Cliente encontrarClientePorId(Long idCliente) {
+        return clienteDao.findById(idCliente).orElseThrow();
+    }
+    
+    @Transactional
+    public void nuevoCliente(Cliente cliente) {
+        clienteDao.save(cliente);
+        
+    }
+    
+    @Transactional
+    public void actualizarCliente(Cliente cliente) {
+        
+    }
+    
+    
 	
 }

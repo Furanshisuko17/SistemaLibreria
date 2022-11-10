@@ -24,7 +24,7 @@ public class Empleado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idEmpleado;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "idRol", referencedColumnName = "idRol", nullable = true)
 	private RolAcceso rolAcceso;
 	

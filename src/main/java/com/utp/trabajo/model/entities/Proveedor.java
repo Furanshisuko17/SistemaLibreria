@@ -32,5 +32,8 @@ public class Proveedor implements Serializable {
 	
 	@Column(nullable = false)
 	private String telefono;
+    
+    @Column(length = 30)
+    private String tipoComercio; //Minorista o mayorista
 
 }

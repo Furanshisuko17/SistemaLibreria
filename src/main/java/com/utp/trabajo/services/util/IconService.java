@@ -20,8 +20,9 @@ public class IconService {
 	public FlatSVGIcon iconoExit;
 	public FlatSVGIcon iconoLightMode;
 	public FlatSVGIcon iconoDarkMode;
-	
-	
+	public FlatSVGIcon iconoCuenta;
+	public FlatSVGIcon iconoLogout;
+    
 	//public FlatSVGIcon icono;
 	
 	/**
@@ -38,6 +39,8 @@ public class IconService {
 		iconoExit = utilService.getIcon("/icons/exit.svg", 16);
 		iconoLightMode = utilService.getIcon("/icons/lightMode.svg", 16);
 		iconoDarkMode = utilService.getIcon("/icons/darkMode.svg", 16);
+        iconoCuenta = utilService.getIcon("/icons/cuentaIcono.svg", 16);
+        iconoLogout = utilService.getIcon("/icons/logoutIcon.svg", 16);
 	}
 	
 	

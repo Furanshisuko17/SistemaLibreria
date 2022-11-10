@@ -4,6 +4,194 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="appearanceButtonGroup">
     </Component>
+    <Container class="javax.swing.JDialog" name="loginPrompt">
+      <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
+        <Property name="title" type="java.lang.String" value="Librer&#xed;a El Estudiante"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="loginDialog" noResource="true"/>
+        <Property name="resizable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="loginPromptWindowClosing"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JDialog(this, false)"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="BottomPanel" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="AutenticationPanelMain" min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="AutenticationPanelMain" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="BottomPanel" min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="AutenticationPanelMain">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Component id="InfoLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="informationLabel" alignment="0" min="-2" pref="260" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="PasswordLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="UsernameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="passwordInput" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="usernameInput" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="25" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Component id="InfoLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
+                              <Component id="UsernameLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="usernameInput" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="PasswordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="passwordInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="informationLabel" min="-2" pref="21" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="InfoLabel">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Iniciar sesi&#xf3;n"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="UsernameLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Usuario:"/>
+                <Property name="toolTipText" type="java.lang.String" value="Especifique el usuario de la base de datos"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="usernameInput">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="fran"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="PasswordLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
+                <Property name="toolTipText" type="java.lang.String" value="Especifique la contrase&#xf1;a de la base de datos"/>
+              </Properties>
+            </Component>
+            <Component class="com.formdev.flatlaf.extras.components.FlatPasswordField" name="passwordInput">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="123"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                <Property name="placeholderText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.formdev.flatlaf.extras.components.FlatPasswordField()"/>
+              </AuxValues>
+            </Component>
+            <Component class="org.jdesktop.swingx.JXLabel" name="informationLabel">
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="BottomPanel">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="Separator" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                      <Component id="busyLabel" min="-2" pref="117" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="loginButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="Separator" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="loginButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="busyLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="loginButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Iniciar sesi&#xf3;n"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="com.formdev.flatlaf.extras.components.FlatSeparator" name="Separator">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.formdev.flatlaf.extras.components.FlatSeparator()"/>
+              </AuxValues>
+            </Component>
+            <Component class="org.jdesktop.swingx.JXBusyLabel" name="busyLabel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22))"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
@@ -93,6 +281,21 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="userButton">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="menuBar.add(javax.swing.Box.createHorizontalGlue());  "/>
+          </AuxValues>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="logoutButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cerrar sesi&#xf3;n"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutButtonActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
@@ -121,13 +324,13 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="panelPrincipal" max="32767" attributes="0"/>
-          <Component id="jToolBar1" max="32767" attributes="0"/>
+          <Component id="toolBar" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jToolBar1" min="-2" pref="25" max="-2" attributes="0"/>
+              <Component id="toolBar" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Component id="panelPrincipal" max="32767" attributes="0"/>
           </Group>
@@ -150,7 +353,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="javax.swing.JToolBar" name="jToolBar1">
+    <Container class="javax.swing.JToolBar" name="toolBar">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
       </Properties>

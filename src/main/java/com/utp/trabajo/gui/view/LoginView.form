@@ -154,7 +154,7 @@
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Component id="busyLabel" min="-2" pref="117" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="Login" min="-2" max="-2" attributes="0"/>
+                  <Component id="loginButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -165,7 +165,7 @@
                   <Component id="Separator" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="Login" min="-2" max="-2" attributes="0"/>
+                      <Component id="loginButton" min="-2" max="-2" attributes="0"/>
                       <Component id="busyLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -174,12 +174,12 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="Login">
+        <Component class="javax.swing.JButton" name="loginButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Iniciar sesi&#xf3;n"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LoginActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="com.formdev.flatlaf.extras.components.FlatSeparator" name="Separator">

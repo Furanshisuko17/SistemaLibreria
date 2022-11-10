@@ -1,5 +1,6 @@
 package com.utp.trabajo.services.security;
 
+import com.utp.trabajo.model.entities.Empleado;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,5 +18,9 @@ public class SecurityService {
 	public List<String> getPermissions() {
 		return authService.getPermisos();
 	}
-	
+    
+    public Empleado getLoggedEmpleado() {
+        return authService.getLoggedEmpleado();
+    }
+    
 }

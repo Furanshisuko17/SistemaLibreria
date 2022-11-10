@@ -16,19 +16,34 @@ public class EstadisticasView extends javax.swing.JInternalFrame {
 	@Autowired
 	private IconService iconos;
 	
+	public EstadisticasView() {
+		initComponents();
+	}
+    
 	@PostConstruct
 	private void init(){
 		setFrameIcon(iconos.iconoEstadisticas);
 	}
 		
-	public EstadisticasView() {
-		initComponents();
-	}
-
+    
+    public void abrirVentana() {
+        setVisible(false);
+        com.formdev.flatlaf.FlatLaf.updateUI();
+        
+        //Colocar tabs aquí
+        
+        setVisible(true);
+    }
+    
+    public void cerrarVentana() {
+        tabbedPane.removeAll();
+    }
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        tabbedPane = new javax.swing.JTabbedPane();
 
         setClosable(true);
         setMaximizable(true);
@@ -39,16 +54,17 @@ public class EstadisticasView extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }

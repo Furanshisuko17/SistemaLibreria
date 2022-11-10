@@ -1,8 +1,6 @@
-
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +32,9 @@ public class Cliente implements Serializable {
 	
 	@Column(nullable = false)
 	private String razonSocial;
+    
+    @Column(nullable = true)
+    private Long numeroCompras; //cantidad de compras que ha hecho el cliente
 	
 	
 	//private String 

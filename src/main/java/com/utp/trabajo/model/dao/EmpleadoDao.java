@@ -5,7 +5,6 @@ import com.utp.trabajo.exception.UsernameNotFoundException;
 import com.utp.trabajo.model.entities.Empleado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
 public interface EmpleadoDao extends JpaRepository<Empleado, Long>{
 	
 	boolean existsEmpleadoByUsername(String username);

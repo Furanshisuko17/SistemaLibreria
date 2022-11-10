@@ -5,10 +5,9 @@ import com.utp.trabajo.services.util.UtilService;
 import com.utp.trabajo.services.VentasService;
 import com.utp.trabajo.services.security.SecurityService;
 import javax.annotation.PostConstruct;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.UIManager;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,9 +17,6 @@ public class VentasView extends javax.swing.JInternalFrame {
 	private VentasService ventasService;
 
 	@Autowired
-	private ApplicationContext context;
-	
-	@Autowired
 	private IconService iconos;
 
 	@Autowired
@@ -29,15 +25,13 @@ public class VentasView extends javax.swing.JInternalFrame {
 	@Autowired
 	private SecurityService securityService;
 		
-	public VentasView() {	
+	public VentasView() {
 		initComponents();
 	}
         
 	@PostConstruct
 	private void init(){
 		setFrameIcon(iconos.iconoVentas);
-		tabbedPane.add("Clientes", context.getBean(ClientesTab.class));
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -64,8 +58,25 @@ public class VentasView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
+    
+    public void abrirVentana() {
+        setVisible(false);
+        com.formdev.flatlaf.FlatLaf.updateUI();
+        tabbedPane.add("Clientes", getClientesTabInstance());
+        setVisible(true);
+    }
+    
+    public void cerrarVentana() {
+        tabbedPane.removeAll();
+    }
+           
+    @Autowired
+    private ObjectFactory<ClientesTab> clientesTabObjectFactory;
+    
+    public ClientesTab getClientesTabInstance() {
+        return clientesTabObjectFactory.getObject();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables

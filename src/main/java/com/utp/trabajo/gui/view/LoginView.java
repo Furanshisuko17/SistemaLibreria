@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-@Component
+@Deprecated
 public class LoginView extends javax.swing.JFrame {
 
 	@Autowired
@@ -38,7 +38,7 @@ public class LoginView extends javax.swing.JFrame {
         passwordInput = new com.formdev.flatlaf.extras.components.FlatPasswordField();
         informationLabel = new org.jdesktop.swingx.JXLabel();
         BottomPanel = new javax.swing.JPanel();
-        Login = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
         Separator = new com.formdev.flatlaf.extras.components.FlatSeparator();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
 
@@ -107,10 +107,10 @@ public class LoginView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Login.setText("Iniciar sesión");
-        Login.addActionListener(new java.awt.event.ActionListener() {
+        loginButton.setText("Iniciar sesión");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoginActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
@@ -123,7 +123,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Login)
+                .addComponent(loginButton)
                 .addGap(26, 26, 26))
         );
         BottomPanelLayout.setVerticalGroup(
@@ -132,7 +132,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addComponent(Separator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(BottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Login)
+                    .addComponent(loginButton)
                     .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -165,7 +165,7 @@ public class LoginView extends javax.swing.JFrame {
 		busyLabel.setEnabled(false);
 	}
 
-    private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 		usernameInput.putClientProperty("JComponent.outline", "");
 		passwordInput.putClientProperty("JComponent.outline", "");
 		setBusy();
@@ -229,23 +229,21 @@ public class LoginView extends javax.swing.JFrame {
 
 				}
 			}
-
-			
 		};
 		
 		swingWorker.execute();
-    }//GEN-LAST:event_LoginActionPerformed
+    }//GEN-LAST:event_loginButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AutenticationPanelMain;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.JLabel InfoLabel;
-    private javax.swing.JButton Login;
     private javax.swing.JLabel PasswordLabel;
     private com.formdev.flatlaf.extras.components.FlatSeparator Separator;
     private javax.swing.JLabel UsernameLabel;
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private org.jdesktop.swingx.JXLabel informationLabel;
+    private javax.swing.JButton loginButton;
     private com.formdev.flatlaf.extras.components.FlatPasswordField passwordInput;
     private javax.swing.JTextField usernameInput;
     // End of variables declaration//GEN-END:variables
