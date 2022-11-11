@@ -46,6 +46,7 @@ public class EstadisticasView extends javax.swing.JInternalFrame {
         tabbedPane = new javax.swing.JTabbedPane();
 
         setClosable(true);
+        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Estadisticas");

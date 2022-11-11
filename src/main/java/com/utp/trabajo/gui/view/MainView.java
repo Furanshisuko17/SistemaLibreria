@@ -10,14 +10,11 @@ import com.utp.trabajo.services.util.UtilService;
 import java.awt.event.ItemEvent;
 import java.util.concurrent.ExecutionException;
 import javax.annotation.PostConstruct;
-import javax.swing.JInternalFrame;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 
 @org.springframework.stereotype.Component
@@ -406,9 +403,7 @@ public class MainView extends javax.swing.JFrame {
     }
     
     private void closeAllInternalWindows() {
-        for (JInternalFrame frame : panelPrincipal.getAllFrames()) {
-            frame.dispose();
-        }       
+        panelPrincipal.removeAll();
     }
     
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
