@@ -117,6 +117,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         }
         
         setBusy("Cargando...");
+		reloadTableButton.setEnabled(false);
+		loadMoreButton.setEnabled(false);
         if(reload) {
             defaultTableModelClientes.setRowCount(0);
             lastId = 0;
@@ -155,6 +157,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
+				reloadTableButton.setEnabled(true);
+				loadMoreButton.setEnabled(true);
             }
         };
         worker.execute();

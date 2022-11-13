@@ -43,6 +43,8 @@ public class MainView extends javax.swing.JFrame {
         loginPrompt.pack();
         loginPrompt.setLocationRelativeTo(this);
         //loginPrompt.setVisible(true); 
+		cuentaWindow.pack();
+		cuentaWindow.setLocationRelativeTo(this);
 	}
         
 	@PostConstruct
@@ -91,6 +93,36 @@ public class MainView extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         Separator = new com.formdev.flatlaf.extras.components.FlatSeparator();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
+        cuentaWindow = new javax.swing.JDialog();
+        nombreLabel = new javax.swing.JLabel();
+        nombresField = new javax.swing.JTextField();
+        apellidoLabel = new javax.swing.JLabel();
+        apellidosField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        dniField = new javax.swing.JTextField();
+        direccionLabel = new javax.swing.JLabel();
+        direccionField = new javax.swing.JTextField();
+        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        fechaNacimientoLabel = new javax.swing.JLabel();
+        fechaContratacionLabel = new javax.swing.JLabel();
+        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
+        fechaCeseLabel = new javax.swing.JLabel();
+        jXDatePicker3 = new org.jdesktop.swingx.JXDatePicker();
+        datosPersonalesLabel = new javax.swing.JLabel();
+        telefonoLabel = new javax.swing.JLabel();
+        telefonoField = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        usuarioLabel = new javax.swing.JLabel();
+        contrasenaLabel = new javax.swing.JLabel();
+        usuarioField = new javax.swing.JTextField();
+        contrasenaField = new com.formdev.flatlaf.extras.components.FlatPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        cerrarVentana = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        aceptarButon = new javax.swing.JButton();
         panelPrincipal = new javax.swing.JDesktopPane();
         toolBar = new javax.swing.JToolBar();
         openVentasWindowButton = new javax.swing.JButton();
@@ -111,6 +143,8 @@ public class MainView extends javax.swing.JFrame {
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
         userButton = new javax.swing.JMenu();
+        userDetailsButton = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         logoutButton = new javax.swing.JMenuItem();
 
         loginPrompt.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -229,6 +263,207 @@ public class MainView extends javax.swing.JFrame {
                 .addComponent(AutenticationPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(BottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        cuentaWindow.setTitle("Configuración de la cuenta");
+        cuentaWindow.setResizable(false);
+
+        nombreLabel.setText("Nombres:");
+
+        apellidoLabel.setText("Apellidos:");
+
+        jLabel1.setText("DNI:");
+
+        direccionLabel.setText("Dirección:");
+
+        jXDatePicker1.setPreferredSize(new java.awt.Dimension(143, 22));
+        jXDatePicker1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXDatePicker1ActionPerformed(evt);
+            }
+        });
+
+        fechaNacimientoLabel.setText("Fecha de nacimiento:");
+
+        fechaContratacionLabel.setText("Fecha de contrato:");
+
+        jXDatePicker2.setPreferredSize(new java.awt.Dimension(143, 22));
+        jXDatePicker2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXDatePicker2ActionPerformed(evt);
+            }
+        });
+
+        fechaCeseLabel.setText("Fecha de cese:");
+
+        jXDatePicker3.setPreferredSize(new java.awt.Dimension(143, 22));
+        jXDatePicker3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jXDatePicker3ActionPerformed(evt);
+            }
+        });
+
+        datosPersonalesLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        datosPersonalesLabel.setText("Datos personales");
+
+        telefonoLabel.setText("Teléfono:");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Datos de inicio de sesión");
+
+        usuarioLabel.setText("Usuario:");
+        usuarioLabel.setAutoscrolls(true);
+
+        contrasenaLabel.setText("Contraseña:");
+
+        jLabel3.setText("Descripción / biografía: ");
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setLineWrap(true);
+        jTextArea2.setRows(5);
+        jTextArea2.setTabSize(4);
+        jTextArea2.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        cerrarVentana.setText("Cerrar");
+
+        jButton2.setText("?");
+
+        aceptarButon.setText("Aceptar");
+
+        javax.swing.GroupLayout cuentaWindowLayout = new javax.swing.GroupLayout(cuentaWindow.getContentPane());
+        cuentaWindow.getContentPane().setLayout(cuentaWindowLayout);
+        cuentaWindowLayout.setHorizontalGroup(
+            cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator3)
+            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(datosPersonalesLabel)
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, 0))
+                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2)
+                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addComponent(usuarioLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(contrasenaLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(contrasenaField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel2)
+                                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addComponent(direccionLabel)
+                                                .addGap(11, 11, 11)
+                                                .addComponent(direccionField))
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addComponent(nombreLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(apellidoLabel)
+                                                    .addComponent(jLabel1))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(apellidosField, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                                                    .addComponent(dniField))))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addComponent(fechaContratacionLabel)
+                                                .addGap(27, 27, 27)
+                                                .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addComponent(fechaCeseLabel)
+                                                .addGap(49, 49, 49)
+                                                .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(fechaNacimientoLabel)
+                                                    .addComponent(telefonoLabel))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(telefonoField))))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aceptarButon)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cerrarVentana)
+                .addContainerGap())
+        );
+        cuentaWindowLayout.setVerticalGroup(
+            cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(6, 6, 6)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usuarioLabel)
+                    .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(contrasenaLabel)
+                    .addComponent(contrasenaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(datosPersonalesLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreLabel)
+                    .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(telefonoLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(apellidoLabel)
+                            .addComponent(apellidosField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(direccionLabel)
+                            .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fechaNacimientoLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fechaContratacionLabel)
+                            .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fechaCeseLabel)
+                            .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cerrarVentana)
+                    .addComponent(jButton2)
+                    .addComponent(aceptarButon))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -359,6 +594,16 @@ public class MainView extends javax.swing.JFrame {
         menuBar.add(helpMenu);
 
         menuBar.add(javax.swing.Box.createHorizontalGlue());
+        userButton.setText("Usuario");
+
+        userDetailsButton.setText("Configuración de la cuenta");
+        userDetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userDetailsButtonActionPerformed(evt);
+            }
+        });
+        userButton.add(userDetailsButton);
+        userButton.add(jSeparator1);
 
         logoutButton.setText("Cerrar sesión");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -610,7 +855,6 @@ public class MainView extends javax.swing.JFrame {
                 } catch (ExecutionException ex) {
                     try {
                         throw ex.getCause();
-
                     } catch (UsernameNotFoundException e) {
                         usernameInput.putClientProperty("JComponent.outline", "error");
                         informationLabel.setText(e.getMessage());
@@ -633,7 +877,7 @@ public class MainView extends javax.swing.JFrame {
                     setVisible(true);
                     userButton.setText(authService.getLoggedEmpleado().getUsername());
                 } else {
-
+						
                 }
             }
         };
@@ -653,6 +897,23 @@ public class MainView extends javax.swing.JFrame {
         //DONE: redo this by restarting the context application
         //TODO: low priority, place a loading window while logging out
     }//GEN-LAST:event_logoutButtonActionPerformed
+
+    private void userDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userDetailsButtonActionPerformed
+		cuentaWindow.setVisible(true);
+		
+    }//GEN-LAST:event_userDetailsButtonActionPerformed
+
+    private void jXDatePicker3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jXDatePicker3ActionPerformed
+
+    private void jXDatePicker2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jXDatePicker2ActionPerformed
+
+    private void jXDatePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jXDatePicker1ActionPerformed
     
    
     
@@ -664,20 +925,47 @@ public class MainView extends javax.swing.JFrame {
     private com.formdev.flatlaf.extras.components.FlatSeparator Separator;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton aceptarButon;
+    private javax.swing.JLabel apellidoLabel;
+    private javax.swing.JTextField apellidosField;
     private javax.swing.JMenu appearanceButton;
     private javax.swing.ButtonGroup appearanceButtonGroup;
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
+    private javax.swing.JButton cerrarVentana;
+    private com.formdev.flatlaf.extras.components.FlatPasswordField contrasenaField;
+    private javax.swing.JLabel contrasenaLabel;
+    private javax.swing.JDialog cuentaWindow;
     private javax.swing.JRadioButtonMenuItem darkModeButton;
+    private javax.swing.JLabel datosPersonalesLabel;
+    private javax.swing.JTextField direccionField;
+    private javax.swing.JLabel direccionLabel;
+    private javax.swing.JTextField dniField;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JLabel fechaCeseLabel;
+    private javax.swing.JLabel fechaContratacionLabel;
+    private javax.swing.JLabel fechaNacimientoLabel;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private org.jdesktop.swingx.JXLabel informationLabel;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTextArea jTextArea2;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
     private javax.swing.JRadioButtonMenuItem lightModeButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JDialog loginPrompt;
     private javax.swing.JMenuItem logoutButton;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JLabel nombreLabel;
+    private javax.swing.JTextField nombresField;
     private javax.swing.JButton openAdministracionWindowButton;
     private javax.swing.JButton openAlmacenWindowButton;
     private javax.swing.JButton openComprasWindowButton;
@@ -688,9 +976,14 @@ public class MainView extends javax.swing.JFrame {
     private com.formdev.flatlaf.extras.components.FlatPasswordField passwordInput;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JTextField telefonoField;
+    private javax.swing.JLabel telefonoLabel;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JMenu userButton;
+    private javax.swing.JMenuItem userDetailsButton;
     private javax.swing.JTextField usernameInput;
+    private javax.swing.JTextField usuarioField;
+    private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 
 }

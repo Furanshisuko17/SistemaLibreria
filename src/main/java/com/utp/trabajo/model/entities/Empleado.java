@@ -46,6 +46,7 @@ public class Empleado implements Serializable {
 	
 	private Timestamp fechaCese;
 	
+	@Column(length = 500)
 	private String descripcion;
 	
 	@ManyToOne
@@ -61,5 +62,6 @@ public class Empleado implements Serializable {
 	@Column(length = 70)
 	private String encryptedPassword;
 	
-	
+	@Column(length = 15)
+	private String telefono;
 }

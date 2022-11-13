@@ -28,7 +28,7 @@ public class SistemaLibreriaApplication {
 		FlatDarkLaf.setup();
 		FlatSVGIcon.ColorFilter.getInstance()
 				.add(Color.black, new Color(90, 90, 90), new Color(175, 177, 179));
-		FlatInspector.install( "ctrl shift alt X" ); // To inspect the UI - dev only       
+		 
 		context = getBuiltAndConfiguredApp().run(args);
         createInterface(context);
 	}
@@ -41,6 +41,7 @@ public class SistemaLibreriaApplication {
     
     public static void createInterface(ConfigurableApplicationContext context) {
         EventQueue.invokeLater(() -> {
+			FlatInspector.install( "ctrl shift alt X" ); // To inspect the UI - dev only      
 			MainView mainView = context.getBean(MainView.class);
 			//mainView.setVisible(false); 
             for (Window window : mainView.getOwnedWindows()) {
