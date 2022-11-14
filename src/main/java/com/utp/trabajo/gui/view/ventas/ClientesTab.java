@@ -16,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ClientesTab extends org.jdesktop.swingx.JXPanel {
-	
-	DefaultTableModel defaultTableModelClientes = new DefaultTableModel() {
+
+    DefaultTableModel defaultTableModelClientes = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            switch(columnIndex) {
+            switch (columnIndex) {
                 case 0:
                     return Long.class;
                 case 1:
@@ -38,24 +38,24 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 default:
                     return String.class;
             }
-        }        
+        }
     };
-	String[] columnNames = {"ID", "Nombre", "Dirección", "DNI", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
-       
+    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
+
     private boolean canRead = true;
-    
+
     private long lastId = 0;
-    
+
     private long limit = 100;
-    
-	@Autowired
-	private SecurityService securityService;
-    
+
+    @Autowired
+    private SecurityService securityService;
+
     @Autowired
     private ClienteService clienteService;
-	
-	public ClientesTab() {
-		initComponents();
+
+    public ClientesTab() {
+        initComponents();
         defaultTableModelClientes.setColumnIdentifiers(columnNames);
         tablaClientes.setModel(defaultTableModelClientes);
         scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
@@ -72,60 +72,61 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         });
         setIdle();
         System.out.println("Clientes tab - Nueva instancia!");
-	}
-	
-	@PostConstruct
-	private void init() {
+    }
+
+    @PostConstruct
+    private void init() {
         checkPermissions();
         retrieveData(false); // mover hacia un listener que verifique que se ha abierto el jPanel
-	}
-    
+    }
+
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
         //read, create, edit, delete
-        if(!permissions.contains("read")) {
+        if (!permissions.contains("read")) {
             canRead = false;
             loadMoreButton.setEnabled(false);
             reloadTableButton.setEnabled(false);
         }
-        if(!permissions.contains("write")) {
+        if (!permissions.contains("write")) {
             nuevoClienteButton.setEnabled(false);
             editarClienteButton.setEnabled(false);
             eliminarClienteButton.setEnabled(false);
         }
-        
+
     }
-    
+
     private void setBusy() {
-		busyLabel.setEnabled(true);
-	}
-    
+        busyLabel.setEnabled(true);
+    }
+
     private void setBusy(String message) {
-		busyLabel.setEnabled(true);
+        busyLabel.setEnabled(true);
         busyLabel.setText(message);
-	}
-	
-	private void setIdle() {
-		busyLabel.setEnabled(false);
+    }
+
+    private void setIdle() {
+        busyLabel.setEnabled(false);
         busyLabel.setText("");
-	}
-       
+    }
+
     private void retrieveData(boolean reload) {
-        if(!canRead) {
+        if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
-        
+
         setBusy("Cargando...");
 		reloadTableButton.setEnabled(false);
 		loadMoreButton.setEnabled(false);
-        if(reload) {
+        
+        if (reload) {
             defaultTableModelClientes.setRowCount(0);
             lastId = 0;
             setBusy("Recargando...");
         }
-        
-        SwingWorker worker = new SwingWorker<List<Cliente>, List<Cliente>>()  {
+
+        SwingWorker worker = new SwingWorker<List<Cliente>, List<Cliente>>() {
             @Override
             protected List<Cliente> doInBackground() throws Exception {
                 return clienteService.streamClientes(lastId, limit); // set lastId and configurable limit
@@ -146,9 +147,9 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                         values[6] = cliente.getNumeroCompras();
                         defaultTableModelClientes.addRow(values);
                     }
-                    int lastRow = 0 ;
+                    int lastRow = 0;
                     int rowCount = defaultTableModelClientes.getRowCount();
-                    if(rowCount != 0) {
+                    if (rowCount != 0) {
                         lastRow = rowCount - 1;
                     }
                     var id = defaultTableModelClientes.getValueAt(lastRow, 0);
@@ -163,8 +164,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         };
         worker.execute();
     }
-    
-	@SuppressWarnings("unchecked")
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -285,11 +286,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
-        
+
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
 
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
-        
+
     }//GEN-LAST:event_eliminarClienteButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
