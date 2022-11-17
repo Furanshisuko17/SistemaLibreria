@@ -1,21 +1,15 @@
 package com.utp.trabajo.services.security;
 
-import com.utp.trabajo.SistemaLibreriaApplication;
 import com.utp.trabajo.exception.UsernameNotFoundException;
 import com.utp.trabajo.exception.WrongPasswordException;
 import com.utp.trabajo.model.dao.EmpleadoDao;
 import com.utp.trabajo.model.dao.RolAccesoDao;
 import com.utp.trabajo.model.entities.Empleado;
 import com.utp.trabajo.model.entities.Permiso;
-import com.utp.trabajo.model.entities.RolAcceso;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.cloud.context.restart.RestartEndpoint;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

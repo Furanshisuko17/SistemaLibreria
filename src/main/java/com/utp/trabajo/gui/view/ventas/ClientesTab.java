@@ -43,7 +43,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
         }
     };
-    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
+    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
 
     ListSelectionModel selectionModel;
 
@@ -90,9 +90,19 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             } else {
                 eliminarClienteButton.setEnabled(false);
             }
+            
+            if (selectionModel.getSelectedItemsCount() == 1) {
+                editarClienteButton.setEnabled(true);
+            } else {
+                editarClienteButton.setEnabled(false);
+            }
 
         });
         setIdle();
+        eliminarClienteButton.setEnabled(false);
+        editarClienteButton.setEnabled(false);
+        nuevoClienteDialog.pack();
+        nuevoClienteDialog.setLocationRelativeTo(this);
         System.out.println("Clientes tab - Nueva instancia!");
     }
 
@@ -114,6 +124,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         if (!permissions.contains("create")) {
             canCreate = false;
             nuevoClienteButton.setEnabled(false);
+            guardarClienteButton.setEnabled(false);
         }
         if (!permissions.contains("delete")) {
             canDelete = false;
@@ -199,7 +210,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private List<Cliente> getSelectedRows() {
         List<Cliente> clientes = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
-            System.out.println(i);
+            //System.out.println(i);
+            i = tablaClientes.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
             Cliente c = new Cliente();
             c.setIdCliente((Long) defaultTableModelClientes.getValueAt(i, 0));
             c.setNombre((String) defaultTableModelClientes.getValueAt(i, 1));
@@ -217,6 +229,22 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        nuevoClienteDialog = new javax.swing.JDialog();
+        nuevoClienteLabel = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        dniLabel = new javax.swing.JLabel();
+        nombresLabel = new javax.swing.JLabel();
+        dniField = new javax.swing.JTextField();
+        nombresField = new javax.swing.JTextField();
+        direccionLabel = new javax.swing.JLabel();
+        direccionField = new javax.swing.JTextField();
+        telefonoLabel = new javax.swing.JLabel();
+        telefonoField = new javax.swing.JTextField();
+        razonSocialLabel = new javax.swing.JLabel();
+        razonSocialField = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
+        cancelarCreacionClienteButton = new javax.swing.JButton();
+        guardarClienteButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         scrollPane = new javax.swing.JScrollPane();
         tablaClientes = new org.jdesktop.swingx.JXTable();
@@ -226,6 +254,111 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         nuevoClienteButton = new javax.swing.JButton();
         eliminarClienteButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
+
+        nuevoClienteDialog.setTitle("Nuevo cliente");
+        nuevoClienteDialog.setAlwaysOnTop(true);
+        nuevoClienteDialog.setResizable(false);
+
+        nuevoClienteLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        nuevoClienteLabel.setText("Crear nuevo cliente");
+
+        dniLabel.setText("DNI / RUC:");
+
+        nombresLabel.setText("Nombres:");
+
+        direccionLabel.setText("Direccion:");
+
+        telefonoLabel.setText("Teléfono:");
+
+        razonSocialLabel.setText("Raz. social:");
+
+        cancelarCreacionClienteButton.setText("Cancelar");
+        cancelarCreacionClienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarCreacionClienteButtonActionPerformed(evt);
+            }
+        });
+
+        guardarClienteButton.setText("Guardar");
+        guardarClienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarClienteButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout nuevoClienteDialogLayout = new javax.swing.GroupLayout(nuevoClienteDialog.getContentPane());
+        nuevoClienteDialog.getContentPane().setLayout(nuevoClienteDialogLayout);
+        nuevoClienteDialogLayout.setHorizontalGroup(
+            nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                                .addComponent(telefonoLabel)
+                                .addGap(14, 14, 14)
+                                .addComponent(telefonoField, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                            .addComponent(nuevoClienteLabel)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoClienteDialogLayout.createSequentialGroup()
+                                .addComponent(dniLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dniField))
+                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                                .addComponent(nombresLabel)
+                                .addGap(11, 11, 11)
+                                .addComponent(nombresField)))
+                        .addGap(18, 18, 18)
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                                .addComponent(direccionLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                                .addComponent(razonSocialLabel)
+                                .addGap(8, 8, 8)
+                                .addComponent(razonSocialField))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoClienteDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(guardarClienteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelarCreacionClienteButton)))
+                .addContainerGap())
+        );
+        nuevoClienteDialogLayout.setVerticalGroup(
+            nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(nuevoClienteLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dniLabel)
+                    .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombresLabel)
+                    .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(direccionLabel)
+                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefonoLabel)
+                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(razonSocialLabel)
+                    .addComponent(razonSocialField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarCreacionClienteButton)
+                    .addComponent(guardarClienteButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -267,6 +400,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         });
 
         editarClienteButton.setText("Editar");
+        editarClienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarClienteButtonActionPerformed(evt);
+            }
+        });
 
         nuevoClienteButton.setText("Nuevo");
         nuevoClienteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -336,7 +474,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
-
+        nuevoClienteDialog.setVisible(true);
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
 
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
@@ -345,20 +483,114 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         for (Cliente cliente : getSelectedRows()) {
             selectedClientesId.add(cliente.getIdCliente());
         }
-        clienteService.eliminarCliente(selectedClientesId);
+        List<Cliente> clientesEliminados = clienteService.eliminarCliente(selectedClientesId); //implementar swingworker
         
         retrieveData(true); //use a different method to avoid reloading all(delete from the table after successful deletion)
     }//GEN-LAST:event_eliminarClienteButtonActionPerformed
 
+    private void cancelarCreacionClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionClienteButtonActionPerformed
+        nuevoClienteDialog.setVisible(false);//TODO: put a confirmation dialog
+    }//GEN-LAST:event_cancelarCreacionClienteButtonActionPerformed
+
+    private void guardarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarClienteButtonActionPerformed
+        nombresField.putClientProperty("JComponent.outline", "");
+        dniField.putClientProperty("JComponent.outline", "");
+        telefonoField.putClientProperty("JComponent.outline", "");
+        direccionField.putClientProperty("JComponent.outline", "");
+        razonSocialField.putClientProperty("JComponent.outline", "");
+        //TODO: reemplazar razon social por un combobox
+        Cliente c = new Cliente();
+        int dni = 0;
+        int telefono = 0;
+        boolean error = false;
+        
+        if(nombresField.getText().isBlank()) {
+            nombresField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+        
+        if(dniField.getText().isBlank()) {
+            dniField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        } else {
+            try {
+                dni = Integer.parseInt(dniField.getText());
+            } catch (Exception e) {
+                dniField.putClientProperty("JComponent.outline", "error");
+                error = true;
+                e.printStackTrace();
+            }
+        }
+        
+        if(telefonoField.getText().isBlank()) {
+            telefonoField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        } else {
+            try {
+                telefono = Integer.parseInt(telefonoField.getText());
+            } catch (Exception e) {
+                telefonoField.putClientProperty("JComponent.outline", "error");
+                error = true;
+                e.printStackTrace();
+            }
+        }
+        
+        if(direccionField.getText().isBlank()) {
+            direccionField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+        
+        if(razonSocialField.getText().isBlank()) {
+            razonSocialField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+        
+        if(error) {
+            return;
+        } else {
+            c.setIdentificacion(String.valueOf(dni));
+            c.setNombre(nombresField.getText());
+            c.setDireccion(direccionField.getText());
+            c.setRazonSocial(razonSocialField.getText());
+            c.setTelefono(String.valueOf(telefono));
+            c.setNumeroCompras((long) 0);
+            clienteService.nuevoCliente(c); // implementar swingworker
+        }
+        nuevoClienteDialog.setVisible(false);
+    }//GEN-LAST:event_guardarClienteButtonActionPerformed
+
+    private void editarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarClienteButtonActionPerformed
+        List<Cliente> clientesSeleccionado = getSelectedRows();
+        if(clientesSeleccionado.size() == 1) {
+            Cliente clienteSeleccionado = clientesSeleccionado.get(1);
+        } //TODO: Complete
+    }//GEN-LAST:event_editarClienteButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
+    private javax.swing.JButton cancelarCreacionClienteButton;
+    private javax.swing.JTextField direccionField;
+    private javax.swing.JLabel direccionLabel;
+    private javax.swing.JTextField dniField;
+    private javax.swing.JLabel dniLabel;
     private javax.swing.JButton editarClienteButton;
     private javax.swing.JButton eliminarClienteButton;
+    private javax.swing.JButton guardarClienteButton;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton loadMoreButton;
+    private javax.swing.JTextField nombresField;
+    private javax.swing.JLabel nombresLabel;
     private javax.swing.JButton nuevoClienteButton;
+    private javax.swing.JDialog nuevoClienteDialog;
+    private javax.swing.JLabel nuevoClienteLabel;
+    private javax.swing.JTextField razonSocialField;
+    private javax.swing.JLabel razonSocialLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
     private org.jdesktop.swingx.JXTable tablaClientes;
+    private javax.swing.JTextField telefonoField;
+    private javax.swing.JLabel telefonoLabel;
     // End of variables declaration//GEN-END:variables
 }

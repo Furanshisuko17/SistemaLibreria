@@ -20,7 +20,7 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCliente;
 	
-	@Column(length = 15)
+	@Column(length = 15) // have to create a unique key ,unique = true
 	private String identificacion;
 	
 	private String nombre;
