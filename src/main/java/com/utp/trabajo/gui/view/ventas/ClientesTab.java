@@ -11,7 +11,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +45,14 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     };
     String[] columnNames = {"ID", "Nombre", "Dirección", "DNI", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
 
+    ListSelectionModel selectionModel;
+
     private boolean canRead = true;
+    private boolean canEdit = true;
+    private boolean canDelete = true;
+    private boolean canCreate = true;
+
+    private boolean retrievingData = false;
 
     private long lastId = 0;
 
@@ -58,17 +68,29 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         initComponents();
         defaultTableModelClientes.setColumnIdentifiers(columnNames);
         tablaClientes.setModel(defaultTableModelClientes);
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                int maxValue = scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getVisibleAmount();
-                int currentValue = scrollPane.getVerticalScrollBar().getValue();
-                float fraction = (float) currentValue / (float) maxValue;
-                if (fraction > 0.999f) {
-                    retrieveData(false);
-                    System.out.println("Scroll bar is near the bottom");
-                }
+        scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
+            if (retrievingData) {
+                return;
             }
+            int maxValue = scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getVisibleAmount();
+            int currentValue = scrollPane.getVerticalScrollBar().getValue();
+            float fraction = (float) currentValue / (float) maxValue;
+            if (fraction > 0.999f) {
+                retrieveData(false);
+                System.out.println("Scroll bar is near the bottom");
+            }
+        });
+        selectionModel = tablaClientes.getSelectionModel();
+        selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
+            if (!canDelete || !canEdit) {
+                return;
+            }
+            if (!selectionModel.isSelectionEmpty()) {
+                eliminarClienteButton.setEnabled(true);
+            } else {
+                eliminarClienteButton.setEnabled(false);
+            }
+
         });
         setIdle();
         System.out.println("Clientes tab - Nueva instancia!");
@@ -82,16 +104,24 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
+
         //read, create, edit, delete
         if (!permissions.contains("read")) {
             canRead = false;
             loadMoreButton.setEnabled(false);
             reloadTableButton.setEnabled(false);
         }
-        if (!permissions.contains("write")) {
+        if (!permissions.contains("create")) {
+            canCreate = false;
             nuevoClienteButton.setEnabled(false);
-            editarClienteButton.setEnabled(false);
+        }
+        if (!permissions.contains("delete")) {
+            canDelete = false;
             eliminarClienteButton.setEnabled(false);
+        }
+        if (!permissions.contains("edit")) {
+            canEdit = false;
+            editarClienteButton.setEnabled(false);
         }
 
     }
@@ -117,9 +147,9 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         }
 
         setBusy("Cargando...");
-		reloadTableButton.setEnabled(false);
-		loadMoreButton.setEnabled(false);
-        
+        reloadTableButton.setEnabled(false);
+        loadMoreButton.setEnabled(false);
+        retrievingData = true;
         if (reload) {
             defaultTableModelClientes.setRowCount(0);
             lastId = 0;
@@ -158,11 +188,29 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
-				reloadTableButton.setEnabled(true);
-				loadMoreButton.setEnabled(true);
+                reloadTableButton.setEnabled(true);
+                loadMoreButton.setEnabled(true);
+                retrievingData = false;
             }
         };
         worker.execute();
+    }
+
+    private List<Cliente> getSelectedRows() {
+        List<Cliente> clientes = new ArrayList<>();
+        for (int i : selectionModel.getSelectedIndices()) { //rows 
+            System.out.println(i);
+            Cliente c = new Cliente();
+            c.setIdCliente((Long) defaultTableModelClientes.getValueAt(i, 0));
+            c.setNombre((String) defaultTableModelClientes.getValueAt(i, 1));
+            c.setDireccion((String) defaultTableModelClientes.getValueAt(i, 2));
+            c.setIdentificacion((String) defaultTableModelClientes.getValueAt(i, 3));
+            c.setTelefono((String) defaultTableModelClientes.getValueAt(i, 4));
+            c.setRazonSocial((String) defaultTableModelClientes.getValueAt(i, 5));
+            c.setNumeroCompras((Long) defaultTableModelClientes.getValueAt(i, 6));
+            clientes.add(c);
+        }
+        return clientes;
     }
 
     @SuppressWarnings("unchecked")
@@ -187,6 +235,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
             }
         ));
+        tablaClientes.setColumnControlVisible(true);
+        tablaClientes.setEditable(false);
         scrollPane.setViewportView(tablaClientes);
 
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -290,7 +340,14 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
 
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
-
+        //TODO: Implement a confirmation window and a successful check
+        List<Long> selectedClientesId = new ArrayList();
+        for (Cliente cliente : getSelectedRows()) {
+            selectedClientesId.add(cliente.getIdCliente());
+        }
+        clienteService.eliminarCliente(selectedClientesId);
+        
+        retrieveData(true); //use a different method to avoid reloading all(delete from the table after successful deletion)
     }//GEN-LAST:event_eliminarClienteButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

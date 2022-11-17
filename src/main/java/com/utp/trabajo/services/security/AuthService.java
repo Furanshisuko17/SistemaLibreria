@@ -70,7 +70,7 @@ public class AuthService {
         List<Permiso> p = empleado.getRolAcceso().getPermisos();
         
 		for (Permiso permiso : p) {
-            //System.out.println(permiso.getNombre());
+            System.out.println(permiso.getNombre());
 			permisos.add(permiso.getNombre());
 		}
 	}

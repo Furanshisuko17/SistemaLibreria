@@ -41,6 +41,10 @@ public class ClienteService {
         
     }
     
+    @Transactional
+    public List<Cliente> eliminarCliente(List<Long> idsCliente) {
+        return clienteDao.removeAllByIdClienteIn(idsCliente);
+    }
     
 	
 }
