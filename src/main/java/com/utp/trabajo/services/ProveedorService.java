@@ -40,4 +40,8 @@ public class ProveedorService {
     public void actualizarProveedor(Proveedor proveedor) {
         
     }
+    @Transactional
+    public List<Proveedor> eliminarProveedor(List<Long> idsProveedor) {
+        return proveedorDao.removeAllByIdProveedorIn(idsProveedor);
+    }
 }
