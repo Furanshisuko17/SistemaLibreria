@@ -1,6 +1,7 @@
 package com.utp.trabajo.gui.view.compras;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.utp.trabajo.services.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Component;
 public class ComprasView extends javax.swing.JInternalFrame {
 
 	@Autowired
+	private ComprasService comprasService;
+        
+        @Autowired
 	private UtilService utilidades;
 	
 	@Autowired
@@ -28,45 +32,6 @@ public class ComprasView extends javax.swing.JInternalFrame {
 		setFrameIcon(iconos.iconoCompras);
 	}
 		
-
-    public void abrirVentana() {
-        setVisible(false);
-        com.formdev.flatlaf.FlatLaf.updateUI();
-        
-        //Colocar tabs aquí
-        tabbedPane.add("Proveedores" , getProveedoresTabInstance());
-        tabbedPane.add("Materia Prima", getMateriaPrimaTabInstance());
-        tabbedPane.add("Lista de compras", getListaComprasTabInstance());
-        
-        setVisible(true);
-    }
-    
-
-    public void cerrarVentana() {
-        tabbedPane.removeAll();
-    }
-           
-    @Autowired
-    private ObjectFactory<ProovedoresTab> proveedoresTabObjectFactory;
-    
-    public ProovedoresTab getProveedoresTabInstance() {
-        return proveedoresTabObjectFactory.getObject();
-    }
-    
-    @Autowired
-    private ObjectFactory<MateriaPrimaTab> materiaPrimaTabObjectFactory;
-    
-    public MateriaPrimaTab getMateriaPrimaTabInstance() {
-        return materiaPrimaTabObjectFactory.getObject();
-    }
-    
-    @Autowired
-    private ObjectFactory<ListaComprasTab> listaComprasTabObjectFactory;
-    
-    public ListaComprasTab getListaComprasTabInstance() {
-        return listaComprasTabObjectFactory.getObject();
-    }
-    
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -92,7 +57,43 @@ public class ComprasView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void abrirVentana() {
+        setVisible(false);
+        com.formdev.flatlaf.FlatLaf.updateUI();
+        
+        //Colocar tabs aquí
+        tabbedPane.add("Proveedores" , getProveedoresTabInstance());
+        tabbedPane.add("Materia Prima", getMateriaPrimaTabInstance());
+        tabbedPane.add("Lista de compras", getListaComprasTabInstance());
+        
+        setVisible(true);
+        }
+    
 
+        public void cerrarVentana() {
+        tabbedPane.removeAll();
+        }
+           
+        @Autowired
+        private ObjectFactory<ProovedoresTab> proveedoresTabObjectFactory;
+    
+        public ProovedoresTab getProveedoresTabInstance() {
+            return proveedoresTabObjectFactory.getObject();
+        }
+    
+        @Autowired
+        private ObjectFactory<MateriaPrimaTab> materiaPrimaTabObjectFactory;
+    
+        public MateriaPrimaTab getMateriaPrimaTabInstance() {
+            return materiaPrimaTabObjectFactory.getObject();
+        }
+    
+        @Autowired
+        private ObjectFactory<ListaComprasTab> listaComprasTabObjectFactory;
+    
+        public ListaComprasTab getListaComprasTabInstance() {
+            return listaComprasTabObjectFactory.getObject();
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;
