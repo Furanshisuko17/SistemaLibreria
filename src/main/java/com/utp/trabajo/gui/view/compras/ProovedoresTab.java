@@ -4,21 +4,20 @@ import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.ProveedorService;
 import com.utp.trabajo.model.entities.Proveedor;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ListSelectionModel;
 import javax.annotation.PostConstruct;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
+
     DefaultTableModel defaultTableModelProveedores = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
@@ -30,7 +29,7 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                 case 2:
                     return String.class;
                 case 3:
-                    return Integer.class;
+                    return Integer.class; //maybe just String?
                 case 4:
                     return Integer.class;
                 case 5:
@@ -41,31 +40,31 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         }
     };
 
-    String[] columnNames = {"IdProveedor", "Nombre", "Direccion", "RUC", "Teléfono", "Tipo de comercio"};
-    
+    String[] columnNames = {"ID", "Nombre", "Direccion", "RUC", "Teléfono", "Tipo de comercio"};
+
     ListSelectionModel selectionModel;
 
     private boolean canRead = true;
     private boolean canEdit = true;
     private boolean canDelete = true;
     private boolean canCreate = true;
-    
+
     private boolean retrievingData = false;
 
     private long lastId = 0;
-    
+
     private long limit = 100;
     @Autowired
     private SecurityService securityService;
 
     @Autowired
     private ProveedorService proveedoresService;
-    
+
     public ProovedoresTab() {
         initComponents();
         defaultTableModelProveedores.setColumnIdentifiers(columnNames);
-        tablaProovedores.setModel(defaultTableModelProveedores);
-        scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e)-> {
+        tablaProveedores.setModel(defaultTableModelProveedores);
+        scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
                 return;
             }
@@ -77,7 +76,8 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                 System.out.println("Scroll bar is near the bottom");
             }
         });
-        selectionModel = tablaProovedores.getSelectionModel();
+
+        selectionModel = tablaProveedores.getSelectionModel();
         selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
             if (!canDelete || !canEdit) {
                 return;
@@ -87,7 +87,7 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
             } else {
                 eliminarProveedorButton.setEnabled(false);
             }
-            
+
             if (selectionModel.getSelectedItemsCount() == 1) {
                 editarProveedorButton.setEnabled(true);
             } else {
@@ -95,13 +95,19 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
+
         setIdle();
         eliminarProveedorButton.setEnabled(false);
         editarProveedorButton.setEnabled(false);
+        jLayeredPane1.removeAll();
+        jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
+        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
+
         nuevoProveedorDialog.pack();
         nuevoProveedorDialog.setLocationRelativeTo(this);
         System.out.println("Proveedores tab - Nueva instancia!");
     }
+
     @PostConstruct
     private void init() {
         checkPermissions();
@@ -110,16 +116,17 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
 
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
+
         //read, create, edit, delete
         if (!permissions.contains("read")) {
             canRead = false;
-            nuevoProveedorButton.setEnabled(false);
-            reloadButton.setEnabled(false);
+            loadMoreButton.setEnabled(false);
+            reloadTableButton.setEnabled(false);
         }
         if (!permissions.contains("create")) {
             canCreate = false;
             nuevoProveedorButton.setEnabled(false);
-            guardarProveedorButton.setEnabled(false);
+            //guardarProveedorButton.setEnabled(false);
         }
         if (!permissions.contains("delete")) {
             canDelete = false;
@@ -129,7 +136,6 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
             canEdit = false;
             editarProveedorButton.setEnabled(false);
         }
-
     }
 
     private void setBusy() {
@@ -147,16 +153,18 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
     }
 
     private void retrieveData(boolean reload) {
+        tableInformationLabel.setVisible(false);
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
 
         setBusy("Cargando...");
-	reloadButton.setEnabled(false);
-	loadMoreButton.setEnabled(false);
+        reloadTableButton.setEnabled(false);
+        nuevoProveedorButton.setEnabled(false);
         retrievingData = true;
-        
+        loadMoreButton.setEnabled(false);
+
         if (reload) {
             defaultTableModelProveedores.setRowCount(0);
             lastId = 0;
@@ -191,23 +199,29 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                     var id = defaultTableModelProveedores.getValueAt(lastRow, 0);
                     lastId = Long.parseLong(id.toString());
                 } catch (InterruptedException | ExecutionException ex) {
+                    setIdle();
                     Logger.getLogger(ProovedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    tableInformationLabel.setVisible(true);
+                    //busyLabel.setBusy(false);
+                    //Logger.getLogger(ProovedoresTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
-				reloadButton.setEnabled(true);
-				nuevoProveedorButton.setEnabled(true);
-                                loadMoreButton.setEnabled(true);
-                                retrievingData = false;
+                reloadTableButton.setEnabled(true);
+                nuevoProveedorButton.setEnabled(true);
+                loadMoreButton.setEnabled(true);
+                retrievingData = false;
+                retrievingData = false;
             }
         };
         worker.execute();
     }
-    
+
     private List<Proveedor> getSelectedRows() {
         List<Proveedor> proveedores = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
             //System.out.println(i);
-            i = tablaProovedores.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
+            i = tablaProveedores.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
             Proveedor p = new Proveedor();
             p.setIdProveedor((Long) defaultTableModelProveedores.getValueAt(i, 0));
             p.setNombre((String) defaultTableModelProveedores.getValueAt(i, 1));
@@ -220,11 +234,6 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         return proveedores;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -246,12 +255,13 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         cancelarCreacionProveedorButton = new javax.swing.JButton();
         guardarProveedorButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
-        tablaProovedores = new org.jdesktop.swingx.JXTable();
+        tablaProveedores = new org.jdesktop.swingx.JXTable();
         nuevoProveedorButton = new javax.swing.JButton();
         editarProveedorButton = new javax.swing.JButton();
         eliminarProveedorButton = new javax.swing.JButton();
-        reloadButton = new javax.swing.JButton();
+        reloadTableButton = new javax.swing.JButton();
         loadMoreButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
 
@@ -457,7 +467,9 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        tablaProovedores.setModel(new javax.swing.table.DefaultTableModel(
+        tableInformationLabel.setText("Sin datos.");
+
+        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -465,24 +477,35 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
 
             }
         ));
-        scrollPane.setViewportView(tablaProovedores);
+        tablaProveedores.setColumnControlVisible(true);
+        scrollPane.setViewportView(tablaProveedores);
 
+        jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+            .addGap(0, 598, Short.MAX_VALUE)
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tableInformationLabel)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+            .addGap(0, 267, Short.MAX_VALUE)
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tableInformationLabel)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         nuevoProveedorButton.setText("Nuevo");
@@ -506,10 +529,10 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
             }
         });
 
-        reloadButton.setText("Recargar");
-        reloadButton.addActionListener(new java.awt.event.ActionListener() {
+        reloadTableButton.setText("Recargar");
+        reloadTableButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reloadButtonActionPerformed(evt);
+                reloadTableButtonActionPerformed(evt);
             }
         });
 
@@ -527,42 +550,41 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
+                        .addComponent(loadMoreButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(reloadTableButton))
+                    .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevoProveedorButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarProveedorButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminarProveedorButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(loadMoreButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(reloadButton)
-                        .addGap(14, 14, 14))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoProveedorButton)
                     .addComponent(editarProveedorButton)
                     .addComponent(eliminarProveedorButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jLayeredPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(loadMoreButton)
-                        .addComponent(reloadButton))
+                    .addComponent(reloadTableButton)
+                    .addComponent(loadMoreButton)
                     .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -574,8 +596,8 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
     private void editarProveedorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarProveedorButtonActionPerformed
         // TODO add your handling code here:
         List<Proveedor> proveedoresSeleccionado = getSelectedRows();
-        if(proveedoresSeleccionado.size() == 1) {
-                Proveedor proveedorSeleccionado = proveedoresSeleccionado.get(1);
+        if (proveedoresSeleccionado.size() == 1) {
+            Proveedor proveedorSeleccionado = proveedoresSeleccionado.get(0);
         }
     }//GEN-LAST:event_editarProveedorButtonActionPerformed
 
@@ -586,14 +608,14 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
             selectedProveedoresId.add(proveedor.getIdProveedor());
         }
         List<Proveedor> proveedoresEliminados = proveedoresService.eliminarProveedor(selectedProveedoresId);
-        
+
         retrieveData(true);
     }//GEN-LAST:event_eliminarProveedorButtonActionPerformed
 
-    private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadButtonActionPerformed
+    private void reloadTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadTableButtonActionPerformed
         // TODO add your handling code here:
         retrieveData(true);
-    }//GEN-LAST:event_reloadButtonActionPerformed
+    }//GEN-LAST:event_reloadTableButtonActionPerformed
 
     private void loadMoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMoreButtonActionPerformed
         // TODO add your handling code here:
@@ -612,13 +634,13 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         int ruc = 0;
         int telefono = 0;
         boolean error = false;
-        
-        if(nombresField.getText().isBlank()) {
+
+        if (nombresField.getText().isBlank()) {
             nombresField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(rucField.getText().isBlank()) {
+
+        if (rucField.getText().isBlank()) {
             rucField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -630,8 +652,8 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                 e.printStackTrace();
             }
         }
-        
-        if(telefonoField.getText().isBlank()) {
+
+        if (telefonoField.getText().isBlank()) {
             telefonoField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -643,18 +665,18 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                 e.printStackTrace();
             }
         }
-        
-        if(direccionField.getText().isBlank()) {
+
+        if (direccionField.getText().isBlank()) {
             direccionField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(tipoComercioField.getText().isBlank()) {
+
+        if (tipoComercioField.getText().isBlank()) {
             tipoComercioField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(error) {
+
+        if (error) {
             return;
         } else {
             p.setRuc(String.valueOf(ruc));
@@ -694,11 +716,12 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JButton nuevoProveedorButton;
     private javax.swing.JDialog nuevoProveedorDialog;
     private javax.swing.JLabel nuevoProveedorLabel;
-    private javax.swing.JButton reloadButton;
+    private javax.swing.JButton reloadTableButton;
     private javax.swing.JTextField rucField;
     private javax.swing.JLabel rucLabel;
     private javax.swing.JScrollPane scrollPane;
-    private org.jdesktop.swingx.JXTable tablaProovedores;
+    private org.jdesktop.swingx.JXTable tablaProveedores;
+    private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JTextField telefonoField;
     private javax.swing.JLabel telefonoLabel;
     private javax.swing.JTextField tipoComercioField;
