@@ -23,10 +23,15 @@ public class AppConfiguration {
 	@Bean
 	public BCryptPasswordEncoder BCryptpasswordEncoder() {
 		return new BCryptPasswordEncoder();
-        
-	}
+    }
     
-        @Bean
+    @Bean
+    public RestartEndpoint restartEndPoint() {
+        return new RestartEndpoint();
+    }
+    
+    //ALMACEN
+    @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public MarcaTab MarcaTabPrototype() {
         return new MarcaTab();
@@ -37,12 +42,9 @@ public class AppConfiguration {
     public TipoTab TipoTabPrototype() {
         return new TipoTab();
     }    
+    //ALMACEN 
         
-    @Bean
-    public RestartEndpoint restartEndPoint() {
-        return new RestartEndpoint();
-    }
-    
+    //VENTAS
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public ClientesTab clientesTabPrototype() {
@@ -60,7 +62,9 @@ public class AppConfiguration {
     public VentasTab ventasTabPrototype() {
         return new VentasTab();
     }
+    //VENTAS
     
+    //COMPRAS
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public ListaComprasTab listaComprasTabPrototype() {
@@ -78,4 +82,6 @@ public class AppConfiguration {
     public ProovedoresTab proveedoressTabPrototype() {
         return new ProovedoresTab();
     }
+    //COMPRAS
+    
 }
