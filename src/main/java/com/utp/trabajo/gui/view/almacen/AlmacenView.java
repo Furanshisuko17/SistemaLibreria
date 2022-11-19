@@ -1,11 +1,13 @@
-package com.utp.trabajo.gui.view;
+package com.utp.trabajo.gui.view.almacen;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
+import com.utp.trabajo.services.security.SecurityService;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.ObjectFactory;
 
 @Component
 public class AlmacenView extends javax.swing.JInternalFrame {
@@ -30,6 +32,8 @@ public class AlmacenView extends javax.swing.JInternalFrame {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
         
+        tabbedPane.add("Marca del Producto" , getMarcaTabInstance());
+        tabbedPane.add("Tipo de Producto", getTipoTabInstance());
         //Colocar tabs aquí
         
         setVisible(true);
@@ -37,6 +41,20 @@ public class AlmacenView extends javax.swing.JInternalFrame {
     
     public void cerrarVentana() {
         tabbedPane.removeAll();
+    }
+    
+            @Autowired
+    private ObjectFactory<MarcaTab> MarcaTabObjectFactory;
+    
+    public MarcaTab getMarcaTabInstance() {
+        return MarcaTabObjectFactory.getObject();
+    }
+    
+        @Autowired
+    private ObjectFactory<TipoTab> TipoTabObjectFactory;
+    
+    public TipoTab getTipoTabInstance() {
+        return TipoTabObjectFactory.getObject();
     }
 
 	@SuppressWarnings("unchecked")

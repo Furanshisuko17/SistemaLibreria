@@ -6,7 +6,8 @@ import com.utp.trabajo.gui.view.compras.MateriaPrimaTab;
 import com.utp.trabajo.gui.view.compras.ProovedoresTab;
 import com.utp.trabajo.gui.view.ventas.NuevaVentaTab;
 import com.utp.trabajo.gui.view.ventas.VentasTab;
-
+import com.utp.trabajo.gui.view.almacen.MarcaTab;
+import com.utp.trabajo.gui.view.almacen.TipoTab;
 
 
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -25,6 +26,18 @@ public class AppConfiguration {
         
 	}
     
+        @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public MarcaTab MarcaTabPrototype() {
+        return new MarcaTab();
+    }
+    
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public TipoTab TipoTabPrototype() {
+        return new TipoTab();
+    }    
+        
     @Bean
     public RestartEndpoint restartEndPoint() {
         return new RestartEndpoint();

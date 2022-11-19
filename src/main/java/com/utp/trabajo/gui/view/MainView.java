@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view;
 
+import com.utp.trabajo.gui.view.almacen.AlmacenView;
 import com.utp.trabajo.gui.view.compras.ComprasView;
 import com.utp.trabajo.gui.view.ventas.VentasView;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
