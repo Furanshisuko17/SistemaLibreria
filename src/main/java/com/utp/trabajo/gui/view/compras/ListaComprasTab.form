@@ -261,6 +261,11 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="tableInformationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="No Data"/>
+          </Properties>
+        </Component>
         <Container class="javax.swing.JScrollPane" name="scrollPane">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
@@ -275,11 +280,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="tableInformationLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel7"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="nuevaCompraButton">

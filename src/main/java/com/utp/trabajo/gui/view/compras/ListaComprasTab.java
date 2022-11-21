@@ -257,9 +257,9 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         cancelarNuevaCompraButton = new javax.swing.JButton();
         guardarButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         tablaCompras = new org.jdesktop.swingx.JXTable();
-        tableInformationLabel = new javax.swing.JLabel();
         nuevaCompraButton = new javax.swing.JButton();
         editarCompraButton = new javax.swing.JButton();
         eliminarCompraButton = new javax.swing.JButton();
@@ -359,6 +359,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap())
         );
 
+        tableInformationLabel.setText("No Data");
+
         tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -370,10 +372,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         tablaCompras.setColumnControlVisible(true);
         scrollPane.setViewportView(tablaCompras);
 
-        tableInformationLabel.setText("jLabel7");
-
-        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
