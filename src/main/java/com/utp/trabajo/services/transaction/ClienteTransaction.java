@@ -25,9 +25,6 @@ public class ClienteTransaction {
 	@Autowired
 	private ClienteDao clienteDao;
     
-    @Autowired 
-    private SecurityService securityService;
-    
     @Transactional(readOnly = true)
     public List<Cliente> streamClientes(Long lastId, Long limit) {
         try(Stream<Cliente> streamedClientes = clienteDao.findByIdClienteGreaterThan(lastId)) {
@@ -42,13 +39,13 @@ public class ClienteTransaction {
     }
     
     @Transactional
-    public void nuevoCliente(Cliente cliente) {
-        clienteDao.save(cliente);
+    public Cliente nuevoCliente(Cliente cliente) {
+        return clienteDao.save(cliente);
     }
     
     @Transactional
-    public void actualizarCliente(Cliente cliente) {
-        
+    public Cliente actualizarCliente(Cliente cliente) {
+        return clienteDao.save(cliente);
     }
     
     @Transactional

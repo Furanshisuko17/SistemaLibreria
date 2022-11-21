@@ -1,4 +1,4 @@
-package com.utp.trabajo.exception;
+package com.utp.trabajo.exception.auth;
 
 public class WrongPasswordException extends Exception {
 	

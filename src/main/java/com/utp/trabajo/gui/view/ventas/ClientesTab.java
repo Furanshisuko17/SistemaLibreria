@@ -1,20 +1,20 @@
 package com.utp.trabajo.gui.view.ventas;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Cliente;
 import com.utp.trabajo.services.ClienteService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,9 +42,13 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     return String.class;
             }
         }
+        
+        
+        
     };
-    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"}; //TODO: set minimum and default sizes for each column
-
+    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"}; 
+    //TODO: set minimum and default sizes for each column
+    
     ListSelectionModel selectionModel;
 
     private boolean canRead = true;
@@ -56,16 +60,28 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     private long lastId = 0;
 
-    private long limit = 100;
+    private long limit = 10;
 
     @Autowired
     private SecurityService securityService;
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteService clienteService; //TODO:  refactor!
 
     public ClientesTab() {
         initComponents();
+        initTableClientes() ;
+
+        System.out.println("Clientes tab - Nueva instancia!");
+    }
+
+    @PostConstruct
+    private void init() {
+        checkPermissions();
+        updateTable(false, false); // mover hacia un listener que verifique que se ha abierto el jPanel
+    }
+
+    private void initTableClientes() {
         defaultTableModelClientes.setColumnIdentifiers(columnNames);
         tablaClientes.setModel(defaultTableModelClientes);
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
@@ -76,7 +92,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             int currentValue = scrollPane.getVerticalScrollBar().getValue();
             float fraction = (float) currentValue / (float) maxValue;
             if (fraction > 0.999f) {
-                retrieveData(false);
+                updateTable(false, false);
                 System.out.println("Scroll bar is near the bottom");
             }
         });
@@ -90,7 +106,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             } else {
                 eliminarClienteButton.setEnabled(false);
             }
-            
+
             if (selectionModel.getSelectedItemsCount() == 1) {
                 editarClienteButton.setEnabled(true);
             } else {
@@ -98,20 +114,18 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
+        tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(100);
         setIdle();
         eliminarClienteButton.setEnabled(false);
         editarClienteButton.setEnabled(false);
         nuevoClienteDialog.pack();
         nuevoClienteDialog.setLocationRelativeTo(this);
-        System.out.println("Clientes tab - Nueva instancia!");
-    }
 
-    @PostConstruct
-    private void init() {
-        checkPermissions();
-        retrieveData(false); // mover hacia un listener que verifique que se ha abierto el jPanel
-    }
-
+        jLayeredPane1.removeAll();
+        jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
+        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
+    }   
+    
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
 
@@ -151,7 +165,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setText("");
     }
 
-    private void retrieveData(boolean reload) {
+    private void updateTable(boolean reload, boolean checkChanges) { //refactor!  DONE!
+        tableInformationLabel.setVisible(false);
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
@@ -167,26 +182,48 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             setBusy("Recargando...");
         }
 
-        SwingWorker worker = new SwingWorker<List<Cliente>, List<Cliente>>() {
+        SwingWorker worker2 = new SwingWorker<Long, Long>() {
             @Override
-            protected List<Cliente> doInBackground() throws Exception {
-                return clienteService.streamClientes(lastId, limit); // set lastId and configurable limit
+            protected Long doInBackground() throws Exception {
+                return clienteService.contarClientes();
             }
 
             @Override
             protected void done() {
                 try {
-                    var clientes = get();
-                    for (Cliente cliente : clientes) {
-                        Object[] values = new Object[7];
-                        values[0] = cliente.getIdCliente();
-                        values[1] = cliente.getNombre();
-                        values[2] = cliente.getDireccion();
-                        values[3] = cliente.getIdentificacion();
-                        values[4] = cliente.getTelefono();
-                        values[5] = cliente.getRazonSocial();
-                        values[6] = cliente.getNumeroCompras();
-                        defaultTableModelClientes.addRow(values);
+                    Long cantidadClientesDatabase = get();
+                    int cantidadClientesTabla = defaultTableModelClientes.getRowCount();
+                    contadorClientesLabel.setText("Mostrando: " + cantidadClientesTabla + "/" + cantidadClientesDatabase);
+
+                } catch (InterruptedException ex) {
+                    try {
+                        throw ex.getCause();
+                    } catch (NotEnoughPermissionsException e) {
+                        //Joption pane or do nothing!
+                    } catch (Throwable e) {
+                        System.out.println("impossible :");
+                        e.printStackTrace();
+                        System.out.println("impossible end");
+                        return;
+                    }
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+            }
+
+        };
+        SwingWorker obtenerClientesWorker = new SwingWorker<Boolean, Boolean>() {
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return clienteService.obtenerClientes(lastId, limit); // set lastId and configurable limit
+            }
+
+            @Override   
+            protected void done() {
+                try {
+                    boolean ready = get();
+                    if(ready) {
+                        clienteService.updateTable(defaultTableModelClientes, checkChanges, limit);
                     }
                     int lastRow = 0;
                     int rowCount = defaultTableModelClientes.getRowCount();
@@ -195,34 +232,36 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     }
                     var id = defaultTableModelClientes.getValueAt(lastRow, 0);
                     lastId = Long.parseLong(id.toString());
+
                 } catch (InterruptedException | ExecutionException ex) {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    tableInformationLabel.setVisible(true);
+                    //Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotEnoughPermissionsException ex) {
+                    
+                
+                } finally {
+                    setIdle();
+                    reloadTableButton.setEnabled(true);
+                    loadMoreButton.setEnabled(true);
+                    retrievingData = false;
                 }
-                setIdle();
-                reloadTableButton.setEnabled(true);
-                loadMoreButton.setEnabled(true);
-                retrievingData = false;
+                worker2.execute();
             }
         };
-        worker.execute();
+        obtenerClientesWorker.execute();
+
     }
 
-    private List<Cliente> getSelectedRows() {
-        List<Cliente> clientes = new ArrayList<>();
+    private List<Long> getIdFromSelectedRows()  { // refactor! DONE!
+        List<Long> idClientes = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
-            //System.out.println(i);
-            i = tablaClientes.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
-            Cliente c = new Cliente();
-            c.setIdCliente((Long) defaultTableModelClientes.getValueAt(i, 0));
-            c.setNombre((String) defaultTableModelClientes.getValueAt(i, 1));
-            c.setDireccion((String) defaultTableModelClientes.getValueAt(i, 2));
-            c.setIdentificacion((String) defaultTableModelClientes.getValueAt(i, 3));
-            c.setTelefono((String) defaultTableModelClientes.getValueAt(i, 4));
-            c.setRazonSocial((String) defaultTableModelClientes.getValueAt(i, 5));
-            c.setNumeroCompras((Long) defaultTableModelClientes.getValueAt(i, 6));
-            clientes.add(c);
+            i = tablaClientes.convertRowIndexToModel(i); 
+            // ↑ IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
+            idClientes.add((Long) defaultTableModelClientes.getValueAt(i, 0));
         }
-        return clientes;
+        return idClientes;
     }
 
     @SuppressWarnings("unchecked")
@@ -246,6 +285,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         cancelarCreacionClienteButton = new javax.swing.JButton();
         guardarClienteButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         tablaClientes = new org.jdesktop.swingx.JXTable();
         reloadTableButton = new javax.swing.JButton();
@@ -254,6 +294,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         nuevoClienteButton = new javax.swing.JButton();
         eliminarClienteButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
+        contadorClientesLabel = new javax.swing.JLabel();
 
         nuevoClienteDialog.setTitle("Nuevo cliente");
         nuevoClienteDialog.setAlwaysOnTop(true);
@@ -315,8 +356,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                             .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
                                 .addComponent(direccionLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
                             .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
                                 .addComponent(razonSocialLabel)
                                 .addGap(8, 8, 8)
@@ -360,6 +400,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        tableInformationLabel.setText("Sin datos.");
+
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -372,6 +414,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         tablaClientes.setEditable(false);
         scrollPane.setViewportView(tablaClientes);
 
+        jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -379,10 +422,20 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(scrollPane)
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tableInformationLabel)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tableInformationLabel)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         reloadTableButton.setText("Recargar");
@@ -423,6 +476,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setBusy(true);
         busyLabel.setPreferredSize(new java.awt.Dimension(22, 22));
 
+        contadorClientesLabel.setText("Cargando...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -437,9 +492,10 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(editarClienteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(eliminarClienteButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(contadorClientesLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -450,10 +506,12 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nuevoClienteButton)
-                    .addComponent(editarClienteButton)
-                    .addComponent(eliminarClienteButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nuevoClienteButton)
+                        .addComponent(editarClienteButton)
+                        .addComponent(eliminarClienteButton))
+                    .addComponent(contadorClientesLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -466,26 +524,51 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void reloadTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadTableButtonActionPerformed
-        retrieveData(true);
+        updateTable(true, false);
     }//GEN-LAST:event_reloadTableButtonActionPerformed
 
     private void loadMoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMoreButtonActionPerformed
-        retrieveData(false);
+        updateTable(false, false);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
         nuevoClienteDialog.setVisible(true);
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
-
+    
+    //TODO: ↓ Refactor!
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
-        //TODO: Implement a confirmation window and a successful check
-        List<Long> selectedClientesId = new ArrayList();
-        for (Cliente cliente : getSelectedRows()) {
-            selectedClientesId.add(cliente.getIdCliente());
+        List<Long> selectedClientesId = getIdFromSelectedRows();
+
+        int selectedOption = JOptionPane.showConfirmDialog(this,
+            "¿Desea eliminar " + (selectedClientesId.size() == 1 ? "1 cliente?" : (selectedClientesId.size() + " clientes?")),
+            selectedClientesId.size() == 1 ? "Eliminar un cliente" : "Eliminar varios clientes",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            List<Cliente> clientesEliminados = new ArrayList<>();
+            try {
+                clientesEliminados = clienteService.eliminarClientes(selectedClientesId); //implementar swingworker
+            } catch (NotEnoughPermissionsException ex) {
+                // just pass?
+            } 
+            
+            if (!clientesEliminados.isEmpty()) {
+                try {
+                    clienteService.updateTable(defaultTableModelClientes, true, limit);
+                } catch (NotEnoughPermissionsException ex) {
+                    //implement j option pane? 
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Ocurrió un error al eliminar " + (selectedClientesId.size() == 1 ? "el cliente seleccionado." : "los clientes seleccionados."),
+                    "¡Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (selectedOption == JOptionPane.NO_OPTION) {
+            //do nothing
         }
-        List<Cliente> clientesEliminados = clienteService.eliminarCliente(selectedClientesId); //implementar swingworker
-        
-        retrieveData(true); //use a different method to avoid reloading all(delete from the table after successful deletion)
+
     }//GEN-LAST:event_eliminarClienteButtonActionPerformed
 
     private void cancelarCreacionClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionClienteButtonActionPerformed
@@ -503,13 +586,13 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         int dni = 0;
         int telefono = 0;
         boolean error = false;
-        
-        if(nombresField.getText().isBlank()) {
+
+        if (nombresField.getText().isBlank()) {
             nombresField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(dniField.getText().isBlank()) {
+
+        if (dniField.getText().isBlank()) {
             dniField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -518,11 +601,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             } catch (Exception e) {
                 dniField.putClientProperty("JComponent.outline", "error");
                 error = true;
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
-        
-        if(telefonoField.getText().isBlank()) {
+
+        if (telefonoField.getText().isBlank()) {
             telefonoField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -531,21 +614,21 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             } catch (Exception e) {
                 telefonoField.putClientProperty("JComponent.outline", "error");
                 error = true;
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
-        
-        if(direccionField.getText().isBlank()) {
+
+        if (direccionField.getText().isBlank()) {
             direccionField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(razonSocialField.getText().isBlank()) {
+
+        if (razonSocialField.getText().isBlank()) {
             razonSocialField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-        
-        if(error) {
+
+        if (error) {
             return;
         } else {
             c.setIdentificacion(String.valueOf(dni));
@@ -554,21 +637,31 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             c.setRazonSocial(razonSocialField.getText());
             c.setTelefono(String.valueOf(telefono));
             c.setNumeroCompras((long) 0);
-            clienteService.nuevoCliente(c); // implementar swingworker
+            try {
+                clienteService.nuevoCliente(c); // implementar swingworker //TODO: refactor!
+            } catch (NotEnoughPermissionsException ex) {
+                //Implementar un Jdialog o dejarlo así...
+            }
         }
         nuevoClienteDialog.setVisible(false);
     }//GEN-LAST:event_guardarClienteButtonActionPerformed
 
     private void editarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarClienteButtonActionPerformed
-        List<Cliente> clientesSeleccionado = getSelectedRows();
-        if(clientesSeleccionado.size() == 1) {
-            Cliente clienteSeleccionado = clientesSeleccionado.get(1);
-        } //TODO: Complete
+        List<Long> idClientesSeleccionado = getIdFromSelectedRows();
+        if (idClientesSeleccionado.size() == 1) {
+            Cliente clienteSeleccionado = null;
+            try {
+                clienteSeleccionado = clienteService.obtenerClientePorId(idClientesSeleccionado.get(0));
+            } catch (NotEnoughPermissionsException ex) {
+                return; 
+            }
+        } //TODO: Refactor and complete
     }//GEN-LAST:event_editarClienteButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarCreacionClienteButton;
+    private javax.swing.JLabel contadorClientesLabel;
     private javax.swing.JTextField direccionField;
     private javax.swing.JLabel direccionLabel;
     private javax.swing.JTextField dniField;
@@ -590,6 +683,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
     private org.jdesktop.swingx.JXTable tablaClientes;
+    private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JTextField telefonoField;
     private javax.swing.JLabel telefonoLabel;
     // End of variables declaration//GEN-END:variables

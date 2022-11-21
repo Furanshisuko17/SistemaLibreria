@@ -1,7 +1,7 @@
 package com.utp.trabajo.services.security;
 
-import com.utp.trabajo.exception.UsernameNotFoundException;
-import com.utp.trabajo.exception.WrongPasswordException;
+import com.utp.trabajo.exception.auth.UsernameNotFoundException;
+import com.utp.trabajo.exception.auth.WrongPasswordException;
 import com.utp.trabajo.model.dao.EmpleadoDao;
 import com.utp.trabajo.model.dao.RolAccesoDao;
 import com.utp.trabajo.model.entities.Empleado;

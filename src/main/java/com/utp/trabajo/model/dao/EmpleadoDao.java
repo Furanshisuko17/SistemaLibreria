@@ -1,7 +1,7 @@
 
 package com.utp.trabajo.model.dao;
 
-import com.utp.trabajo.exception.UsernameNotFoundException;
+import com.utp.trabajo.exception.auth.UsernameNotFoundException;
 import com.utp.trabajo.model.entities.Empleado;
 import org.springframework.data.jpa.repository.JpaRepository;
 

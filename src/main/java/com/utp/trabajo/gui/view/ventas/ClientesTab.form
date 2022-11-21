@@ -194,10 +194,11 @@
                       <Component id="editarClienteButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="eliminarClienteButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="contadorClientesLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="busyLabel" pref="590" max="32767" attributes="0"/>
+                      <Component id="busyLabel" pref="340" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="loadMoreButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -212,10 +213,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="nuevoClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="editarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="eliminarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="nuevoClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="editarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="eliminarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="contadorClientesLabel" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLayeredPane1" max="32767" attributes="0"/>
@@ -237,15 +241,34 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="scrollPane" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="tableInformationLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="scrollPane" alignment="0" pref="549" max="32767" attributes="0"/>
+              <Component id="scrollPane" alignment="0" pref="344" max="32767" attributes="0"/>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="tableInformationLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="tableInformationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Sin datos."/>
+          </Properties>
+        </Component>
         <Container class="javax.swing.JScrollPane" name="scrollPane">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -316,6 +339,11 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22))"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="contadorClientesLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cargando..."/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

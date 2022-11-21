@@ -1,7 +1,7 @@
 package com.utp.trabajo.gui.view;
 
-import com.utp.trabajo.exception.UsernameNotFoundException;
-import com.utp.trabajo.exception.WrongPasswordException;
+import com.utp.trabajo.exception.auth.UsernameNotFoundException;
+import com.utp.trabajo.exception.auth.WrongPasswordException;
 import com.utp.trabajo.services.security.AuthService;
 import java.awt.EventQueue;
 import java.util.concurrent.ExecutionException;
