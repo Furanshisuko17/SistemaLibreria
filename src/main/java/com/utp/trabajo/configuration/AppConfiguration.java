@@ -8,6 +8,8 @@ import com.utp.trabajo.gui.view.ventas.NuevaVentaTab;
 import com.utp.trabajo.gui.view.ventas.VentasTab;
 import com.utp.trabajo.gui.view.almacen.MarcaTab;
 import com.utp.trabajo.gui.view.almacen.TipoTab;
+import com.utp.trabajo.gui.view.almacen.ProductoTab;
+import com.utp.trabajo.gui.view.almacen.AlmacenTab;
 
 
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -41,7 +43,18 @@ public class AppConfiguration {
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public TipoTab TipoTabPrototype() {
         return new TipoTab();
-    }    
+    }   
+    
+     @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public ProductoTab ProductoTabPrototype() {
+        return new ProductoTab();
+    } 
+     @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public AlmacenTab AlmacenTabPrototype() {
+        return new AlmacenTab();
+    }  
     //ALMACEN 
         
     //VENTAS

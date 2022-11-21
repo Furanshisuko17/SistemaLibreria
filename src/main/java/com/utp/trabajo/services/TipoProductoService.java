@@ -35,7 +35,7 @@ public class TipoProductoService {
     }
     
     @Transactional
-    public void nuevaTipoProducto(TipoProducto tipoproducto) {
+    public void nuevoTipoProducto(TipoProducto tipoproducto) {
         tipoproductoDao.save(tipoproducto);
         
     }

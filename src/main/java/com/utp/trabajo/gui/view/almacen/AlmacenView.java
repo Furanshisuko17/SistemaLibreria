@@ -34,6 +34,8 @@ public class AlmacenView extends javax.swing.JInternalFrame {
         
         tabbedPane.add("Marca del Producto" , getMarcaTabInstance());
         tabbedPane.add("Tipo de Producto", getTipoTabInstance());
+        tabbedPane.add("Producto", getProductoTabInstance());
+        tabbedPane.add("Almacen", getTipoTabInstance());
         //Colocar tabs aquí
         
         setVisible(true);
@@ -55,6 +57,20 @@ public class AlmacenView extends javax.swing.JInternalFrame {
     
     public TipoTab getTipoTabInstance() {
         return TipoTabObjectFactory.getObject();
+    }
+    
+    @Autowired
+    private ObjectFactory<ProductoTab> ProductoTabObjectFactory;
+    
+    public ProductoTab getProductoTabInstance() {
+        return ProductoTabObjectFactory.getObject();
+    }
+    
+     @Autowired
+    private ObjectFactory<AlmacenTab> AlmacenTabObjectFactory;
+    
+    public AlmacenTab getAlmacenTabInstance() {
+        return AlmacenTabObjectFactory.getObject();
     }
 
 	@SuppressWarnings("unchecked")
