@@ -2,7 +2,7 @@ package com.utp.trabajo.gui.view.ventas;
 
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
-import com.utp.trabajo.services.VentasService;
+import com.utp.trabajo.services.transaction.VentasService;
 import com.utp.trabajo.services.security.SecurityService;
 import javax.annotation.PostConstruct;
 import javax.swing.UIManager;

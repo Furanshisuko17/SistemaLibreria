@@ -2,7 +2,7 @@
 package com.utp.trabajo.gui.view.almacen;
 
 import com.utp.trabajo.model.entities.Marca;
-import com.utp.trabajo.services.MarcaService;
+import com.utp.trabajo.services.transaction.MarcaService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;

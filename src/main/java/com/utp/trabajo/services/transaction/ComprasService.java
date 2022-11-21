@@ -1,5 +1,5 @@
 
-package com.utp.trabajo.services;
+package com.utp.trabajo.services.transaction;
 
 import com.utp.trabajo.model.dao.CompraDao;
 import com.utp.trabajo.model.entities.Compra;

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MarcaDao extends JpaRepository<Marca, Long>{
 
-        Stream<Marca>findByIdMarcaGreaterThan(Long lastId);
+    Stream<Marca> findByIdMarcaGreaterThan(Long lastId);
     
-     List<Marca> removeAllByIdMarcaIn(Iterable<? extends Long> ids);
+    List<Marca> removeAllByIdMarcaIn(Iterable<? extends Long> ids);
 }

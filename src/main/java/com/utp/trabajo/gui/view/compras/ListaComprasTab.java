@@ -3,7 +3,7 @@ package com.utp.trabajo.gui.view.compras;
 
 import com.utp.trabajo.model.entities.Compra;
 import com.utp.trabajo.model.entities.MetodoPago;
-import com.utp.trabajo.services.ComprasService;
+import com.utp.trabajo.services.transaction.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.math.BigInteger;
@@ -393,7 +393,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 433, Short.MAX_VALUE)
+            .addGap(0, 409, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -456,7 +456,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 460, Short.MAX_VALUE)
                         .addComponent(loadMoreButton)
                         .addGap(30, 30, 30)
                         .addComponent(reloadButton)
