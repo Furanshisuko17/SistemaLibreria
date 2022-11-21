@@ -1,7 +1,7 @@
 package com.utp.trabajo.gui.view.compras;
 
 import com.utp.trabajo.services.security.SecurityService;
-import com.utp.trabajo.services.ProveedorService;
+import com.utp.trabajo.services.transaction.ProveedorService;
 import com.utp.trabajo.model.entities.Proveedor;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
@@ -265,6 +265,8 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
         loadMoreButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
 
+        nuevoProveedorDialog.setResizable(false);
+
         nuevoProveedorLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         nuevoProveedorLabel.setText("Crear nuevo proveedor");
 
@@ -307,12 +309,12 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                 .addGap(25, 25, 25)
                 .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                        .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rucLabel)
-                            .addComponent(nombresLabel))
+                        .addComponent(rucLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                        .addComponent(tipoComercioLabel)
+                        .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tipoComercioLabel)
+                            .addComponent(nombresLabel))
                         .addGap(18, 18, 18)
                         .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
@@ -322,7 +324,7 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                                 .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(rucField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
                                         .addComponent(telefonoLabel)
@@ -333,29 +335,26 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                                         .addGap(18, 18, 18)
                                         .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addGap(66, 66, 66))
-            .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(guardarProveedorButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelarCreacionProveedorButton))
-                    .addComponent(jSeparator1))
-                .addContainerGap())
+            .addComponent(jSeparator1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoProveedorDialogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(nuevoProveedorLabel)
-                .addGap(167, 167, 167))
+                .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoProveedorDialogLayout.createSequentialGroup()
+                        .addComponent(nuevoProveedorLabel)
+                        .addGap(167, 167, 167))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoProveedorDialogLayout.createSequentialGroup()
+                        .addComponent(guardarProveedorButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelarCreacionProveedorButton)
+                        .addContainerGap())))
         );
         nuevoProveedorDialogLayout.setVerticalGroup(
             nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(nuevoProveedorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(direccionField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,21 +373,23 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                         .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(telefonoLabel))))
-                    .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
-                .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tipoComercioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tipoComercioLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(telefonoLabel)
+                                .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(guardarProveedorButton)
-                    .addComponent(cancelarCreacionProveedorButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(nuevoProveedorDialogLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tipoComercioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tipoComercioLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoProveedorDialogLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(nuevoProveedorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cancelarCreacionProveedorButton)
+                            .addComponent(guardarProveedorButton))
+                        .addContainerGap())))
         );
 
         tableInformationLabel.setText("Sin datos.");

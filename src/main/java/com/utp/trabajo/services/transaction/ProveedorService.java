@@ -1,4 +1,4 @@
-package com.utp.trabajo.services;
+package com.utp.trabajo.services.transaction;
 
 import com.utp.trabajo.model.dao.ProveedorDao;
 import com.utp.trabajo.model.entities.Proveedor;

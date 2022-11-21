@@ -6,6 +6,7 @@ import com.utp.trabajo.gui.view.ventas.VentasView;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.utp.trabajo.exception.UsernameNotFoundException;
 import com.utp.trabajo.exception.WrongPasswordException;
+import com.utp.trabajo.model.entities.Empleado;
 import com.utp.trabajo.services.security.AuthService;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
@@ -14,8 +15,15 @@ import java.util.concurrent.ExecutionException;
 import javax.annotation.PostConstruct;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -35,6 +43,10 @@ public class MainView extends javax.swing.JFrame {
 	
 	@Autowired 
 	private IconService iconos;
+    
+    private PlainDocument descripcionDocument;
+    
+    Empleado loggedEmpleado;
 
 	public MainView() {
         defineUI();
@@ -47,11 +59,61 @@ public class MainView extends javax.swing.JFrame {
         //loginPrompt.setVisible(true); 
 		cuentaWindow.pack();
 		cuentaWindow.setLocationRelativeTo(this);
-	}
+        
+        descripcionDocument = new PlainDocument();
+        descripcionTextArea.setDocument(descripcionDocument);
+        descripcionDocument.setDocumentFilter(new DocumentFilter() {
+            int maxCharacters = 500;
+            //FIX ??-??
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                int documentLength = fb.getDocument().getLength();
+                int incomingTextLength = string.length();
+                if (documentLength + incomingTextLength <= maxCharacters) {
+                    super.insertString(fb, offset, string, attr);
+                }else {
+                    String truncatedString = string.substring(0, maxCharacters - documentLength);
+                    //^ maybe check if incomingTextLength == 0...
+                    super.insertString(fb, offset, truncatedString, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int documentLength = fb.getDocument().getLength();
+                int incomingTextLength = text.length();
+                if (documentLength + incomingTextLength <= maxCharacters) {
+                    super.insertString(fb, offset, text, attrs);
+                }else {
+                    String truncatedString = text.substring(0, maxCharacters - documentLength);
+                    //^ maybe check if incomingTextLength == 0...
+                   super.insertString(fb, offset, truncatedString, attrs);
+                }
+                
+            }
+            
+            
+        });
+        descripcionDocument.addDocumentListener(new DocumentListener() {
+            @Override   
+            public void insertUpdate(DocumentEvent e) {
+                updateCharsLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateCharsLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+    }
         
 	@PostConstruct
 	private void init(){
 		iconInit();
+        pack();
 		setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         
 	}
@@ -63,11 +125,11 @@ public class MainView extends javax.swing.JFrame {
 	
 	private void iconInit() {
 		setIconImage(iconos.iconoPrincipal.getImage()); // Icono de la ventana principal
-		openVentasWindowButton.setIcon(iconos.iconoVentas);
-		openComprasWindowButton.setIcon(iconos.iconoCompras);
-		openAlmacenWindowButton.setIcon(iconos.iconoAlmacen);
-		openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas);
-		openAdministracionWindowButton.setIcon(iconos.iconoAdministracion);
+		openVentasWindowButton.setIcon(iconos.iconoVentas.derive(24, 24));
+		openComprasWindowButton.setIcon(iconos.iconoCompras.derive(24, 24));
+		openAlmacenWindowButton.setIcon(iconos.iconoAlmacen.derive(24, 24));
+		openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas.derive(24, 24));
+		openAdministracionWindowButton.setIcon(iconos.iconoAdministracion.derive(24, 24));
 		
 		exitMenuItem.setIcon(iconos.iconoExit);
 		appearanceButton.setIcon(iconos.iconoDarkMode);
@@ -104,12 +166,12 @@ public class MainView extends javax.swing.JFrame {
         dniField = new javax.swing.JTextField();
         direccionLabel = new javax.swing.JLabel();
         direccionField = new javax.swing.JTextField();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        fechaNacimientoDatePicker = new org.jdesktop.swingx.JXDatePicker();
         fechaNacimientoLabel = new javax.swing.JLabel();
         fechaContratacionLabel = new javax.swing.JLabel();
-        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
+        fechaContratoDatePicker = new org.jdesktop.swingx.JXDatePicker();
         fechaCeseLabel = new javax.swing.JLabel();
-        jXDatePicker3 = new org.jdesktop.swingx.JXDatePicker();
+        fechaCeseDatePicker = new org.jdesktop.swingx.JXDatePicker();
         datosPersonalesLabel = new javax.swing.JLabel();
         telefonoLabel = new javax.swing.JLabel();
         telefonoField = new javax.swing.JTextField();
@@ -121,17 +183,20 @@ public class MainView extends javax.swing.JFrame {
         contrasenaField = new com.formdev.flatlaf.extras.components.FlatPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        descripcionTextArea = new javax.swing.JTextArea();
         cerrarVentana = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         aceptarButon = new javax.swing.JButton();
+        maxCaracteresLabel = new javax.swing.JLabel();
         panelPrincipal = new javax.swing.JDesktopPane();
         toolBar = new javax.swing.JToolBar();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         openVentasWindowButton = new javax.swing.JButton();
         openComprasWindowButton = new javax.swing.JButton();
         openAlmacenWindowButton = new javax.swing.JButton();
         openEstadisticasWindowButton = new javax.swing.JButton();
         openAdministracionWindowButton = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -269,6 +334,11 @@ public class MainView extends javax.swing.JFrame {
 
         cuentaWindow.setTitle("Configuración de la cuenta");
         cuentaWindow.setResizable(false);
+        cuentaWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                cuentaWindowWindowClosing(evt);
+            }
+        });
 
         nombreLabel.setText("Nombres:");
 
@@ -278,32 +348,20 @@ public class MainView extends javax.swing.JFrame {
 
         direccionLabel.setText("Dirección:");
 
-        jXDatePicker1.setPreferredSize(new java.awt.Dimension(143, 22));
-        jXDatePicker1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jXDatePicker1ActionPerformed(evt);
-            }
-        });
+        fechaNacimientoDatePicker.setEditable(false);
+        fechaNacimientoDatePicker.setPreferredSize(new java.awt.Dimension(143, 22));
 
         fechaNacimientoLabel.setText("Fecha de nacimiento:");
 
         fechaContratacionLabel.setText("Fecha de contrato:");
 
-        jXDatePicker2.setPreferredSize(new java.awt.Dimension(143, 22));
-        jXDatePicker2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jXDatePicker2ActionPerformed(evt);
-            }
-        });
+        fechaContratoDatePicker.setEditable(false);
+        fechaContratoDatePicker.setPreferredSize(new java.awt.Dimension(143, 22));
 
         fechaCeseLabel.setText("Fecha de cese:");
 
-        jXDatePicker3.setPreferredSize(new java.awt.Dimension(143, 22));
-        jXDatePicker3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jXDatePicker3ActionPerformed(evt);
-            }
-        });
+        fechaCeseDatePicker.setEditable(false);
+        fechaCeseDatePicker.setPreferredSize(new java.awt.Dimension(143, 22));
 
         datosPersonalesLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         datosPersonalesLabel.setText("Datos personales");
@@ -320,18 +378,25 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel3.setText("Descripción / biografía: ");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setLineWrap(true);
-        jTextArea2.setRows(5);
-        jTextArea2.setTabSize(4);
-        jTextArea2.setWrapStyleWord(true);
-        jScrollPane2.setViewportView(jTextArea2);
+        descripcionTextArea.setColumns(20);
+        descripcionTextArea.setLineWrap(true);
+        descripcionTextArea.setRows(5);
+        descripcionTextArea.setTabSize(4);
+        descripcionTextArea.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(descripcionTextArea);
 
         cerrarVentana.setText("Cerrar");
+        cerrarVentana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarVentanaActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("?");
 
         aceptarButon.setText("Aceptar");
+
+        maxCaracteresLabel.setText("500/500");
 
         javax.swing.GroupLayout cuentaWindowLayout = new javax.swing.GroupLayout(cuentaWindow.getContentPane());
         cuentaWindow.getContentPane().setLayout(cuentaWindowLayout);
@@ -342,12 +407,14 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cuentaWindowLayout.createSequentialGroup()
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(datosPersonalesLabel)
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, 0))
+                        .addComponent(datosPersonalesLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(cuentaWindowLayout.createSequentialGroup()
                         .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(maxCaracteresLabel))
                             .addComponent(jScrollPane2)
                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -384,18 +451,18 @@ public class MainView extends javax.swing.JFrame {
                                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                                 .addComponent(fechaContratacionLabel)
                                                 .addGap(27, 27, 27)
-                                                .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(fechaContratoDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                                 .addComponent(fechaCeseLabel)
                                                 .addGap(49, 49, 49)
-                                                .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(fechaCeseDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(fechaNacimientoLabel)
                                                     .addComponent(telefonoLabel))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(fechaNacimientoDatePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                     .addComponent(telefonoField))))))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
@@ -419,9 +486,9 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contrasenaLabel)
                     .addComponent(contrasenaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addGap(6, 6, 6)
                 .addComponent(datosPersonalesLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -429,43 +496,41 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(telefonoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(cuentaWindowLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fechaNacimientoDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fechaNacimientoLabel)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(apellidoLabel)
-                            .addComponent(apellidosField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(direccionLabel)
-                            .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(cuentaWindowLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fechaNacimientoLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fechaContratacionLabel)
-                            .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fechaCeseLabel)
-                            .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(apellidosField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaContratacionLabel)
+                    .addComponent(fechaContratoDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaCeseLabel)
+                    .addComponent(fechaCeseDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(direccionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(maxCaracteresLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(6, 6, 6)
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cerrarVentana)
                     .addComponent(jButton2)
                     .addComponent(aceptarButon))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -483,11 +548,17 @@ public class MainView extends javax.swing.JFrame {
         );
 
         toolBar.setRollover(true);
+        toolBar.add(filler2);
 
         openVentasWindowButton.setText("Ventas");
         openVentasWindowButton.setFocusable(false);
         openVentasWindowButton.setHideActionText(true);
-        openVentasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        openVentasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openVentasWindowButton.setIconTextGap(2);
+        openVentasWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openVentasWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openVentasWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openVentasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openVentasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openVentasWindowButtonActionPerformed(evt);
@@ -497,7 +568,12 @@ public class MainView extends javax.swing.JFrame {
 
         openComprasWindowButton.setText("Compras");
         openComprasWindowButton.setFocusable(false);
-        openComprasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        openComprasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openComprasWindowButton.setIconTextGap(2);
+        openComprasWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openComprasWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openComprasWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openComprasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openComprasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openComprasWindowButtonActionPerformed(evt);
@@ -507,7 +583,12 @@ public class MainView extends javax.swing.JFrame {
 
         openAlmacenWindowButton.setText("Almacén");
         openAlmacenWindowButton.setFocusable(false);
-        openAlmacenWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        openAlmacenWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openAlmacenWindowButton.setIconTextGap(2);
+        openAlmacenWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openAlmacenWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openAlmacenWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openAlmacenWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openAlmacenWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openAlmacenWindowButtonActionPerformed(evt);
@@ -517,7 +598,12 @@ public class MainView extends javax.swing.JFrame {
 
         openEstadisticasWindowButton.setText("Estadísticas");
         openEstadisticasWindowButton.setFocusable(false);
-        openEstadisticasWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        openEstadisticasWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openEstadisticasWindowButton.setIconTextGap(2);
+        openEstadisticasWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openEstadisticasWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openEstadisticasWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openEstadisticasWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openEstadisticasWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openEstadisticasWindowButtonActionPerformed(evt);
@@ -525,9 +611,13 @@ public class MainView extends javax.swing.JFrame {
         });
         toolBar.add(openEstadisticasWindowButton);
 
-        openAdministracionWindowButton.setText("Administración");
+        openAdministracionWindowButton.setText("Admin");
         openAdministracionWindowButton.setFocusable(false);
-        openAdministracionWindowButton.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        openAdministracionWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openAdministracionWindowButton.setIconTextGap(2);
+        openAdministracionWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openAdministracionWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openAdministracionWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
         openAdministracionWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         openAdministracionWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -535,6 +625,7 @@ public class MainView extends javax.swing.JFrame {
             }
         });
         toolBar.add(openAdministracionWindowButton);
+        toolBar.add(filler1);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Archivo");
@@ -624,18 +715,60 @@ public class MainView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelPrincipal)
-            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(panelPrincipal))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void initCuentaWindow() {
+        fechaCeseDatePicker.setEnabled(false);
+        fechaContratoDatePicker.setEnabled(false);
+        fechaNacimientoDatePicker.setEnabled(false);
+        dniField.setEditable(false);
+        nombresField.setEditable(false);
+        apellidosField.setEditable(false);
+        
+        fillCuentaWindow();
+    }
+    
+    private void fillCuentaWindow() {
+        nombresField.setText(loggedEmpleado.getNombres());
+        apellidosField.setText(loggedEmpleado.getApellidos());
+        dniField.setText(loggedEmpleado.getDni());
+        direccionField.setText(loggedEmpleado.getDireccion());
+        telefonoField.setText(loggedEmpleado.getTelefono());
+        fechaNacimientoDatePicker.setDate(loggedEmpleado.getFechaNacimiento());
+        fechaContratoDatePicker.setDate(loggedEmpleado.getFechaContratacion());
+        fechaCeseDatePicker.setDate(loggedEmpleado.getFechaCese());
+        descripcionTextArea.setText(loggedEmpleado.getDescripcion());
+
+        usuarioField.setText(loggedEmpleado.getUsername());
+    }
+    
+    private void resetCuentaWindow() {
+        nombresField.setText(loggedEmpleado.getNombres());
+        apellidosField.setText(loggedEmpleado.getApellidos());
+        dniField.setText(loggedEmpleado.getDni());
+        direccionField.setText(loggedEmpleado.getDireccion());
+        telefonoField.setText(loggedEmpleado.getTelefono());
+        fechaNacimientoDatePicker.setDate(loggedEmpleado.getFechaNacimiento());
+        fechaContratoDatePicker.setDate(loggedEmpleado.getFechaContratacion());
+        fechaCeseDatePicker.setDate(loggedEmpleado.getFechaCese());
+        descripcionTextArea.setText(loggedEmpleado.getDescripcion());
+
+        usuarioField.setText(loggedEmpleado.getUsername());
+    }
+    
+    private void updateCharsLabel() {
+        int lines = descripcionDocument.getLength();
+        maxCaracteresLabel.setText(lines + "/500");
+    }
     
     private void setBusy() {
 		busyLabel.setEnabled(true);
@@ -877,7 +1010,10 @@ public class MainView extends javax.swing.JFrame {
                     setIdle();
                     loginPrompt.setVisible(false);
                     setVisible(true);
-                    userButton.setText(authService.getLoggedEmpleado().getUsername());
+                    loggedEmpleado = authService.getLoggedEmpleado();
+                    userButton.setText(loggedEmpleado.getUsername());
+                    initCuentaWindow();
+
                 } else {
 						
                 }
@@ -905,17 +1041,14 @@ public class MainView extends javax.swing.JFrame {
 		
     }//GEN-LAST:event_userDetailsButtonActionPerformed
 
-    private void jXDatePicker3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jXDatePicker3ActionPerformed
+    private void cerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarVentanaActionPerformed
+        cuentaWindow.setVisible(false);
+        resetCuentaWindow();
+    }//GEN-LAST:event_cerrarVentanaActionPerformed
 
-    private void jXDatePicker2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jXDatePicker2ActionPerformed
-
-    private void jXDatePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jXDatePicker1ActionPerformed
+    private void cuentaWindowWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_cuentaWindowWindowClosing
+        resetCuentaWindow();
+    }//GEN-LAST:event_cuentaWindowWindowClosing
     
    
     
@@ -939,15 +1072,21 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JDialog cuentaWindow;
     private javax.swing.JRadioButtonMenuItem darkModeButton;
     private javax.swing.JLabel datosPersonalesLabel;
+    private javax.swing.JTextArea descripcionTextArea;
     private javax.swing.JTextField direccionField;
     private javax.swing.JLabel direccionLabel;
     private javax.swing.JTextField dniField;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
+    private org.jdesktop.swingx.JXDatePicker fechaCeseDatePicker;
     private javax.swing.JLabel fechaCeseLabel;
     private javax.swing.JLabel fechaContratacionLabel;
+    private org.jdesktop.swingx.JXDatePicker fechaContratoDatePicker;
+    private org.jdesktop.swingx.JXDatePicker fechaNacimientoDatePicker;
     private javax.swing.JLabel fechaNacimientoLabel;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JMenu helpMenu;
     private org.jdesktop.swingx.JXLabel informationLabel;
     private javax.swing.JButton jButton2;
@@ -957,14 +1096,11 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextArea jTextArea2;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
     private javax.swing.JRadioButtonMenuItem lightModeButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JDialog loginPrompt;
     private javax.swing.JMenuItem logoutButton;
+    private javax.swing.JLabel maxCaracteresLabel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel nombreLabel;
     private javax.swing.JTextField nombresField;
@@ -988,4 +1124,5 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 
+    
 }

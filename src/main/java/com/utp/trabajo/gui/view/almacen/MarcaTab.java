@@ -2,7 +2,7 @@
 package com.utp.trabajo.gui.view.almacen;
 
 import com.utp.trabajo.model.entities.Marca;
-import com.utp.trabajo.services.MarcaService;
+import com.utp.trabajo.services.transaction.MarcaService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -147,7 +147,10 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
-
+        setBusy("Cargando...");
+        reloadTableButton.setEnabled(false);
+        loadMoreButton.setEnabled(false);
+        retrievingData = true;
         
         if (reload) {
             defaultTableModelMarca.setRowCount(0);
@@ -233,7 +236,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         loadMoreButton = new javax.swing.JButton();
 
         nuevaMarcaLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        nuevaMarcaLabel.setText("NuevaMarca");
+        nuevaMarcaLabel.setText("Nueva Marca");
 
         cancelarCreacionClienteButton.setText("Cancelar");
         cancelarCreacionClienteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -354,19 +357,20 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(loadMoreButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(reloadTableButton)
+                        .addGap(17, 17, 17))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevaMarcaButton)
                         .addGap(18, 18, 18)
                         .addComponent(editarMarcaButton)
                         .addGap(18, 18, 18)
                         .addComponent(eliminarMarcaButton)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(loadMoreButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(reloadTableButton)))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -377,14 +381,17 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                     .addComponent(nuevaMarcaButton)
                     .addComponent(editarMarcaButton)
                     .addComponent(eliminarMarcaButton))
-                .addGap(18, 18, 18)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(reloadTableButton)
-                        .addComponent(loadMoreButton))
-                    .addComponent(busyLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(loadMoreButton)
+                            .addComponent(reloadTableButton))))
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -408,8 +415,8 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         int telefono = 0;
         boolean error = false;
 
-        if(idField.getText().isBlank()) {
-            idField.putClientProperty("JComponent.outline", "error");
+        if(nombreMarcaField.getText().isBlank()) {
+            nombreMarcaField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
 
@@ -452,7 +459,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         for (Marca cliente : getSelectedRows()) {
             selectedMarcasId.add(cliente.getIdMarca());
         }
-        List<Marca> clientesEliminados = marcaService.eliminarMarca(selectedMarcasId);
+        List<Marca> marcaEliminados = marcaService.eliminarMarca(selectedMarcasId);
         // TODO add your handling code here:
     }//GEN-LAST:event_eliminarMarcaButtonActionPerformed
 
