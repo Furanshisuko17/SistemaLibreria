@@ -42,13 +42,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     return String.class;
             }
         }
-        
-        
-        
+
     };
-    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"}; 
+    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"};
     //TODO: set minimum and default sizes for each column
-    
+
     ListSelectionModel selectionModel;
 
     private boolean canRead = true;
@@ -70,7 +68,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     public ClientesTab() {
         initComponents();
-        initTableClientes() ;
+        initTableClientes();
 
         System.out.println("Clientes tab - Nueva instancia!");
     }
@@ -124,8 +122,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1.removeAll();
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
-    }   
-    
+    }
+
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
 
@@ -208,7 +206,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     }
                 } catch (ExecutionException ex) {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                }
             }
 
         };
@@ -218,11 +216,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 return clienteService.obtenerClientes(lastId, limit); // set lastId and configurable limit
             }
 
-            @Override   
+            @Override
             protected void done() {
                 try {
                     boolean ready = get();
-                    if(ready) {
+                    if (ready) {
                         clienteService.updateTable(defaultTableModelClientes, checkChanges, limit);
                     }
                     int lastRow = 0;
@@ -239,8 +237,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     tableInformationLabel.setVisible(true);
                     //Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NotEnoughPermissionsException ex) {
-                    
-                
+
                 } finally {
                     setIdle();
                     reloadTableButton.setEnabled(true);
@@ -254,10 +251,10 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     }
 
-    private List<Long> getIdFromSelectedRows()  { // refactor! DONE!
+    private List<Long> getIdFromSelectedRows() { // refactor! DONE!
         List<Long> idClientes = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
-            i = tablaClientes.convertRowIndexToModel(i); 
+            i = tablaClientes.convertRowIndexToModel(i);
             // ↑ IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
             idClientes.add((Long) defaultTableModelClientes.getValueAt(i, 0));
         }
@@ -351,12 +348,12 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                                 .addComponent(nombresLabel)
                                 .addGap(11, 11, 11)
                                 .addComponent(nombresField)))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
                                 .addComponent(direccionLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
                             .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
                                 .addComponent(razonSocialLabel)
                                 .addGap(8, 8, 8)
@@ -374,23 +371,29 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap()
                 .addComponent(nuevoClienteLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dniLabel)
-                    .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombresLabel)
-                    .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(direccionLabel)
-                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dniLabel)
+                            .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nombresLabel)
+                            .addComponent(nombresField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(direccionLabel)
+                            .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(razonSocialLabel)
+                            .addComponent(razonSocialField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefonoLabel)
-                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(razonSocialLabel)
-                    .addComponent(razonSocialField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -534,7 +537,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
         nuevoClienteDialog.setVisible(true);
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
-    
+
     //TODO: ↓ Refactor!
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
         List<Long> selectedClientesId = getIdFromSelectedRows();
@@ -552,8 +555,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 clientesEliminados = clienteService.eliminarClientes(selectedClientesId); //implementar swingworker
             } catch (NotEnoughPermissionsException ex) {
                 // just pass?
-            } 
-            
+            }
+
             if (!clientesEliminados.isEmpty()) {
                 try {
                     clienteService.updateTable(defaultTableModelClientes, true, limit);
@@ -653,7 +656,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             try {
                 clienteSeleccionado = clienteService.obtenerClientePorId(idClientesSeleccionado.get(0));
             } catch (NotEnoughPermissionsException ex) {
-                return; 
+                return;
             }
         } //TODO: Refactor and complete
     }//GEN-LAST:event_editarClienteButtonActionPerformed

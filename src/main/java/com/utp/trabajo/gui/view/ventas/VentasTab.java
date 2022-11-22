@@ -8,11 +8,11 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 public class VentasTab extends javax.swing.JPanel {
-    
+
     DefaultTableModel defaultTableModelVentas = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            switch(columnIndex) {
+            switch (columnIndex) {
                 case 0:
                     return Long.class;
                 case 1:
@@ -30,72 +30,69 @@ public class VentasTab extends javax.swing.JPanel {
                 default:
                     return String.class;
             }
-        }        
+        }
     };
-    
+
     private boolean canRead = true;
 
     private long lastId = 0;
-    
+
     private long limit = 100;
 
     public VentasTab() {
         initComponents();
     }
-    
+
     @PostConstruct
     public void init() {
-        
+
     }
-    
+
     private void checkPermissions() {
-        
+
     }
-    
+
     private void setBusy() {
-		//busyLabel.setEnabled(true);
-	}
-    
+        //busyLabel.setEnabled(true);
+    }
+
     private void setBusy(String message) {
-		//busyLabel.setEnabled(true);
+        //busyLabel.setEnabled(true);
         //busyLabel.setText(message);
-	}
-	
-	private void setIdle() {
-		//busyLabel.setEnabled(false);
+    }
+
+    private void setIdle() {
+        //busyLabel.setEnabled(false);
         //busyLabel.setText("");
-	}
-       
-    
+    }
+
     private void retrieveData(boolean reload) {
-        if(!canRead) {
+        if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
-        
+
         setBusy("Cargando...");
-        if(reload) {
+        if (reload) {
             defaultTableModelVentas.setRowCount(0);
             lastId = 0;
             setBusy("Recargando...");
         }
-        SwingWorker worker = new SwingWorker<List<Venta>, List<Venta>>()  {
+        SwingWorker worker = new SwingWorker<List<Venta>, List<Venta>>() {
             @Override
             protected List<Venta> doInBackground() throws Exception {
-                 return new ArrayList<Venta>();// set lastId and configurable limit
+                return new ArrayList<Venta>();// set lastId and configurable limit
             }
 
             @Override
             protected void done() {
-                
-                
+
                 setIdle();
             }
         };
         worker.execute();
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -111,8 +108,6 @@ public class VentasTab extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

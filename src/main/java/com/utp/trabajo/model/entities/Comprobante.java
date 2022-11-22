@@ -13,21 +13,18 @@ import lombok.Data;
 @Entity
 @Table(name = "comprobante")
 public class Comprobante implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long idComprobante;
-	
-	@Column(nullable = false)
-	public String nombreComprobante;
-	
-	@Column(nullable = false)
-	public String tipoComprobante;
-	
-	
-	//TODO: Implementar un sistema de generacion de comprobantes con PDF's
-	
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long idComprobante;
+
+    @Column(nullable = false)
+    public String nombreComprobante;
+
+    @Column(nullable = false)
+    public String tipoComprobante;
+
+    //TODO: Implementar un sistema de generacion de comprobantes con PDF's
 }

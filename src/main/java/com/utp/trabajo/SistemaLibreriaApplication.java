@@ -20,55 +20,53 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:config/mysql/db.properties")
 //@EnableAsync
 public class SistemaLibreriaApplication {
-    
+
     private static ConfigurableApplicationContext context;
 
-	public static void main(String[] args) {
-		//SpringApplication.run(SistemaLibreriaApplication.class, args);
-		FlatDarkLaf.setup();
-		FlatSVGIcon.ColorFilter.getInstance()
-				.add(Color.black, new Color(90, 90, 90), new Color(175, 177, 179));
-		 
-		context = getBuiltAndConfiguredApp().run(args);
+    public static void main(String[] args) {
+        //SpringApplication.run(SistemaLibreriaApplication.class, args);
+        FlatDarkLaf.setup();
+        FlatSVGIcon.ColorFilter.getInstance()
+            .add(Color.black, new Color(90, 90, 90), new Color(175, 177, 179));
+
+        context = getBuiltAndConfiguredApp().run(args);
         createInterface(context);
-	}
-    
+    }
+
     public static SpringApplicationBuilder getBuiltAndConfiguredApp() {
         return new SpringApplicationBuilder(SistemaLibreriaApplication.class)
-                .headless(false)
-                .web(WebApplicationType.NONE);
+            .headless(false)
+            .web(WebApplicationType.NONE);
     }
-    
+
     public static void createInterface(ConfigurableApplicationContext context) {
         EventQueue.invokeLater(() -> {
-			FlatInspector.install( "ctrl shift alt X" ); // To inspect the UI - dev only      
-			MainView mainView = context.getBean(MainView.class);
-			//mainView.setVisible(false); 
+            FlatInspector.install("ctrl shift alt X"); // To inspect the UI - dev only      
+            MainView mainView = context.getBean(MainView.class);
+            //mainView.setVisible(false); 
             for (Window window : mainView.getOwnedWindows()) {
                 System.out.println(window.getName());
                 if (window.getName().equalsIgnoreCase("logindialog")) {
                     window.setVisible(true); //TODO: needs another workaround - medium priority
                 }
             };
-		});
+        });
     }
-    
-    
-    
+
     //NO FUNCIONA, no está en uso
     public static void restart() {
         ApplicationArguments args = context.getBean(ApplicationArguments.class);
-        for(String arg : args.getSourceArgs()) {
+        for (String arg : args.getSourceArgs()) {
             System.out.println("Args: " + arg);
-            
+
         }
         Thread thread = new Thread(() -> {
             context.close();
             context = getBuiltAndConfiguredApp().run(args.getSourceArgs());
-            
+
         });
-       thread.setDaemon(false);
-       thread.start();
-        
+        thread.setDaemon(false);
+        thread.start();
+
     }
 }

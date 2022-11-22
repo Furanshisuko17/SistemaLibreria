@@ -22,38 +22,38 @@ import lombok.Data;
 @Entity
 @Table(name = "venta")
 public class Venta implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idVenta;
-	
-	private Timestamp fechaEmision;
-	
-	@OneToMany(mappedBy = "venta", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	private List<DetallesVenta> detallesVenta;
-	
-	@OneToOne
-	@JoinColumn(nullable = false, name = "idComprobante", referencedColumnName = "idComprobante")
-	private Comprobante comprobante;
-	
-	@Column(nullable = false, precision = 12, scale=2)
-	private BigInteger igv;
-	
-	@Column(nullable = false, precision = 12, scale=2)
-	private BigInteger precioTotal;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idEmpleado", referencedColumnName = "idEmpleado")
-	private Empleado empleado; //references empleado//
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idCliente", referencedColumnName = "idCliente")
-	private Cliente cliente;	//references cliente
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idMetodoPagoVenta", referencedColumnName = "idMetodoPago")
-	private MetodoPago metodoPago;	
-	
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idVenta;
+
+    private Timestamp fechaEmision;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<DetallesVenta> detallesVenta;
+
+    @OneToOne
+    @JoinColumn(nullable = false, name = "idComprobante", referencedColumnName = "idComprobante")
+    private Comprobante comprobante;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigInteger igv;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigInteger precioTotal;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idEmpleado", referencedColumnName = "idEmpleado")
+    private Empleado empleado; //references empleado//
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idCliente", referencedColumnName = "idCliente")
+    private Cliente cliente;	//references cliente
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idMetodoPagoVenta", referencedColumnName = "idMetodoPago")
+    private MetodoPago metodoPago;
+
 }

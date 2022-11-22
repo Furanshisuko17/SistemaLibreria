@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.gui.view.compras;
 
 import com.utp.trabajo.model.entities.Compra;
@@ -20,8 +19,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
+
     DefaultTableModel defaultTableModelCompras = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
@@ -43,7 +42,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
             }
         }
     };
-    String[] columnNames = {"IdCompra", "Fecha Compra", "Transporte", "Descuento","Metodo Pago", "Precio Total"};
+    String[] columnNames = {"IdCompra", "Fecha Compra", "Transporte", "Descuento", "Metodo Pago", "Precio Total"};
 
     ListSelectionModel selectionModel;
     private boolean retrievingData = false;
@@ -53,14 +52,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     private boolean canCreate = true;
 
     private long lastId = 0;
-    
+
     private long limit = 100;
-     @Autowired
+    @Autowired
     private SecurityService securityService;
 
     @Autowired
     private ComprasService comprasService;
-    
 
     public ListaComprasTab() {
         initComponents();
@@ -109,12 +107,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         nuevaCompraDialog.setLocationRelativeTo(this);
         System.out.println("Compras tab - Nueva instancia!");
     }
+
     @PostConstruct
     public void init() {
         checkPermissions();
         retrieveData(false);
     }
-    
+
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
 
@@ -138,43 +137,42 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
             editarCompraButton.setEnabled(false);
         }
     }
-    
+
     private void setBusy() {
-		busyLabel.setEnabled(true);
-	}
-    
+        busyLabel.setEnabled(true);
+    }
+
     private void setBusy(String message) {
-            busyLabel.setEnabled(true);
-            busyLabel.setText(message);
-	}
-	
-	private void setIdle() {
-            busyLabel.setEnabled(false);
-            busyLabel.setText("");
-	}
-       
-    
+        busyLabel.setEnabled(true);
+        busyLabel.setText(message);
+    }
+
+    private void setIdle() {
+        busyLabel.setEnabled(false);
+        busyLabel.setText("");
+    }
+
     private void retrieveData(boolean reload) {
-        
-        if(!canRead) {
+
+        if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
-        
+
         setBusy("Cargando...");
         reloadButton.setEnabled(false);
         nuevaCompraButton.setEnabled(false);
         retrievingData = true;
         loadMoreButton.setEnabled(false);
-        if(reload) {
+        if (reload) {
             defaultTableModelCompras.setRowCount(0);
             lastId = 0;
             setBusy("Recargando...");
         }
-        SwingWorker worker = new SwingWorker<List<Compra>, List<Compra>>()  {
+        SwingWorker worker = new SwingWorker<List<Compra>, List<Compra>>() {
             @Override
             protected List<Compra> doInBackground() throws Exception {
-                 return comprasService.streamCompras(lastId, limit);// set lastId and configurable limit
+                return comprasService.streamCompras(lastId, limit);// set lastId and configurable limit
             }
 
             @Override
@@ -214,6 +212,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         };
         worker.execute();
     }
+
     private List<Compra> getSelectedRows() {
         List<Compra> compras = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
@@ -293,38 +292,41 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         nuevaCompraDialog.getContentPane().setLayout(nuevaCompraDialogLayout);
         nuevaCompraDialogLayout.setHorizontalGroup(
             nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator2)
             .addGroup(nuevaCompraDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel6))
-                .addGap(19, 19, 19)
-                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(IdCompraField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(fechaCompraField)
-                    .addComponent(descuentoField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
-                .addGap(40, 40, 40)
-                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(metodoPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(precioTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16))
-            .addGroup(nuevaCompraDialogLayout.createSequentialGroup()
-                .addGap(166, 166, 166)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevaCompraDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(guardarButton)
-                .addGap(18, 18, 18)
-                .addComponent(cancelarNuevaCompraButton)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevaCompraDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(guardarButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelarNuevaCompraButton))
+                    .addGroup(nuevaCompraDialogLayout.createSequentialGroup()
+                        .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nuevaCompraDialogLayout.createSequentialGroup()
+                                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel6)
+                                    .addGroup(nuevaCompraDialogLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(IdCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(descuentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fechaCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(18, 18, 18)
+                                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(precioTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(metodoPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1))
+                        .addGap(0, 9, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jSeparator2)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         nuevaCompraDialogLayout.setVerticalGroup(
             nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,26 +334,25 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(IdCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(precioTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(precioTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(fechaCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)
-                        .addComponent(metodoPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(fechaCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(metodoPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(descuentoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(nuevaCompraDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarNuevaCompraButton)
@@ -359,7 +360,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap())
         );
 
-        tableInformationLabel.setText("No Data");
+        tableInformationLabel.setText("Sin datos.");
 
         tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -379,12 +380,9 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 661, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -393,16 +391,14 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)))
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 213, Short.MAX_VALUE)
                     .addComponent(tableInformationLabel)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 213, Short.MAX_VALUE)))
         );
 
         nuevaCompraButton.setText("Nuevo");
@@ -450,28 +446,25 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLayeredPane1)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 460, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(loadMoreButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(reloadButton)
-                        .addGap(21, 21, 21))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(reloadButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevaCompraButton)
-                        .addGap(18, 18, 18)
+                        .addGap(12, 12, 12)
                         .addComponent(editarCompraButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(eliminarCompraButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevaCompraButton)
@@ -479,12 +472,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                     .addComponent(eliminarCompraButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(loadMoreButton)
-                        .addComponent(reloadButton))))
+                        .addComponent(reloadButton)
+                        .addComponent(loadMoreButton))
+                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -502,7 +496,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         metodoPagoField.putClientProperty("JComponent.outline", "");
         //TODO: reemplazar razon social por un combobox
         Compra c = new Compra();
-        
+
         boolean error = false;
 
         if (IdCompraField.getText().isBlank()) {
@@ -513,12 +507,12 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         if (fechaCompraField.getText().isBlank()) {
             fechaCompraField.putClientProperty("JComponent.outline", "error");
             error = true;
-        } 
+        }
 
         if (descuentoField.getText().isBlank()) {
             descuentoField.putClientProperty("JComponent.outline", "error");
             error = true;
-        } 
+        }
 
         if (precioTotalField.getText().isBlank()) {
             precioTotalField.putClientProperty("JComponent.outline", "error");
@@ -564,7 +558,6 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         // TODO add your handling code here:
         retrieveData(true);
     }//GEN-LAST:event_reloadButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField IdCompraField;

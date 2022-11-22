@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.model.dao;
 
 import com.utp.trabajo.model.entities.CalidadProducto;

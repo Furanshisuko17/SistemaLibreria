@@ -18,24 +18,24 @@ import lombok.Data;
 @Entity
 @Table(name = "rol_acceso")
 public class RolAcceso implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idRol;
-	
-	@Column(nullable = false)
-	private String nombre;
-	
-	@Column(nullable = false, length = 300) //consider when creating the interface for this
-	private String descripcion;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "permisos_concedidos",
-		joinColumns = @JoinColumn(name = "idRol"),
-		inverseJoinColumns = @JoinColumn(name = "idPermiso"))
-	private List<Permiso> permisos;
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idRol;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false, length = 300) //consider when creating the interface for this
+    private String descripcion;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "permisos_concedidos",
+        joinColumns = @JoinColumn(name = "idRol"),
+        inverseJoinColumns = @JoinColumn(name = "idPermiso"))
+    private List<Permiso> permisos;
 
 }

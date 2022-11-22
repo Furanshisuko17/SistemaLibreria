@@ -16,20 +16,20 @@ import lombok.Data;
 @Entity
 @Table(name = "permiso")
 public class Permiso implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idPermiso;
-	
-	@Column(nullable = false)
-	private String nombre;
-	
-	@Column(length = 300)
-	private String descripcion;
-	
-	@ManyToMany(mappedBy = "permisos", fetch = FetchType.EAGER)
-	private List<RolAcceso> rolesAcceso;
-	
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPermiso;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(length = 300)
+    private String descripcion;
+
+    @ManyToMany(mappedBy = "permisos", fetch = FetchType.EAGER)
+    private List<RolAcceso> rolesAcceso;
+
 }

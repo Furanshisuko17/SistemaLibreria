@@ -17,34 +17,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TipoProductoService {
-    
+
     @Autowired
-	private TipoProductoDao tipoproductoDao;
-	   
+    private TipoProductoDao tipoproductoDao;
+
     @Transactional(readOnly = true)
     public List<TipoProducto> streamTipoProducto(Long lastId, Long limit) {
-        try(Stream<TipoProducto> streamedTipoProducto = tipoproductoDao.findByIdTipoProductoGreaterThan(lastId)) {
+        try ( Stream<TipoProducto> streamedTipoProducto = tipoproductoDao.findByIdTipoProductoGreaterThan(lastId)) {
             return streamedTipoProducto.limit(limit)
-                    .collect(Collectors.toList());
-        }   
-    } 
-    
+                .collect(Collectors.toList());
+        }
+    }
+
     @Transactional(readOnly = true)
     public TipoProducto encontrarTipoProductoPorId(Long idMarca) {
         return tipoproductoDao.findById(idMarca).orElseThrow();
     }
-    
+
     @Transactional
     public void nuevoTipoProducto(TipoProducto tipoproducto) {
         tipoproductoDao.save(tipoproducto);
-        
+
     }
-    
+
     @Transactional
     public void actualizarTipoProducto(TipoProducto tipoproducto) {
-        
+
     }
-  @Transactional
+
+    @Transactional
     public List<TipoProducto> eliminarTipoProducto(List<Long> idsTipoProducto) {
         return tipoproductoDao.removeAllByIdTipoProductoIn(idsTipoProducto);
     }

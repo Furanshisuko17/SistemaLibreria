@@ -13,28 +13,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class VentasView extends javax.swing.JInternalFrame {
 
-	@Autowired
-	private VentasService ventasService;
+    @Autowired
+    private VentasService ventasService;
 
-	@Autowired
-	private IconService iconos;
+    @Autowired
+    private IconService iconos;
 
-	@Autowired
-	private UtilService utilidades;
-	
-	@Autowired
-	private SecurityService securityService;
-		
-	public VentasView() {
-		initComponents();
-	}
-        
-	@PostConstruct
-	private void init(){
-		setFrameIcon(iconos.iconoVentas);
-	}
-	
-	@SuppressWarnings("unchecked")
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private SecurityService securityService;
+
+    public VentasView() {
+        initComponents();
+    }
+
+    @PostConstruct
+    private void init() {
+        setFrameIcon(iconos.iconoVentas);
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -59,41 +59,41 @@ public class VentasView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        tabbedPane.add("Nueva venta" , getNuevaVentaTabInstance());
+        tabbedPane.add("Nueva venta", getNuevaVentaTabInstance());
         tabbedPane.add("Ventas", getVentasTabInstance());
         tabbedPane.add("Clientes", getClientesTabInstance());
         setVisible(true);
     }
-    
+
     public void cerrarVentana() {
         tabbedPane.removeAll();
     }
-           
+
     @Autowired
     private ObjectFactory<ClientesTab> clientesTabObjectFactory;
-    
+
     public ClientesTab getClientesTabInstance() {
         return clientesTabObjectFactory.getObject();
     }
-    
+
     @Autowired
     private ObjectFactory<VentasTab> ventasTabObjectFactory;
-    
+
     public VentasTab getVentasTabInstance() {
         return ventasTabObjectFactory.getObject();
     }
-    
+
     @Autowired
     private ObjectFactory<NuevaVentaTab> nuevaVentaTabObjectFactory;
-    
+
     public NuevaVentaTab getNuevaVentaTabInstance() {
         return nuevaVentaTabObjectFactory.getObject();
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables

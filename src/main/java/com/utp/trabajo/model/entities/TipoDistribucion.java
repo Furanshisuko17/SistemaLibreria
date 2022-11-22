@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
@@ -17,25 +16,25 @@ import lombok.Data;
 @Entity
 @Table(name = "tipo_distribucion")
 public class TipoDistribucion implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long idTipoDistribucion;
-	
-	@OneToOne
-	@JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
-	public TipoProducto tipoProducto;
-	
-	@Column(nullable = false)
-	public String nombreEmpaquetado;
-	
-	@Column(nullable = false)
-	public int cantidad;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idMarca", referencedColumnName = "idMarca")
-	private Marca marca;
-	
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long idTipoDistribucion;
+
+    @OneToOne
+    @JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
+    public TipoProducto tipoProducto;
+
+    @Column(nullable = false)
+    public String nombreEmpaquetado;
+
+    @Column(nullable = false)
+    public int cantidad;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idMarca", referencedColumnName = "idMarca")
+    private Marca marca;
+
 }

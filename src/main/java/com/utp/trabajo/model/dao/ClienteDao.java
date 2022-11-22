@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ClienteDao extends JpaRepository<Cliente, Long> {
-    
+
     //@Query()
     Stream<Cliente> findByIdClienteGreaterThan(Long lastId);
-    
+
     List<Cliente> removeAllByIdClienteIn(Iterable<? extends Long> ids);
-    
+
 }

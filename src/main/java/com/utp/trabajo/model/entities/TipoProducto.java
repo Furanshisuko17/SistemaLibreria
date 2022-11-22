@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
@@ -13,14 +12,13 @@ import lombok.Data;
 @Entity
 @Table(name = "tipo_producto")
 public class TipoProducto implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idTipoProducto;
-		
-	private String tipo;
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTipoProducto;
+
+    private String tipo;
 
 }
-

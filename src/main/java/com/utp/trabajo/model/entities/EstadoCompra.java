@@ -13,12 +13,12 @@ import lombok.Data;
 @Entity
 @Table(name = "estado_compra")
 public class EstadoCompra implements Serializable {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idEstadoCompra;
-	
-	@Column(nullable = false)
-	private String estado;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idEstadoCompra;
+
+    @Column(nullable = false)
+    private String estado;
 
 }

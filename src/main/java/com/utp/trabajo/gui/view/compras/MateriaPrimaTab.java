@@ -3,6 +3,7 @@ package com.utp.trabajo.gui.view.compras;
 import javax.swing.table.DefaultTableModel;
 
 public class MateriaPrimaTab extends org.jdesktop.swingx.JXPanel {
+
     DefaultTableModel defaultTableModelCompras = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
@@ -46,7 +47,6 @@ public class MateriaPrimaTab extends org.jdesktop.swingx.JXPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

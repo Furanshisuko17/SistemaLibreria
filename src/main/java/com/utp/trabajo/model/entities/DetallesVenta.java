@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
@@ -17,27 +16,27 @@ import lombok.Data;
 @Entity
 @Table(name = "detalles_venta")
 public class DetallesVenta implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idDetallesVenta;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idVenta", referencedColumnName = "idVenta")
-	private Venta venta;
-	
-	private int cantidad;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idProducto", referencedColumnName = "idProducto")
-	private Producto producto;
-	
-	@Column(precision = 12, scale=2)
-	private BigInteger precioUnidad;
-	
-	@Column(precision = 12, scale=2)
-	private BigInteger total;
-	//Total se calcula en el programa
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idDetallesVenta;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idVenta", referencedColumnName = "idVenta")
+    private Venta venta;
+
+    private int cantidad;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idProducto", referencedColumnName = "idProducto")
+    private Producto producto;
+
+    @Column(precision = 12, scale = 2)
+    private BigInteger precioUnidad;
+
+    @Column(precision = 12, scale = 2)
+    private BigInteger total;
+    //Total se calcula en el programa
 }

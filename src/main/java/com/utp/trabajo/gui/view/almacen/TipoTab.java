@@ -21,9 +21,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.springframework.beans.factory.annotation.Autowired;
-public class TipoTab extends javax.swing.JPanel {
 
-        DefaultTableModel defaultTableModelTipoProducto = new DefaultTableModel() {
+public class TipoTab extends org.jdesktop.swingx.JXPanel {
+
+    DefaultTableModel defaultTableModelTipoProducto = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             switch (columnIndex) {
@@ -36,14 +37,14 @@ public class TipoTab extends javax.swing.JPanel {
             }
         }
     };
-    String[] columnNames = {"ID", "Tipo de Producto"}; 
-    
-     ListSelectionModel selectionModel;
-    
+    String[] columnNames = {"ID", "Tipo de Producto"};
+
+    ListSelectionModel selectionModel;
+
     private boolean canEdit = true;
     private boolean canDelete = true;
     private boolean canCreate = true;
-     private boolean retrievingData = false;
+    private boolean retrievingData = false;
     private boolean canRead = true;
 
     private long lastId = 0;
@@ -55,11 +56,12 @@ public class TipoTab extends javax.swing.JPanel {
 
     @Autowired
     private TipoProductoService tipoproductoService;
+
     public TipoTab() {
         initComponents();
         defaultTableModelTipoProducto.setColumnIdentifiers(columnNames);
         tablaTipoTab.setModel(defaultTableModelTipoProducto);
-         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
+        scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
                 return;
             }
@@ -70,9 +72,9 @@ public class TipoTab extends javax.swing.JPanel {
                 retrieveData(false);
                 System.out.println("Scroll bar is near the bottom");
             }
-        });  
+        });
         selectionModel = tablaTipoTab.getSelectionModel();
-                selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
+        selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
             if (!canDelete || !canEdit) {
                 return;
             }
@@ -81,7 +83,7 @@ public class TipoTab extends javax.swing.JPanel {
             } else {
                 eliminarTipoButton.setEnabled(false);
             }
-            
+
             if (selectionModel.getSelectedItemsCount() == 1) {
                 editarTipoButton.setEnabled(true);
             } else {
@@ -89,14 +91,15 @@ public class TipoTab extends javax.swing.JPanel {
             }
 
         });
-         setIdle();
+        setIdle();
         eliminarTipoButton.setEnabled(false);
         editarTipoButton.setEnabled(false);
         nuevoTipoDialog.pack();
         nuevoTipoDialog.setLocationRelativeTo(this);
         System.out.println("Clientes tab - Nueva instancia!");
     }
-         @PostConstruct
+
+    @PostConstruct
     private void init() {
         checkPermissions();
         retrieveData(false); // mover hacia un listener que verifique que se ha abierto el jPanel
@@ -104,7 +107,7 @@ public class TipoTab extends javax.swing.JPanel {
 
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
-            if (!permissions.contains("read")) {
+        if (!permissions.contains("read")) {
             canRead = false;
             loadMoreButton.setEnabled(false);
             reloadTableButton.setEnabled(false);
@@ -122,10 +125,10 @@ public class TipoTab extends javax.swing.JPanel {
             canEdit = false;
             editarTipoButton.setEnabled(false);
         }
-        
+
     }
-    
-      private void setBusy() {
+
+    private void setBusy() {
         busyLabel.setEnabled(true);
     }
 
@@ -138,8 +141,8 @@ public class TipoTab extends javax.swing.JPanel {
         busyLabel.setEnabled(false);
         busyLabel.setText("");
     }
-    
-     private void retrieveData(boolean reload) {
+
+    private void retrieveData(boolean reload) {
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
@@ -148,7 +151,7 @@ public class TipoTab extends javax.swing.JPanel {
         reloadTableButton.setEnabled(false);
         loadMoreButton.setEnabled(false);
         retrievingData = true;
-        
+
         if (reload) {
             defaultTableModelTipoProducto.setRowCount(0);
             lastId = 0;
@@ -183,20 +186,20 @@ public class TipoTab extends javax.swing.JPanel {
                     Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
-		reloadTableButton.setEnabled(true);
+                reloadTableButton.setEnabled(true);
                 loadMoreButton.setEnabled(true);
-                retrievingData = false;	
+                retrievingData = false;
             }
         };
         worker.execute();
     }
-     
-       private List<TipoProducto> getSelectedRows() {
+
+    private List<TipoProducto> getSelectedRows() {
         List<TipoProducto> TipoProducto = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
             //System.out.println(i);
             i = tablaTipoTab.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
-              TipoProducto c = new TipoProducto();
+            TipoProducto c = new TipoProducto();
             c.setIdTipoProducto((Long) defaultTableModelTipoProducto.getValueAt(i, 0));
             c.setTipo((String) defaultTableModelTipoProducto.getValueAt(i, 1));
 
@@ -361,24 +364,25 @@ public class TipoTab extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(loadMoreButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reloadTableButton)
-                .addGap(8, 8, 8))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevoTipoButton)
-                        .addGap(28, 28, 28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarTipoButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(eliminarTipoButton)))
-                .addGap(16, 16, 16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(eliminarTipoButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,21 +391,20 @@ public class TipoTab extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoTipoButton)
                     .addComponent(editarTipoButton)
-                    .addComponent(eliminarTipoButton))
-                .addGap(18, 18, 18)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(loadMoreButton)
-                        .addComponent(reloadTableButton))
+                    .addComponent(eliminarTipoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loadMoreButton)
+                    .addComponent(reloadTableButton)
                     .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45))
+                .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void eliminarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTipoButtonActionPerformed
-           List<Long> selectedMarcasId = new ArrayList();
+        List<Long> selectedMarcasId = new ArrayList();
         for (TipoProducto cliente : getSelectedRows()) {
             selectedMarcasId.add(cliente.getIdTipoProducto());
         }
@@ -417,7 +420,7 @@ public class TipoTab extends javax.swing.JPanel {
     }//GEN-LAST:event_tipoFieldActionPerformed
 
     private void cancelarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarTipoButtonActionPerformed
-       nuevoTipoDialog.setVisible(false); // TODO add your handling code here:
+        nuevoTipoDialog.setVisible(false); // TODO add your handling code here:
     }//GEN-LAST:event_cancelarTipoButtonActionPerformed
 
     private void guardarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarTipoButtonActionPerformed
@@ -430,12 +433,12 @@ public class TipoTab extends javax.swing.JPanel {
         int telefono = 0;
         boolean error = false;
 
-        if(tipoField.getText().isBlank()) {
+        if (tipoField.getText().isBlank()) {
             tipoField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
 
-        if(idField.getText().isBlank()) {
+        if (idField.getText().isBlank()) {
             idField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -448,14 +451,12 @@ public class TipoTab extends javax.swing.JPanel {
             }
         }
 
-
-
-        if(error) {
+        if (error) {
             return;
         } else {
-            c.setIdTipoProducto((long)(id));
+            c.setIdTipoProducto((long) (id));
             c.setTipo(tipoField.getText());
-           
+
             tipoproductoService.nuevoTipoProducto(c); // implementar swingworker
         }
         nuevoTipoDialog.setVisible(false);
@@ -468,7 +469,6 @@ public class TipoTab extends javax.swing.JPanel {
     private void reloadTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadTableButtonActionPerformed
         retrieveData(true);
     }//GEN-LAST:event_reloadTableButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;

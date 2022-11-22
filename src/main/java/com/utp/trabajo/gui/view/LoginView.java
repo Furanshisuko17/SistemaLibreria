@@ -13,20 +13,20 @@ import org.springframework.stereotype.Component;
 @Deprecated
 public class LoginView extends javax.swing.JFrame {
 
-	@Autowired
-	private ApplicationContext context;
+    @Autowired
+    private ApplicationContext context;
 
-	@Autowired
-	private AuthService authService;
-	
-	public LoginView() {
-		initComponents();
-		busyLabel.setEnabled(false);
-		busyLabel.setBusy(true);
-	}
-	//object.putClientProperty("JComponent.outline", "error");
+    @Autowired
+    private AuthService authService;
 
-	@SuppressWarnings("unchecked")
+    public LoginView() {
+        initComponents();
+        busyLabel.setEnabled(false);
+        busyLabel.setBusy(true);
+    }
+    //object.putClientProperty("JComponent.outline", "error");
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -156,82 +156,82 @@ public class LoginView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-	
-	private void setBusy() {
-		busyLabel.setEnabled(true);
-	}
-	
-	private void setIdle() {
-		busyLabel.setEnabled(false);
-	}
+
+    private void setBusy() {
+        busyLabel.setEnabled(true);
+    }
+
+    private void setIdle() {
+        busyLabel.setEnabled(false);
+    }
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-		usernameInput.putClientProperty("JComponent.outline", "");
-		passwordInput.putClientProperty("JComponent.outline", "");
-		setBusy();
-		
-		String username = usernameInput.getText();
-		if (username.isBlank()) {
-			usernameInput.putClientProperty("JComponent.outline", "error");
-			informationLabel.setText("El nombre de usuario está vacío.");
-			setIdle();
-			return;
-		}
-		
-		char[] rawPassword = passwordInput.getPassword();
-		if (String.valueOf(rawPassword).isBlank()) {
-			passwordInput.putClientProperty("JComponent.outline", "error");
-			informationLabel.setText("La contraseña está vacío.");
-			setIdle();
-			return;
-		}
+        usernameInput.putClientProperty("JComponent.outline", "");
+        passwordInput.putClientProperty("JComponent.outline", "");
+        setBusy();
 
-		SwingWorker swingWorker = new SwingWorker<Boolean, Boolean>() {
-			@Override
-			protected Boolean doInBackground() throws Exception {
-				boolean logeo = authService.login(username, rawPassword);
-				return logeo;
-			}
+        String username = usernameInput.getText();
+        if (username.isBlank()) {
+            usernameInput.putClientProperty("JComponent.outline", "error");
+            informationLabel.setText("El nombre de usuario está vacío.");
+            setIdle();
+            return;
+        }
 
-			@Override
-			protected void done() {
-				boolean logeoExitoso = false;
-				try {
-					logeoExitoso = get();
-				} catch (InterruptedException ex) {
-				} catch (ExecutionException ex) {
-					try {
-						throw ex.getCause();
+        char[] rawPassword = passwordInput.getPassword();
+        if (String.valueOf(rawPassword).isBlank()) {
+            passwordInput.putClientProperty("JComponent.outline", "error");
+            informationLabel.setText("La contraseña está vacío.");
+            setIdle();
+            return;
+        }
 
-					} catch (UsernameNotFoundException e) {
-						usernameInput.putClientProperty("JComponent.outline", "error");
-						informationLabel.setText(e.getMessage());
-						setIdle();
-					} catch (WrongPasswordException e) {
-						passwordInput.putClientProperty("JComponent.outline", "error");
-						informationLabel.setText(e.getMessage());
-						setIdle();
-					} catch (Throwable imp) {
-						System.out.println("impossible!: \n");
-						imp.printStackTrace();
-					}
-				}
-				if (logeoExitoso) {
-					passwordInput.putClientProperty("JComponent.outline", "");
-					usernameInput.putClientProperty("JComponent.outline", "");
-					setIdle();
-					setVisible(false);
-					EventQueue.invokeLater(() -> {
-						MainView mainView = context.getBean(MainView.class);
-						mainView.setVisible(true);
-					});
-				} else {
+        SwingWorker swingWorker = new SwingWorker<Boolean, Boolean>() {
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                boolean logeo = authService.login(username, rawPassword);
+                return logeo;
+            }
 
-				}
-			}
-		};
-		
-		swingWorker.execute();
+            @Override
+            protected void done() {
+                boolean logeoExitoso = false;
+                try {
+                    logeoExitoso = get();
+                } catch (InterruptedException ex) {
+                } catch (ExecutionException ex) {
+                    try {
+                        throw ex.getCause();
+
+                    } catch (UsernameNotFoundException e) {
+                        usernameInput.putClientProperty("JComponent.outline", "error");
+                        informationLabel.setText(e.getMessage());
+                        setIdle();
+                    } catch (WrongPasswordException e) {
+                        passwordInput.putClientProperty("JComponent.outline", "error");
+                        informationLabel.setText(e.getMessage());
+                        setIdle();
+                    } catch (Throwable imp) {
+                        System.out.println("impossible!: \n");
+                        imp.printStackTrace();
+                    }
+                }
+                if (logeoExitoso) {
+                    passwordInput.putClientProperty("JComponent.outline", "");
+                    usernameInput.putClientProperty("JComponent.outline", "");
+                    setIdle();
+                    setVisible(false);
+                    EventQueue.invokeLater(() -> {
+                        MainView mainView = context.getBean(MainView.class);
+                        mainView.setVisible(true);
+                    });
+                } else {
+
+                }
+            }
+        };
+
+        swingWorker.execute();
     }//GEN-LAST:event_loginButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

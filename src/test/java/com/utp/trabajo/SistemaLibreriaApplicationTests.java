@@ -10,10 +10,8 @@ import com.utp.trabajo.util.HeadlessSpringBootContextLoader;
 @ContextConfiguration(loader = HeadlessSpringBootContextLoader.class)
 class SistemaLibreriaApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-	
-
+    @Test
+    void contextLoads() {
+    }
 
 }

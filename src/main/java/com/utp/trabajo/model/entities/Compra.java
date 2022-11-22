@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
@@ -21,29 +20,29 @@ import lombok.Data;
 @Entity
 @Table(name = "compra")
 public class Compra implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCompra;
-	
-	@Column(nullable = false)
-	private Timestamp fechaCompra;
-	
-	@Column(nullable = false, precision = 12, scale=2)
-	private BigInteger precioTotal;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idMetodoPagoCompra", referencedColumnName = "idMetodoPago")
-	private MetodoPago metodoPago;	
-	
-	private String transporte;
-	
-	@Column(nullable = false, precision = 12, scale=2)
-	private BigInteger descuento;
-	
-	@OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
-	private List<DetalleCompra> detallesCompra;
-	
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idCompra;
+
+    @Column(nullable = false)
+    private Timestamp fechaCompra;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigInteger precioTotal;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idMetodoPagoCompra", referencedColumnName = "idMetodoPago")
+    private MetodoPago metodoPago;
+
+    private String transporte;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigInteger descuento;
+
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+    private List<DetalleCompra> detallesCompra;
+
 }

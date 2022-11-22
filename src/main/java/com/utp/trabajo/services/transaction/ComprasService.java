@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.services.transaction;
 
 import com.utp.trabajo.model.dao.CompraDao;
@@ -13,35 +12,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ComprasService {
+
     @Autowired
     private CompraDao compraDao;
-	
-	@Transactional(readOnly = true)
+
+    @Transactional(readOnly = true)
     public List<Compra> streamCompras(Long lastId, Long limit) {
-        try(Stream<Compra> streamedCompras = compraDao.findByIdCompraGreaterThan(lastId)) {
+        try ( Stream<Compra> streamedCompras = compraDao.findByIdCompraGreaterThan(lastId)) {
             return streamedCompras.limit(limit)
-                    .collect(Collectors.toList());
-        }   
-    } 
-    
+                .collect(Collectors.toList());
+        }
+    }
+
     @Transactional(readOnly = true)
     public Compra encontrarCompraPorId(Long idCompra) {
         return compraDao.findById(idCompra).orElseThrow();
     }
-    
+
     @Transactional
     public void nuevaCompra(Compra compra) {
         compraDao.save(compra);
-        
+
     }
-    
+
     @Transactional
     public void actualizarCompra(Compra compra) {
-        
+
     }
+
     @Transactional
     public List<Compra> eliminarCompra(List<Long> idsCompra) {
         return compraDao.removeAllByIdCompraIn(idsCompra);
     }
-        
+
 }

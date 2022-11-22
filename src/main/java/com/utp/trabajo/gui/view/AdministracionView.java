@@ -10,35 +10,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdministracionView extends javax.swing.JInternalFrame {
 
-	@Autowired
-	private UtilService utilidades;
-	
-	@Autowired
-	private IconService iconos;
-        
-	public AdministracionView() {
-		initComponents();
-	}
-    
-	@PostConstruct
-	private void init(){
-		setFrameIcon(iconos.iconoAdministracion);
-	}
-		
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private IconService iconos;
+
+    public AdministracionView() {
+        initComponents();
+    }
+
+    @PostConstruct
+    private void init() {
+        setFrameIcon(iconos.iconoAdministracion);
+    }
+
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        
+
         //Colocar tabs aquí
-        
         setVisible(true);
     }
-    
+
     public void cerrarVentana() {
         tabbedPane.removeAll();
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -64,7 +63,6 @@ public class AdministracionView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;

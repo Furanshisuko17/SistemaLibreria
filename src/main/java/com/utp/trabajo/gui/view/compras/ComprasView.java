@@ -14,25 +14,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class ComprasView extends javax.swing.JInternalFrame {
 
-	@Autowired
-	private ComprasService comprasService;
-        
-        @Autowired
-	private UtilService utilidades;
-	
-	@Autowired
-	private IconService iconos;
-	
-	public ComprasView() {
-		initComponents();
-	}
-    
-	@PostConstruct
-	private void init(){
-		setFrameIcon(iconos.iconoCompras);
-	}
-		
-	@SuppressWarnings("unchecked")
+    @Autowired
+    private ComprasService comprasService;
+
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private IconService iconos;
+
+    public ComprasView() {
+        initComponents();
+    }
+
+    @PostConstruct
+    private void init() {
+        setFrameIcon(iconos.iconoCompras);
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -60,40 +60,39 @@ public class ComprasView extends javax.swing.JInternalFrame {
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        
+
         //Colocar tabs aquí
-        tabbedPane.add("Proveedores" , getProveedoresTabInstance());
+        tabbedPane.add("Proveedores", getProveedoresTabInstance());
         tabbedPane.add("Materia Prima", getMateriaPrimaTabInstance());
         tabbedPane.add("Lista de compras", getListaComprasTabInstance());
-        
-        setVisible(true);
-        }
-    
 
-        public void cerrarVentana() {
+        setVisible(true);
+    }
+
+    public void cerrarVentana() {
         tabbedPane.removeAll();
-        }
-           
-        @Autowired
-        private ObjectFactory<ProovedoresTab> proveedoresTabObjectFactory;
-    
-        public ProovedoresTab getProveedoresTabInstance() {
-            return proveedoresTabObjectFactory.getObject();
-        }
-    
-        @Autowired
-        private ObjectFactory<MateriaPrimaTab> materiaPrimaTabObjectFactory;
-    
-        public MateriaPrimaTab getMateriaPrimaTabInstance() {
-            return materiaPrimaTabObjectFactory.getObject();
-        }
-    
-        @Autowired
-        private ObjectFactory<ListaComprasTab> listaComprasTabObjectFactory;
-    
-        public ListaComprasTab getListaComprasTabInstance() {
-            return listaComprasTabObjectFactory.getObject();
-        }
+    }
+
+    @Autowired
+    private ObjectFactory<ProovedoresTab> proveedoresTabObjectFactory;
+
+    public ProovedoresTab getProveedoresTabInstance() {
+        return proveedoresTabObjectFactory.getObject();
+    }
+
+    @Autowired
+    private ObjectFactory<MateriaPrimaTab> materiaPrimaTabObjectFactory;
+
+    public MateriaPrimaTab getMateriaPrimaTabInstance() {
+        return materiaPrimaTabObjectFactory.getObject();
+    }
+
+    @Autowired
+    private ObjectFactory<ListaComprasTab> listaComprasTabObjectFactory;
+
+    public ListaComprasTab getListaComprasTabInstance() {
+        return listaComprasTabObjectFactory.getObject();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;

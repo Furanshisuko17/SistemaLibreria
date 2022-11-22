@@ -1,11 +1,9 @@
-
 package com.utp.trabajo.gui.view.almacen;
 
 import com.utp.trabajo.model.entities.Marca;
 import com.utp.trabajo.services.transaction.MarcaService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -16,7 +14,6 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MarcaTab extends org.jdesktop.swingx.JXPanel {
@@ -34,14 +31,14 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             }
         }
     };
-    String[] columnNames = {"ID", "Marca"}; 
-    
-     ListSelectionModel selectionModel;
-    
+    String[] columnNames = {"ID", "Marca"};
+
+    ListSelectionModel selectionModel;
+
     private boolean canEdit = true;
     private boolean canDelete = true;
     private boolean canCreate = true;
-     private boolean retrievingData = false;
+    private boolean retrievingData = false;
     private boolean canRead = true;
 
     private long lastId = 0;
@@ -53,11 +50,11 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
 
     @Autowired
     private MarcaService marcaService;
-    
+
     public MarcaTab() {
         initComponents();
-        
-         defaultTableModelMarca.setColumnIdentifiers(columnNames);
+
+        defaultTableModelMarca.setColumnIdentifiers(columnNames);
         tablaMarca.setModel(defaultTableModelMarca);
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
@@ -74,7 +71,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         setIdle();
         System.out.println("Clientes tab - Nueva instancia!");
         selectionModel = tablaMarca.getSelectionModel();
-                selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
+        selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
             if (!canDelete || !canEdit) {
                 return;
             }
@@ -83,7 +80,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             } else {
                 eliminarMarcaButton.setEnabled(false);
             }
-            
+
             if (selectionModel.getSelectedItemsCount() == 1) {
                 editarMarcaButton.setEnabled(true);
             } else {
@@ -91,15 +88,15 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
-         setIdle();
+        setIdle();
         eliminarMarcaButton.setEnabled(false);
         editarMarcaButton.setEnabled(false);
         nuevaMarcaDialog.pack();
         nuevaMarcaDialog.setLocationRelativeTo(this);
         System.out.println("Clientes tab - Nueva instancia!");
     }
-    
-     @PostConstruct
+
+    @PostConstruct
     private void init() {
         checkPermissions();
         retrieveData(false); // mover hacia un listener que verifique que se ha abierto el jPanel
@@ -107,7 +104,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
 
     private void checkPermissions() {
         List<String> permissions = securityService.getPermissions();
-            if (!permissions.contains("read")) {
+        if (!permissions.contains("read")) {
             canRead = false;
             loadMoreButton.setEnabled(false);
             reloadTableButton.setEnabled(false);
@@ -125,9 +122,9 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             canEdit = false;
             editarMarcaButton.setEnabled(false);
         }
-        
+
     }
-    
+
     private void setBusy() {
         busyLabel.setEnabled(true);
     }
@@ -141,8 +138,8 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setEnabled(false);
         busyLabel.setText("");
     }
-    
-        private void retrieveData(boolean reload) {
+
+    private void retrieveData(boolean reload) {
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
@@ -151,7 +148,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         reloadTableButton.setEnabled(false);
         loadMoreButton.setEnabled(false);
         retrievingData = true;
-        
+
         if (reload) {
             defaultTableModelMarca.setRowCount(0);
             lastId = 0;
@@ -186,19 +183,20 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                     Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
-		reloadTableButton.setEnabled(true);
+                reloadTableButton.setEnabled(true);
                 loadMoreButton.setEnabled(true);
-                retrievingData = false;	
+                retrievingData = false;
             }
         };
         worker.execute();
     }
-            private List<Marca> getSelectedRows() {
+
+    private List<Marca> getSelectedRows() {
         List<Marca> Marca = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
             //System.out.println(i);
             i = tablaMarca.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
-              Marca c = new Marca();
+            Marca c = new Marca();
             c.setIdMarca((Long) defaultTableModelMarca.getValueAt(i, 0));
             c.setNombreMarca((String) defaultTableModelMarca.getValueAt(i, 1));
 
@@ -207,11 +205,6 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         return Marca;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -357,12 +350,11 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(reloadTableButton)
-                        .addGap(17, 17, 17))
+                        .addComponent(reloadTableButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevaMarcaButton)
                         .addGap(18, 18, 18)
@@ -370,29 +362,26 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                         .addGap(18, 18, 18)
                         .addComponent(eliminarMarcaButton)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevaMarcaButton)
                     .addComponent(editarMarcaButton)
                     .addComponent(eliminarMarcaButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(loadMoreButton)
-                            .addComponent(reloadTableButton))))
-                .addGap(20, 20, 20))
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(loadMoreButton)
+                        .addComponent(reloadTableButton))
+                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -409,18 +398,16 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         idField.putClientProperty("JComponent.outline", "");
         nombreMarcaField.putClientProperty("JComponent.outline", "");
 
-        //TODO: reemplazar razon social por un combobox
         Marca c = new Marca();
         int id = 0;
-        int telefono = 0;
         boolean error = false;
 
-        if(nombreMarcaField.getText().isBlank()) {
+        if (nombreMarcaField.getText().isBlank()) {
             nombreMarcaField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
 
-        if(idField.getText().isBlank()) {
+        if (idField.getText().isBlank()) {
             idField.putClientProperty("JComponent.outline", "error");
             error = true;
         } else {
@@ -433,14 +420,12 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             }
         }
 
-
-
-        if(error) {
+        if (error) {
             return;
         } else {
-            c.setIdMarca((long)(id));
+            c.setIdMarca((long) (id));
             c.setNombreMarca(nombreMarcaField.getText());
-           
+
             marcaService.nuevaMarca(c); // implementar swingworker
         }
         nuevaMarcaDialog.setVisible(false);
@@ -460,9 +445,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             selectedMarcasId.add(cliente.getIdMarca());
         }
         List<Marca> marcaEliminados = marcaService.eliminarMarca(selectedMarcasId);
-        // TODO add your handling code here:
     }//GEN-LAST:event_eliminarMarcaButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;

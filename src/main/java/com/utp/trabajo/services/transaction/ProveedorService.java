@@ -13,33 +13,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProveedorService {
-    
-        @Autowired
-	private ProveedorDao proveedorDao;
-	   
+
+    @Autowired
+    private ProveedorDao proveedorDao;
+
     @Transactional(readOnly = true)
     public List<Proveedor> streamProveedores(Long lastId, Long limit) {
-        try(Stream<Proveedor> streamedProveedores = proveedorDao.findByIdProveedorGreaterThan(lastId)) {
+        try ( Stream<Proveedor> streamedProveedores = proveedorDao.findByIdProveedorGreaterThan(lastId)) {
             return streamedProveedores.limit(limit)
-                    .collect(Collectors.toList());
-        }   
-    } 
-    
+                .collect(Collectors.toList());
+        }
+    }
+
     @Transactional(readOnly = true)
     public Proveedor encontrarProveedorPorId(Long idProveedor) {
         return proveedorDao.findById(idProveedor).orElseThrow();
     }
-    
+
     @Transactional
     public void nuevoProveedor(Proveedor proveedor) {
         proveedorDao.save(proveedor);
-        
+
     }
-    
+
     @Transactional
     public void actualizarProveedor(Proveedor proveedor) {
-        
+
     }
+
     @Transactional
     public List<Proveedor> eliminarProveedor(List<Long> idsProveedor) {
         return proveedorDao.removeAllByIdProveedorIn(idsProveedor);

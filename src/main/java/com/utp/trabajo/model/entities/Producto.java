@@ -18,30 +18,30 @@ import lombok.Data;
 @Entity
 @Table(name = "producto")
 public class Producto implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //TODO: remove this when launched to production
-	private Long idProducto;
-	
-	private String nombre;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idMarca", referencedColumnName = "idMarca")
-	private Marca marca;
-	
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
-	private TipoProducto tipoProducto;
-	
-	@OneToOne(mappedBy = "producto")
-	private Almacen almacen;
-	
-	@Column(length = 400)
-	private String descripcion;
-	
-	private Timestamp fechaUltimaVenta;
-	
-	//TODO: more columns
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //TODO: remove this when launched to production
+    private Long idProducto;
+
+    private String nombre;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idMarca", referencedColumnName = "idMarca")
+    private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
+    private TipoProducto tipoProducto;
+
+    @OneToOne(mappedBy = "producto")
+    private Almacen almacen;
+
+    @Column(length = 400)
+    private String descripcion;
+
+    private Timestamp fechaUltimaVenta;
+
+    //TODO: more columns
 }

@@ -10,36 +10,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class EstadisticasView extends javax.swing.JInternalFrame {
 
-	@Autowired
-	private UtilService utilidades;
-        
-	@Autowired
-	private IconService iconos;
-	
-	public EstadisticasView() {
-		initComponents();
-	}
-    
-	@PostConstruct
-	private void init(){
-		setFrameIcon(iconos.iconoEstadisticas);
-	}
-		
-    
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private IconService iconos;
+
+    public EstadisticasView() {
+        initComponents();
+    }
+
+    @PostConstruct
+    private void init() {
+        setFrameIcon(iconos.iconoEstadisticas);
+    }
+
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        
+
         //Colocar tabs aquí
-        
         setVisible(true);
     }
-    
+
     public void cerrarVentana() {
         tabbedPane.removeAll();
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

@@ -12,68 +12,67 @@ import org.springframework.beans.factory.ObjectFactory;
 @Component
 public class AlmacenView extends javax.swing.JInternalFrame {
 
-	@Autowired
-	private UtilService utilidades;
-	
-	@Autowired
-	private IconService iconos;
-        
-	public AlmacenView() {
-		initComponents();
-	}
-    
-	@PostConstruct
-	private void init(){
-		setFrameIcon(iconos.iconoAlmacen);
-	}
-		
-    
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private IconService iconos;
+
+    public AlmacenView() {
+        initComponents();
+    }
+
+    @PostConstruct
+    private void init() {
+        setFrameIcon(iconos.iconoAlmacen);
+    }
+
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        
-        tabbedPane.add("Marca del Producto" , getMarcaTabInstance());
+
+        tabbedPane.add("Marca del Producto", getMarcaTabInstance());
         tabbedPane.add("Tipo de Producto", getTipoTabInstance());
         tabbedPane.add("Producto", getProductoTabInstance());
         tabbedPane.add("Almacen", getTipoTabInstance());
         //Colocar tabs aquí
-        
+
         setVisible(true);
     }
-    
+
     public void cerrarVentana() {
         tabbedPane.removeAll();
     }
-    
-            @Autowired
+
+    @Autowired
     private ObjectFactory<MarcaTab> MarcaTabObjectFactory;
-    
+
     public MarcaTab getMarcaTabInstance() {
         return MarcaTabObjectFactory.getObject();
     }
-    
-        @Autowired
+
+    @Autowired
     private ObjectFactory<TipoTab> TipoTabObjectFactory;
-    
+
     public TipoTab getTipoTabInstance() {
         return TipoTabObjectFactory.getObject();
     }
-    
+
     @Autowired
     private ObjectFactory<ProductoTab> ProductoTabObjectFactory;
-    
+
     public ProductoTab getProductoTabInstance() {
         return ProductoTabObjectFactory.getObject();
     }
-    
-     @Autowired
+
+    @Autowired
     private ObjectFactory<AlmacenTab> AlmacenTabObjectFactory;
-    
+
     public AlmacenTab getAlmacenTabInstance() {
         return AlmacenTabObjectFactory.getObject();
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -99,7 +98,6 @@ public class AlmacenView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;

@@ -8,19 +8,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityService {
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private AuthService authService;
-	
-	public List<String> getPermissions() {
-		return authService.getPermisos();
-	}
-    
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthService authService;
+
+    public List<String> getPermissions() {
+        return authService.getPermisos();
+    }
+
     public Empleado getLoggedEmpleado() {
         return authService.getLoggedEmpleado();
     }
-    
+
 }

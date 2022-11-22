@@ -134,27 +134,28 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-              <Component id="busyLabel" min="-2" pref="32" max="-2" attributes="0"/>
-              <EmptySpace pref="227" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="busyLabel" min="-2" pref="174" max="-2" attributes="0"/>
+              <EmptySpace pref="109" max="32767" attributes="0"/>
               <Component id="loadMoreButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="reloadTableButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="scrollPane" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="nuevoTipoButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="editarTipoButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="eliminarTipoButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -165,19 +166,17 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="nuevoTipoButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="editarTipoButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="eliminarTipoButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="eliminarTipoButton" alignment="1" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Component id="scrollPane" pref="245" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="loadMoreButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="reloadTableButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="busyLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="scrollPane" pref="251" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="loadMoreButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="reloadTableButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="busyLabel" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

@@ -29,41 +29,41 @@ import org.springframework.context.ApplicationContext;
 
 @org.springframework.stereotype.Component
 public class MainView extends javax.swing.JFrame {
-	
-	//TODO: Implementar un menu principal
 
-	@Autowired
-	private ApplicationContext context;
-    
+    //TODO: Implementar un menu principal
     @Autowired
-	private AuthService authService;
+    private ApplicationContext context;
 
-	@Autowired 
-	private UtilService utilidades;
-	
-	@Autowired 
-	private IconService iconos;
-    
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private UtilService utilidades;
+
+    @Autowired
+    private IconService iconos;
+
     private PlainDocument descripcionDocument;
-    
+
     Empleado loggedEmpleado;
 
-	public MainView() {
+    public MainView() {
         defineUI();
-		initComponents();
+        initComponents();
         //toolBar.add(userButton);
         busyLabel.setEnabled(false);
-		busyLabel.setBusy(true);
+        busyLabel.setBusy(true);
         loginPrompt.pack();
         loginPrompt.setLocationRelativeTo(this);
         //loginPrompt.setVisible(true); 
-		cuentaWindow.pack();
-		cuentaWindow.setLocationRelativeTo(this);
-        
+        cuentaWindow.pack();
+        cuentaWindow.setLocationRelativeTo(this);
+
         descripcionDocument = new PlainDocument();
         descripcionTextArea.setDocument(descripcionDocument);
         descripcionDocument.setDocumentFilter(new DocumentFilter() {
             int maxCharacters = 500;
+
             //FIX ??-??
             @Override
             public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -71,7 +71,7 @@ public class MainView extends javax.swing.JFrame {
                 int incomingTextLength = string.length();
                 if (documentLength + incomingTextLength <= maxCharacters) {
                     super.insertString(fb, offset, string, attr);
-                }else {
+                } else {
                     String truncatedString = string.substring(0, maxCharacters - documentLength);
                     //^ maybe check if incomingTextLength == 0...
                     super.insertString(fb, offset, truncatedString, attr);
@@ -84,18 +84,17 @@ public class MainView extends javax.swing.JFrame {
                 int incomingTextLength = text.length();
                 if (documentLength + incomingTextLength <= maxCharacters) {
                     super.insertString(fb, offset, text, attrs);
-                }else {
+                } else {
                     String truncatedString = text.substring(0, maxCharacters - documentLength);
                     //^ maybe check if incomingTextLength == 0...
-                   super.insertString(fb, offset, truncatedString, attrs);
+                    super.insertString(fb, offset, truncatedString, attrs);
                 }
-                
+
             }
-            
-            
+
         });
         descripcionDocument.addDocumentListener(new DocumentListener() {
-            @Override   
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 updateCharsLabel();
             }
@@ -106,41 +105,42 @@ public class MainView extends javax.swing.JFrame {
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {}
+            public void changedUpdate(DocumentEvent e) {
+            }
         });
     }
-        
-	@PostConstruct
-	private void init(){
-		iconInit();
+
+    @PostConstruct
+    private void init() {
+        iconInit();
         pack();
-		setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        
-	}
-    
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+
+    }
+
     private void defineUI() {
-        UIManager.put("PasswordField.showRevealButton", true );
+        UIManager.put("PasswordField.showRevealButton", true);
         UIManager.put("PasswordField.showCapsLock", true);
     }
-	
-	private void iconInit() {
-		setIconImage(iconos.iconoPrincipal.getImage()); // Icono de la ventana principal
-		openVentasWindowButton.setIcon(iconos.iconoVentas.derive(24, 24));
-		openComprasWindowButton.setIcon(iconos.iconoCompras.derive(24, 24));
-		openAlmacenWindowButton.setIcon(iconos.iconoAlmacen.derive(24, 24));
-		openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas.derive(24, 24));
-		openAdministracionWindowButton.setIcon(iconos.iconoAdministracion.derive(24, 24));
-		
-		exitMenuItem.setIcon(iconos.iconoExit);
-		appearanceButton.setIcon(iconos.iconoDarkMode);
-		lightModeButton.setIcon(iconos.iconoLightMode);
-		darkModeButton.setIcon(iconos.iconoDarkMode);
-        
+
+    private void iconInit() {
+        setIconImage(iconos.iconoPrincipal.getImage()); // Icono de la ventana principal
+        openVentasWindowButton.setIcon(iconos.iconoVentas.derive(24, 24));
+        openComprasWindowButton.setIcon(iconos.iconoCompras.derive(24, 24));
+        openAlmacenWindowButton.setIcon(iconos.iconoAlmacen.derive(24, 24));
+        openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas.derive(24, 24));
+        openAdministracionWindowButton.setIcon(iconos.iconoAdministracion.derive(24, 24));
+
+        exitMenuItem.setIcon(iconos.iconoExit);
+        appearanceButton.setIcon(iconos.iconoDarkMode);
+        lightModeButton.setIcon(iconos.iconoLightMode);
+        darkModeButton.setIcon(iconos.iconoDarkMode);
+
         userButton.setIcon(iconos.iconoCuenta);
         logoutButton.setIcon(iconos.iconoLogout);
-	}
+    }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -725,7 +725,7 @@ public class MainView extends javax.swing.JFrame {
                 .addComponent(panelPrincipal))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void initCuentaWindow() {
         fechaCeseDatePicker.setEnabled(false);
         fechaContratoDatePicker.setEnabled(false);
@@ -733,10 +733,10 @@ public class MainView extends javax.swing.JFrame {
         dniField.setEditable(false);
         nombresField.setEditable(false);
         apellidosField.setEditable(false);
-        
+
         fillCuentaWindow();
     }
-    
+
     private void fillCuentaWindow() {
         nombresField.setText(loggedEmpleado.getNombres());
         apellidosField.setText(loggedEmpleado.getApellidos());
@@ -750,7 +750,7 @@ public class MainView extends javax.swing.JFrame {
 
         usuarioField.setText(loggedEmpleado.getUsername());
     }
-    
+
     private void resetCuentaWindow() {
         nombresField.setText(loggedEmpleado.getNombres());
         apellidosField.setText(loggedEmpleado.getApellidos());
@@ -764,193 +764,253 @@ public class MainView extends javax.swing.JFrame {
 
         usuarioField.setText(loggedEmpleado.getUsername());
     }
-    
+
     private void updateCharsLabel() {
         int lines = descripcionDocument.getLength();
         maxCaracteresLabel.setText(lines + "/500");
     }
-    
+
     private void setBusy() {
-		busyLabel.setEnabled(true);
-	}
-	
-	private void setIdle() {
-		busyLabel.setEnabled(false);
-	}
-    
-    private void resetUI(){
+        busyLabel.setEnabled(true);
+    }
+
+    private void setIdle() {
+        busyLabel.setEnabled(false);
+    }
+
+    private void resetUI() {
         //TODO: Gets back the main interface to the default values
     }
-    
+
     private void closeAllInternalWindows() {
         panelPrincipal.removeAll();
     }
-    
+
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-		System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
-	
+
     private void openVentasWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openVentasWindowButtonActionPerformed
-		VentasView ventanaVentas =  context.getBean(VentasView.class);
-		
-		ventanaVentas.addInternalFrameListener(new InternalFrameListener() {
-			@Override
-			public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-				openVentasWindowButton.setEnabled(true);
+        VentasView ventanaVentas = context.getBean(VentasView.class);
+
+        ventanaVentas.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openVentasWindowButton.setEnabled(true);
                 ventanaVentas.cerrarVentana();
             }
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameIconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameDeiconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {}                        
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {}
-		});
-		panelPrincipal.add(ventanaVentas);
-		ventanaVentas.abrirVentana();
-		openVentasWindowButton.setEnabled(false);
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(ventanaVentas);
+        ventanaVentas.abrirVentana();
+        openVentasWindowButton.setEnabled(false);
     }//GEN-LAST:event_openVentasWindowButtonActionPerformed
 
     private void openComprasWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openComprasWindowButtonActionPerformed
         ComprasView comprasView = context.getBean(ComprasView.class);
-		
-		comprasView.addInternalFrameListener(new InternalFrameListener() {
-			@Override
-			public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-				openComprasWindowButton.setEnabled(true);
+
+        comprasView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openComprasWindowButton.setEnabled(true);
                 comprasView.cerrarVentana();
-			}
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameIconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameDeiconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {}                        
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {}
-		});
-		panelPrincipal.add(comprasView);
-		comprasView.abrirVentana();
-		openComprasWindowButton.setEnabled(false);
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(comprasView);
+        comprasView.abrirVentana();
+        openComprasWindowButton.setEnabled(false);
     }//GEN-LAST:event_openComprasWindowButtonActionPerformed
 
     private void openAlmacenWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAlmacenWindowButtonActionPerformed
         AlmacenView almacenView = context.getBean(AlmacenView.class);
-		
-		almacenView.addInternalFrameListener(new InternalFrameListener() {
-			@Override
-			public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-				openAlmacenWindowButton.setEnabled(true);
+
+        almacenView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openAlmacenWindowButton.setEnabled(true);
                 almacenView.cerrarVentana();
-			}
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameIconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameDeiconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {}                        
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {}
-		});
-		panelPrincipal.add(almacenView);
-		almacenView.abrirVentana();
-		openAlmacenWindowButton.setEnabled(false);
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(almacenView);
+        almacenView.abrirVentana();
+        openAlmacenWindowButton.setEnabled(false);
     }//GEN-LAST:event_openAlmacenWindowButtonActionPerformed
 
     private void openEstadisticasWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEstadisticasWindowButtonActionPerformed
         EstadisticasView estadisticasView = context.getBean(EstadisticasView.class);
-		
-		estadisticasView.addInternalFrameListener(new InternalFrameListener() {
-			@Override
-			public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-				openEstadisticasWindowButton.setEnabled(true);
+
+        estadisticasView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openEstadisticasWindowButton.setEnabled(true);
                 estadisticasView.cerrarVentana();
-			}
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameIconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameDeiconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {}                        
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {}
-		});
-		panelPrincipal.add(estadisticasView);
-		estadisticasView.abrirVentana();
-		openEstadisticasWindowButton.setEnabled(false);
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(estadisticasView);
+        estadisticasView.abrirVentana();
+        openEstadisticasWindowButton.setEnabled(false);
     }//GEN-LAST:event_openEstadisticasWindowButtonActionPerformed
 
     private void openAdministracionWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAdministracionWindowButtonActionPerformed
         AdministracionView administracionView = context.getBean(AdministracionView.class);
-		
-		administracionView.addInternalFrameListener(new InternalFrameListener() {
-			@Override
-			public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-				openAdministracionWindowButton.setEnabled(true);
+
+        administracionView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openAdministracionWindowButton.setEnabled(true);
                 administracionView.cerrarVentana();
-			}
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameIconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameDeiconified(InternalFrameEvent e) {}
-			@Override
-			public void internalFrameActivated(InternalFrameEvent e) {}                        
-			@Override
-			public void internalFrameDeactivated(InternalFrameEvent e) {}
-		});
-		panelPrincipal.add(administracionView);
-		administracionView.abrirVentana();
-		openAdministracionWindowButton.setEnabled(false);
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(administracionView);
+        administracionView.abrirVentana();
+        openAdministracionWindowButton.setEnabled(false);
     }//GEN-LAST:event_openAdministracionWindowButtonActionPerformed
 
     private void darkModeButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_darkModeButtonItemStateChanged
-		if(evt.getStateChange() == ItemEvent.SELECTED){
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
             FlatAnimatedLafChange.showSnapshot();
-			appearanceButton.setIcon(iconos.iconoDarkMode);
+            appearanceButton.setIcon(iconos.iconoDarkMode);
             try {
                 UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
             } catch (Exception ex) {
                 // MessageHandler.exceptionMessage(ex);
-				System.out.println("Fail changing feel color to dark");
+                System.out.println("Fail changing feel color to dark");
             }
-			
+
             com.formdev.flatlaf.FlatLaf.updateUI();
             FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        }else if(evt.getStateChange() == ItemEvent.DESELECTED){
+        } else if (evt.getStateChange() == ItemEvent.DESELECTED) {
             FlatAnimatedLafChange.showSnapshot();
-			appearanceButton.setIcon(iconos.iconoLightMode);
+            appearanceButton.setIcon(iconos.iconoLightMode);
             try {
                 UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
             } catch (Exception ex) {
                 // MessageHandler.exceptionMessage(ex);
-				System.out.println("Fail changing feel color to light");
+                System.out.println("Fail changing feel color to light");
             }
             com.formdev.flatlaf.FlatLaf.updateUI();
             FlatAnimatedLafChange.hideSnapshotWithAnimation();
         }
-		
+
     }//GEN-LAST:event_darkModeButtonItemStateChanged
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
@@ -1015,7 +1075,7 @@ public class MainView extends javax.swing.JFrame {
                     initCuentaWindow();
 
                 } else {
-						
+
                 }
             }
         };
@@ -1026,7 +1086,7 @@ public class MainView extends javax.swing.JFrame {
     private void loginPromptWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_loginPromptWindowClosing
         System.exit(0);
     }//GEN-LAST:event_loginPromptWindowClosing
-    
+
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         authService.logout();
         closeAllInternalWindows();
@@ -1037,8 +1097,8 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void userDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userDetailsButtonActionPerformed
-		cuentaWindow.setVisible(true);
-		
+        cuentaWindow.setVisible(true);
+
     }//GEN-LAST:event_userDetailsButtonActionPerformed
 
     private void cerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarVentanaActionPerformed
@@ -1049,9 +1109,7 @@ public class MainView extends javax.swing.JFrame {
     private void cuentaWindowWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_cuentaWindowWindowClosing
         resetCuentaWindow();
     }//GEN-LAST:event_cuentaWindowWindowClosing
-    
-   
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AutenticationPanelMain;
     private javax.swing.JPanel BottomPanel;
@@ -1124,5 +1182,4 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 
-    
 }

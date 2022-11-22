@@ -1,4 +1,3 @@
-
 package com.utp.trabajo.services.transaction;
 
 import com.utp.trabajo.model.entities.Marca;
@@ -14,34 +13,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MarcaService {
-    
-      @Autowired
-	private MarcaDao marcaDao;
-	   
+
+    @Autowired
+    private MarcaDao marcaDao;
+
     @Transactional(readOnly = true)
     public List<Marca> streamMarca(Long lastId, Long limit) {
-        try(Stream<Marca> streamedMarca = marcaDao.findByIdMarcaGreaterThan(lastId)) {
+        try ( Stream<Marca> streamedMarca = marcaDao.findByIdMarcaGreaterThan(lastId)) {
             return streamedMarca.limit(limit)
-                    .collect(Collectors.toList());
-        }   
-    } 
-    
+                .collect(Collectors.toList());
+        }
+    }
+
     @Transactional(readOnly = true)
     public Marca encontrarMarcaPorId(Long idMarca) {
         return marcaDao.findById(idMarca).orElseThrow();
     }
-    
+
     @Transactional
     public void nuevaMarca(Marca marca) {
         marcaDao.save(marca);
-        
+
     }
-    
+
     @Transactional
     public void actualizarMarca(Marca marca) {
-        
+
     }
-  @Transactional
+
+    @Transactional
     public List<Marca> eliminarMarca(List<Long> idsMarca) {
         return marcaDao.removeAllByIdMarcaIn(idsMarca);
     }
