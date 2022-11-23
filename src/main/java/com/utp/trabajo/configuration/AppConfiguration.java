@@ -22,7 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AppConfiguration {
 
     @Bean
-    public BCryptPasswordEncoder BCryptpasswordEncoder() {
+    public BCryptPasswordEncoder bCryptpasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
