@@ -9,6 +9,7 @@ import com.utp.trabajo.model.entities.Permiso;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.cloud.context.restart.RestartEndpoint;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class AuthService {
     private RolAccesoDao rolAccesoDao;
 
     @Autowired
-    private RestartEndpoint restartEndpoint;
+    private ShutdownEndpoint shutdownEndpoint;
 
     private Empleado loggedEmpleado;
 
@@ -71,8 +72,8 @@ public class AuthService {
 
     public void logout() {
         clearSession();
-        Object rest = restartEndpoint.restart(); //partially working 
-        System.out.println(rest);
+        Object off = shutdownEndpoint.shutdown(); 
+        System.out.println(off);
         //SistemaLibreriaApplication.restart(); // not working, no workarounds were found 09/11/2022, 4:23PM
     }
 

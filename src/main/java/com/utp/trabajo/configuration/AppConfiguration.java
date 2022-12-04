@@ -1,6 +1,6 @@
 package com.utp.trabajo.configuration;
 
-import org.springframework.cloud.context.restart.RestartEndpoint;
+import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,8 +14,8 @@ public class AppConfiguration {
     }
 
     @Bean
-    public RestartEndpoint restartEndPoint() {
-        return new RestartEndpoint();
+    public ShutdownEndpoint shutdownEndPoint() {
+        return new ShutdownEndpoint();
     }
 
     
