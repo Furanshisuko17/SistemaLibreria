@@ -1,13 +1,13 @@
 package com.utp.trabajo.services.util;
 
+import java.awt.Component;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import org.springframework.stereotype.Service;
 
-@Service
+// No necesita ser marcado con @Service
 public class OptionPaneService {
 
     public static final String EXCEPTION_TITLE = "Error...";
@@ -19,33 +19,35 @@ public class OptionPaneService {
     private static final Object[] EXCEPTION_OPTIONS = {"Aceptar", "Mostrar stacktrace"};
     private static final Object[] QUESTION_OPTIONS = {"Sí", "No"};
 
-    public static void exceptionMessage(String message) {
-        exceptionMessage(message, EXCEPTION_TITLE);
+    public static void errorMessage(Component component, String message) {
+        errorMessage(component, message, EXCEPTION_TITLE);
     }
 
-    public static void exceptionMessage(String message, String title) {
-        exceptionMessage(null, title, message);
+    public static void errorMessage(Component component, String message, String title) {
+        exceptionMessage(component, null, title, message);
     }
 
-    public static void exceptionMessage(Exception e) {
-        exceptionMessage(e, EXCEPTION_TITLE);
+    public static void exceptionMessage(Component component, Exception e) {
+        exceptionMessage(component, e, EXCEPTION_TITLE);
     }
 
-    public static void exceptionMessage(Exception e, String title) {
-        exceptionMessage(e, title, e.getMessage());
+    public static void exceptionMessage(Component component, Exception e, String title) {
+        exceptionMessage(component, e, title, e.getMessage());
     }
 
     //final exception handler
-    public static void exceptionMessage(Exception e, String title, String message) {
+    public static void exceptionMessage(Component component, Exception e, String title, String message) {
         if (e == null) {
-            mainHandler(message,
+            mainHandler(component, 
+                message,
                 title,
                 JOptionPane.OK_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 SINGLE_OPTION,
                 SINGLE_OPTION[0]);
         } else {
-            int value = mainHandler(message,
+            int value = mainHandler(component, 
+                message,
                 title,
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.ERROR_MESSAGE,
@@ -62,7 +64,8 @@ public class OptionPaneService {
                 JTextArea errorText = new JTextArea(sw.toString(), 15, 70);
                 JScrollPane sp = new JScrollPane(errorText);
 
-                mainHandler(sp,
+                mainHandler(component, 
+                    sp,
                     title,
                     JOptionPane.OK_OPTION,
                     JOptionPane.ERROR_MESSAGE,
@@ -73,12 +76,13 @@ public class OptionPaneService {
 
     }
 
-    public static void informationMessage(String message) {
-        informationMessage(message, "Información!");
+    public static void informationMessage(Component component, String message) {
+        informationMessage(component, message, "Información!");
     }
 
-    public static void informationMessage(String message, String title) {
-        mainHandler(message,
+    public static void informationMessage(Component component, String message, String title) {
+        mainHandler(component, 
+            message,
             title,
             JOptionPane.OK_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
@@ -87,12 +91,12 @@ public class OptionPaneService {
 
     }
 
-    public static void warningMessage(String message) {
-        warningMessage(message, WARNING_TITLE);
+    public static void warningMessage(Component component, String message) {
+        warningMessage(component, message, WARNING_TITLE);
     }
 
-    public static void warningMessage(String message, String title) {
-        mainHandler(message,
+    public static void warningMessage(Component component, String message, String title) {
+        mainHandler(component, message,
             title,
             JOptionPane.OK_OPTION,
             JOptionPane.WARNING_MESSAGE,
@@ -101,12 +105,13 @@ public class OptionPaneService {
 
     }
 
-    public static int questionMessage(String message) {
-        return questionMessage(message, QUESTION_TITLE);
+    public static int questionMessage(Component component, String message) {
+        return questionMessage(component, message, QUESTION_TITLE);
     }
 
-    public static int questionMessage(String message, String title) {
-        return mainHandler(message,
+    public static int questionMessage(Component component, String message, String title) {
+        return mainHandler(component, 
+            message,
             title,
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE,
@@ -114,10 +119,10 @@ public class OptionPaneService {
             QUESTION_OPTIONS[0]);
     }
 
-    private static int mainHandler(Object message, String title, int optionType,
+    private static int mainHandler(Component component, Object message, String title, int optionType,
         int messageType, Object[] options, Object selectedOption) {
         return JOptionPane.showOptionDialog(
-            null, //parent container
+            component, //parent container
             message,
             title,
             optionType, //Option type
