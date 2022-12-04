@@ -1,15 +1,19 @@
 package com.utp.trabajo.gui.view.compras;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.ProveedorService;
 import com.utp.trabajo.model.entities.Proveedor;
+import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -53,7 +57,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
     private long lastId = 0;
 
-    private long limit = 100;
+    private long rowsPerUpdate = 10;
     @Autowired
     private SecurityService securityService;
 
@@ -62,6 +66,16 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
     public ProveedoresTab() {
         initComponents();
+        initTableProveedores();
+        System.out.println("Proveedores tab - Nueva instancia!");
+    }
+
+    @PostConstruct
+    private void init() {
+        checkPermissions();
+        updateTable(false); // mover hacia un listener que verifique que se ha abierto el jPanel
+    }
+    private void initTableProveedores() {
         defaultTableModelProveedores.setColumnIdentifiers(columnNames);
         tablaProveedores.setModel(defaultTableModelProveedores);
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
@@ -72,11 +86,10 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
             int currentValue = scrollPane.getVerticalScrollBar().getValue();
             float fraction = (float) currentValue / (float) maxValue;
             if (fraction > 0.999f) {
-                retrieveData(false);
+                updateTable(false);
                 System.out.println("Scroll bar is near the bottom");
             }
         });
-
         selectionModel = tablaProveedores.getSelectionModel();
         selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
             if (!canDelete || !canEdit) {
@@ -95,23 +108,16 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
-
+        tablaProveedores.getColumnModel().getColumn(0).setPreferredWidth(100);
         setIdle();
         eliminarProveedorButton.setEnabled(false);
         editarProveedorButton.setEnabled(false);
+        nuevoProveedorDialog.pack();
+        nuevoProveedorDialog.setLocationRelativeTo(this);
+
         jLayeredPane1.removeAll();
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
-
-        nuevoProveedorDialog.pack();
-        nuevoProveedorDialog.setLocationRelativeTo(this);
-        System.out.println("Proveedores tab - Nueva instancia!");
-    }
-
-    @PostConstruct
-    private void init() {
-        checkPermissions();
-        retrieveData(false); // mover hacia un listener que verifique que se ha abierto el jPanel
     }
 
     private void checkPermissions() {
@@ -126,7 +132,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         if (!permissions.contains("create")) {
             canCreate = false;
             nuevoProveedorButton.setEnabled(false);
-            //guardarProveedorButton.setEnabled(false);
+            guardarProveedorButton.setEnabled(false);
         }
         if (!permissions.contains("delete")) {
             canDelete = false;
@@ -151,8 +157,20 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setEnabled(false);
         busyLabel.setText("");
     }
+    private void addDataToTable(List<Proveedor> data) {
+        data.forEach(cliente -> {
+            Vector vec = new Vector();
+            vec.add(cliente.getIdProveedor());
+            vec.add(cliente.getNombre());
+            vec.add(cliente.getRuc());
+            vec.add(cliente.getDireccion());
+            vec.add(cliente.getTelefono());
+            vec.add(cliente.getTipoComercio());
+            defaultTableModelProveedores.addRow(vec);
+        });
+    }
 
-    private void retrieveData(boolean reload) {
+    private void updateTable(boolean reload) {
         tableInformationLabel.setVisible(false);
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
@@ -161,36 +179,63 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
         setBusy("Cargando...");
         reloadTableButton.setEnabled(false);
-        nuevoProveedorButton.setEnabled(false);
-        retrievingData = true;
         loadMoreButton.setEnabled(false);
-
+        retrievingData = true;
+        int oldRowCount = defaultTableModelProveedores.getRowCount();
         if (reload) {
             defaultTableModelProveedores.setRowCount(0);
             lastId = 0;
             setBusy("Recargando...");
         }
 
-        SwingWorker worker = new SwingWorker<List<Proveedor>, List<Proveedor>>() {
+        SwingWorker worker2 = new SwingWorker<Long, Long>() {
             @Override
-            protected List<Proveedor> doInBackground() throws Exception {
-                return proveedoresService.streamProveedores(lastId, limit); // set lastId and configurable limit
+            protected Long doInBackground() throws Exception {
+                return proveedoresService.contarProveedores();
             }
 
             @Override
             protected void done() {
                 try {
-                    var proveedores = get();
-                    for (Proveedor proveedor : proveedores) {
-                        Object[] values = new Object[6];
-                        values[0] = proveedor.getIdProveedor();
-                        values[1] = proveedor.getNombre();
-                        values[2] = proveedor.getDireccion();
-                        values[3] = proveedor.getRuc();
-                        values[4] = proveedor.getTelefono();
-                        values[5] = proveedor.getTipoComercio();
-                        defaultTableModelProveedores.addRow(values);
+                    Long cantidadProveedoresDatabase = get();
+                    int cantidadProveedoresTabla = defaultTableModelProveedores.getRowCount();
+                    contadorProveedoresLabel.setText("Mostrando: " + cantidadProveedoresTabla + "/" + cantidadProveedoresDatabase);
+
+                }
+                catch (InterruptedException ex) {
+                    try {
+                        throw ex.getCause();
                     }
+                    catch (NotEnoughPermissionsException e) {
+                        //Joption pane or do nothing!
+                    }
+                    catch (Throwable e) {
+                        System.out.println("impossible :");
+                        e.printStackTrace();
+                        System.out.println("impossible end");
+                        return;
+                    }
+                }
+                catch (ExecutionException ex) {
+                    Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        };
+        SwingWorker obtenerProveedoresWorker = new SwingWorker<List<Proveedor>, List<Proveedor>>() {
+            @Override
+            protected List<Proveedor> doInBackground() throws Exception {
+                // set lastId and configurable rowsPerUpdate if reloading just reload all data
+                if (reload) {
+                    return proveedoresService.streamProveedores(lastId, (long) oldRowCount);
+                }
+                return proveedoresService.streamProveedores(lastId, rowsPerUpdate);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    addDataToTable(get());
                     int lastRow = 0;
                     int rowCount = defaultTableModelProveedores.getRowCount();
                     if (rowCount != 0) {
@@ -198,40 +243,38 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
                     }
                     var id = defaultTableModelProveedores.getValueAt(lastRow, 0);
                     lastId = Long.parseLong(id.toString());
-                } catch (InterruptedException | ExecutionException ex) {
-                    setIdle();
-                    Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    tableInformationLabel.setVisible(true);
-                    //busyLabel.setBusy(false);
-                    //Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
-                setIdle();
-                reloadTableButton.setEnabled(true);
-                nuevoProveedorButton.setEnabled(true);
-                loadMoreButton.setEnabled(true);
-                retrievingData = false;
-                retrievingData = false;
+                catch (InterruptedException | ExecutionException ex) {
+                    Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                catch (ArrayIndexOutOfBoundsException ex) {
+                    tableInformationLabel.setVisible(true);
+                    //Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                    //} catch (NotEnoughPermissionsException ex) {
+
+                }
+                finally {
+                    setIdle();
+                    reloadTableButton.setEnabled(true);
+                    loadMoreButton.setEnabled(true);
+                    retrievingData = false;
+                }
+                worker2.execute();
             }
         };
-        worker.execute();
+        obtenerProveedoresWorker.execute();
+
     }
 
-    private List<Proveedor> getSelectedRows() {
-        List<Proveedor> proveedores = new ArrayList<>();
+    private List<Long> getIdFromSelectedRows() { // refactor! DONE!
+        List<Long> idProveedores = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
-            //System.out.println(i);
-            i = tablaProveedores.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
-            Proveedor p = new Proveedor();
-            p.setIdProveedor((Long) defaultTableModelProveedores.getValueAt(i, 0));
-            p.setNombre((String) defaultTableModelProveedores.getValueAt(i, 1));
-            p.setDireccion((String) defaultTableModelProveedores.getValueAt(i, 2));
-            p.setRuc((String) defaultTableModelProveedores.getValueAt(i, 3));
-            p.setTelefono((String) defaultTableModelProveedores.getValueAt(i, 4));
-            p.setTipoComercio((String) defaultTableModelProveedores.getValueAt(i, 5));
-            proveedores.add(p);
+            i = tablaProveedores.convertRowIndexToModel(i);
+            // ↑ IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
+            idProveedores.add((Long) defaultTableModelProveedores.getValueAt(i, 0));
         }
-        return proveedores;
+        return idProveedores;
     }
 
     @SuppressWarnings("unchecked")
@@ -256,16 +299,22 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         guardarProveedorButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
-        scrollPane = new javax.swing.JScrollPane();
-        tablaProveedores = new org.jdesktop.swingx.JXTable();
         nuevoProveedorButton = new javax.swing.JButton();
         editarProveedorButton = new javax.swing.JButton();
         eliminarProveedorButton = new javax.swing.JButton();
         reloadTableButton = new javax.swing.JButton();
         loadMoreButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
+        contadorProveedoresLabel = new javax.swing.JLabel();
+        scrollPane = new javax.swing.JScrollPane();
+        tablaProveedores = new org.jdesktop.swingx.JXTable();
 
         nuevoProveedorDialog.setResizable(false);
+        nuevoProveedorDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                nuevoProveedorDialogWindowClosing(evt);
+            }
+        });
 
         nuevoProveedorLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         nuevoProveedorLabel.setText("Crear nuevo proveedor");
@@ -381,27 +430,13 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
         tableInformationLabel.setText("Sin datos.");
 
-        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tablaProveedores.setColumnControlVisible(true);
-        scrollPane.setViewportView(tablaProveedores);
-
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 584, Short.MAX_VALUE)
-            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+            .addGap(0, 604, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -410,9 +445,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
-            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
+            .addGap(0, 287, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -458,6 +491,19 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setBusy(true);
         busyLabel.setPreferredSize(new java.awt.Dimension(22, 22));
 
+        contadorProveedoresLabel.setText("Cargando...");
+
+        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tablaProveedores.setColumnControlVisible(true);
+        scrollPane.setViewportView(tablaProveedores);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -478,7 +524,10 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(editarProveedorButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminarProveedorButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(contadorProveedoresLabel)
+                        .addGap(27, 27, 27))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -488,7 +537,10 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoProveedorButton)
                     .addComponent(editarProveedorButton)
-                    .addComponent(eliminarProveedorButton))
+                    .addComponent(eliminarProveedorButton)
+                    .addComponent(contadorProveedoresLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -507,33 +559,86 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
     private void editarProveedorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarProveedorButtonActionPerformed
         // TODO add your handling code here:
-        List<Proveedor> proveedoresSeleccionado = getSelectedRows();
-        if (proveedoresSeleccionado.size() == 1) {
-            Proveedor proveedorSeleccionado = proveedoresSeleccionado.get(0);
+        List<Long> idProveedoresSeleccionado = getIdFromSelectedRows();
+        if (idProveedoresSeleccionado.size() == 1) {
+            Proveedor proveedorSeleccionado = null;
+            SwingWorker editarProveedorWorker = new SwingWorker<Proveedor, Proveedor>() {
+                @Override
+                protected Proveedor doInBackground() throws Exception {
+                    return proveedoresService.encontrarProveedorPorId(idProveedoresSeleccionado.get(0));
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoProveedorDialog, "No dispone de permisos suficientes para poder crear un nuevo proveedor.", "Sin permisos.");
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+                
+            };
         }
     }//GEN-LAST:event_editarProveedorButtonActionPerformed
 
     private void eliminarProveedorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProveedorButtonActionPerformed
         // TODO add your handling code here:
-        List<Long> selectedProveedoresId = new ArrayList();
-        for (Proveedor proveedor : getSelectedRows()) {
-            selectedProveedoresId.add(proveedor.getIdProveedor());
-        }
-        List<Proveedor> proveedoresEliminados = proveedoresService.eliminarProveedor(selectedProveedoresId);
+        List<Long> selectedProveedoresId = getIdFromSelectedRows();
 
-        retrieveData(true);
+        int selectedOption = JOptionPane.showConfirmDialog(this,
+                "¿Desea eliminar " + (selectedProveedoresId.size() == 1 ? "1 cliente?" : (selectedProveedoresId.size() + " proveedores?")),
+                selectedProveedoresId.size() == 1 ? "Eliminar un proveedor" : "Eliminar varios porveedores",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            List<Proveedor> proveedoresEliminados = new ArrayList<>();
+            try {
+                proveedoresEliminados = proveedoresService.eliminarProveedor(selectedProveedoresId); //implementar swingworker
+            }
+            catch (NotEnoughPermissionsException ex) {
+                // just pass?
+            }
+
+            if (!proveedoresEliminados.isEmpty()) {
+                updateTable(true);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Ocurrió un error al eliminar " + (selectedProveedoresId.size() == 1 ? "el proveedor seleccionado." : "los proveedores seleccionados."),
+                        "¡Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (selectedOption == JOptionPane.NO_OPTION) {
+            //do nothing
+        }
     }//GEN-LAST:event_eliminarProveedorButtonActionPerformed
 
     private void reloadTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadTableButtonActionPerformed
         // TODO add your handling code here:
-        retrieveData(true);
+        updateTable(true);
     }//GEN-LAST:event_reloadTableButtonActionPerformed
 
     private void loadMoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMoreButtonActionPerformed
         // TODO add your handling code here:
-        retrieveData(false);
+        updateTable(false);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
-
+    private void clearNuevoProveedorWindow() {
+        nombresField.setText("");
+        rucField.setText("");
+        telefonoField.setText("");
+        direccionField.setText("");
+        tipoComercioField.setText("");
+    }
     private void guardarProveedorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarProveedorButtonActionPerformed
         // TODO add your handling code here:
         nombresField.putClientProperty("JComponent.outline", "");
@@ -561,7 +666,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
             } catch (Exception e) {
                 rucField.putClientProperty("JComponent.outline", "error");
                 error = true;
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
@@ -574,7 +679,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
             } catch (Exception e) {
                 telefonoField.putClientProperty("JComponent.outline", "error");
                 error = true;
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
@@ -591,12 +696,41 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         if (error) {
             return;
         } else {
+            setBusy("Guardando proveedor...");
             p.setRuc(String.valueOf(ruc));
             p.setNombre(nombresField.getText());
             p.setDireccion(direccionField.getText());
             p.setTipoComercio(tipoComercioField.getText());
             p.setTelefono(String.valueOf(telefono));
-            proveedoresService.nuevoProveedor(p); // implementar swingworker
+            SwingWorker nuevoProveedorWorker = new SwingWorker<Proveedor, Proveedor>() {
+                @Override
+                protected Proveedor doInBackground() throws Exception {
+                    return proveedoresService.nuevoProveedor(p); 
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get(); //maybe check if it was correctly added?
+                        setIdle();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoProveedorDialog, "No dispone de permisos suficientes para poder crear un nuevo cliente.", "Sin permisos.");
+                            return;
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+            };
+            nuevoProveedorWorker.execute();
+            clearNuevoProveedorWindow();
         }
         nuevoProveedorDialog.setVisible(false);
     }//GEN-LAST:event_guardarProveedorButtonActionPerformed
@@ -604,15 +738,53 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
     private void rucFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rucFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rucFieldActionPerformed
+    private void cancelarCreacionProveedor() {
+        boolean isBlank = true;
 
+        if (!nombresField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!rucField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!telefonoField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!direccionField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!tipoComercioField.getText().isBlank()) {
+            isBlank = false;
+        }
+        
+        if (isBlank) {
+            nuevoProveedorDialog.setVisible(false);
+        }else {
+            int ans = OptionPaneService.questionMessage(nuevoProveedorDialog, "¿Desea salir sin guardar los cambios?", "Cambios sin guardar");
+            if (ans == JOptionPane.YES_OPTION) {
+                nuevoProveedorDialog.setVisible(false);
+                clearNuevoProveedorWindow();
+            }
+        }
+    }
     private void cancelarCreacionProveedorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionProveedorButtonActionPerformed
         // TODO add your handling code here:
         nuevoProveedorDialog.setVisible(false);
     }//GEN-LAST:event_cancelarCreacionProveedorButtonActionPerformed
 
+    private void nuevoProveedorDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_nuevoProveedorDialogWindowClosing
+        // TODO add your handling code here:
+        cancelarCreacionProveedor();
+    }//GEN-LAST:event_nuevoProveedorDialogWindowClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarCreacionProveedorButton;
+    private javax.swing.JLabel contadorProveedoresLabel;
     private javax.swing.JTextField direccionField;
     private javax.swing.JLabel direccionLabel;
     private javax.swing.JButton editarProveedorButton;

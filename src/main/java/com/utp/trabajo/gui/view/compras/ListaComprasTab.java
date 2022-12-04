@@ -544,7 +544,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         for (Compra compra : getSelectedRows()) {
             selectedComprasId.add(compra.getIdCompra());
         }
-        List<Compra> comprasEliminados = comprasService.eliminarCompra(selectedComprasId);
+        //List<Compra> comprasEliminados = comprasService.eliminarCompra(selectedComprasId);
 
         retrieveData(true);
     }//GEN-LAST:event_eliminarCompraButtonActionPerformed

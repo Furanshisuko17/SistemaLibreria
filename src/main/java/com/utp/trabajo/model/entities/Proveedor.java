@@ -20,16 +20,14 @@ public class Proveedor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProveedor;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(length = 20)
     private String ruc;
 
-    @Column(nullable = false)
     private String direccion;
 
-    @Column(nullable = false)
+    @Column(length = 20)
     private String telefono;
 
     @Column(length = 30)

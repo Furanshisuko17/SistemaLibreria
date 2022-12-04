@@ -42,20 +42,20 @@ public class ProveedorService {
     }
 
     @Transactional
-    public void nuevoProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
+    public Proveedor nuevoProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("create")) {
             throw new NotEnoughPermissionsException("Sin permisos de creación.");
         }
-        proveedorDao.save(proveedor);
+        return proveedorDao.save(proveedor);
 
     }
 
     @Transactional
-    public void actualizarProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
+    public  Proveedor actualizarProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("edit")) {
             throw new NotEnoughPermissionsException("Sin permisos de edición.");
         }
-        
+        return proveedorDao.save(proveedor);
         
     }
 
@@ -65,5 +65,14 @@ public class ProveedorService {
             throw new NotEnoughPermissionsException("Sin permisos de eliminación.");
         }
         return proveedorDao.removeAllByIdProveedorIn(idsProveedor);
+    }
+        @Transactional(readOnly = true)
+    public long contarProveedores() throws NotEnoughPermissionsException {
+        
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
+        return proveedorDao.count();
     }
 }
