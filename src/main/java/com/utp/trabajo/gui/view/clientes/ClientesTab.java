@@ -1,4 +1,4 @@
-package com.utp.trabajo.gui.view.ventas;
+package com.utp.trabajo.gui.view.clientes;
 
 import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Cliente;
@@ -7,6 +7,7 @@ import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +59,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     private long lastId = 0;
 
-    private long limit = 10;
+    private long rowsPerUpdate = 10;
 
     @Autowired
     private SecurityService securityService;
@@ -76,7 +77,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     @PostConstruct
     private void init() {
         checkPermissions();
-        updateTable(false, false); // mover hacia un listener que verifique que se ha abierto el jPanel
+        updateTable(false); // mover hacia un listener que verifique que se ha abierto el jPanel
     }
 
     private void initTableClientes() {
@@ -90,7 +91,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             int currentValue = scrollPane.getVerticalScrollBar().getValue();
             float fraction = (float) currentValue / (float) maxValue;
             if (fraction > 0.999f) {
-                updateTable(false, false);
+                updateTable(false);
                 System.out.println("Scroll bar is near the bottom");
             }
         });
@@ -163,7 +164,13 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setText("");
     }
 
-    private void updateTable(boolean reload, boolean checkChanges) { //refactor!  DONE!
+    private void addDataToTable(Vector<Vector> data) {
+        data.forEach(value -> {
+            defaultTableModelClientes.addRow(value);
+        });
+    }
+    
+    private void updateTable(boolean reload) { //refactor!  DONE!
         tableInformationLabel.setVisible(false);
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
@@ -174,6 +181,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         reloadTableButton.setEnabled(false);
         loadMoreButton.setEnabled(false);
         retrievingData = true;
+        int oldRowCount = defaultTableModelClientes.getRowCount();
         if (reload) {
             defaultTableModelClientes.setRowCount(0);
             lastId = 0;
@@ -210,19 +218,20 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         };
-        SwingWorker obtenerClientesWorker = new SwingWorker<Boolean, Boolean>() {
+        SwingWorker obtenerClientesWorker = new SwingWorker<Vector<Vector>, Vector<Vector>>() {
             @Override
-            protected Boolean doInBackground() throws Exception {
-                return clienteService.obtenerClientes(lastId, limit); // set lastId and configurable limit
+            protected Vector<Vector> doInBackground() throws Exception {
+                // set lastId and configurable rowsPerUpdate if reloading just reload all data
+                if(reload) {
+                    return clienteService.obtenerClientes(lastId, (long) oldRowCount);   
+                }
+                return clienteService.obtenerClientes(lastId, rowsPerUpdate); 
             }
 
             @Override
             protected void done() {
                 try {
-                    boolean ready = get();
-                    if (ready) {
-                        clienteService.updateTable(defaultTableModelClientes, checkChanges, limit);
-                    }
+                    addDataToTable(get());
                     int lastRow = 0;
                     int rowCount = defaultTableModelClientes.getRowCount();
                     if (rowCount != 0) {
@@ -236,7 +245,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     tableInformationLabel.setVisible(true);
                     //Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotEnoughPermissionsException ex) {
+                //} catch (NotEnoughPermissionsException ex) {
 
                 } finally {
                     setIdle();
@@ -527,11 +536,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void reloadTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadTableButtonActionPerformed
-        updateTable(true, false);
+        updateTable(true);
     }//GEN-LAST:event_reloadTableButtonActionPerformed
 
     private void loadMoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMoreButtonActionPerformed
-        updateTable(false, false);
+        updateTable(false);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
@@ -558,11 +567,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
             if (!clientesEliminados.isEmpty()) {
-                try {
-                    clienteService.updateTable(defaultTableModelClientes, true, limit);
-                } catch (NotEnoughPermissionsException ex) {
-                    //implement j option pane? 
-                }
+                    updateTable(true);
             } else {
                 JOptionPane.showMessageDialog(this,
                     "Ocurrió un error al eliminar " + (selectedClientesId.size() == 1 ? "el cliente seleccionado." : "los clientes seleccionados."),

@@ -109,7 +109,7 @@ public class ClienteService {
         if (cachedClientes.containsKey(lastId)) {
             ConcurrentNavigableMap<Long, Cliente> subMapClientes = cachedClientes
                 .subMap(lastId,
-                    false,
+                    true,
                     (lastId + limit),
                     true);
 
@@ -126,11 +126,18 @@ public class ClienteService {
         List<Cliente> clientes;
 
         if (lastId == 0) {
-            lastId = 1L;
+            clientes = getAllCachedData();  
+            if(!clientes.isEmpty()) {
+                return clientes;
+            } else {
+                //get all data from database (add it to cache and return it)
+            }
         }
 
-        if (cachedClientes.containsKey(lastId)) { // Se verifica que existe el ultimo id y regresa todo el cache guardado
-            clientes = getAllCachedData();
+        // Se verifica que existe el ultimo id + 1 y regresa todo el cache guardado
+        if (cachedClientes.containsKey(lastId + 1L)) { 
+            //get needed data from database(add it to cache and return only the needed data)
+            clientes = getCachedData(lastId, rowsPerUpdate);
         } else { // actualiza el cache con info de la base de datos y luego lo regresa 
             clientes = getCachedData(lastId, rowsPerUpdate);
         }
@@ -157,49 +164,6 @@ public class ClienteService {
     }
 
     // ↓ MÉTODOS PÚBLICOS ↓
-    /**
-     * El llamar a este método cada que se haga algún metodo CRUD dado que
-     * actualiza el vector del DefaultTableModel.
-     *
-     * @param model DefaultTableModel de la tabla
-     * @param checkChanges true para forzar la actualización de la tabla aún así
-     * no hayan cambios CRUD
-     * @throws com.utp.trabajo.exception.security.NotEnoughPermissionsException
-     * si no hay permisos de lectura
-     */
-    public void updateTable(DefaultTableModel model, boolean checkChanges, Long limit) throws NotEnoughPermissionsException {
-
-        if (!securityService.getPermissions().contains("read")) {
-            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
-        }
-
-        Vector<Vector> dataVector = model.getDataVector(); // Vector del model de la tabla
-
-        Long lastId;
-        try {
-            lastId = (Long) dataVector.lastElement().firstElement(); //obtiene el ultimo id de la tabla
-        } catch (NoSuchElementException ex) {
-            lastId = 0L;
-        }
-
-        Vector<Vector> clientesAsVector = getClientesAsVector(lastId, limit); // vector de la caché
-
-        Vector columnIdentifiers = new Vector(); // nombres de las columnas, hecho así por la falta de metodos del DefaulTableModel
-        for (int i = 0; i < model.getColumnCount(); i++) {
-            String columnName = model.getColumnName(i);
-            columnIdentifiers.add(columnName);
-        }
-
-        if (checkChanges) { // compara los cambios existentes entre el modelo de la tabla y la actualiza si hay
-            if (!dataVector.equals(clientesAsVector)) {
-                System.out.println("cambios!");
-                model.setDataVector(clientesAsVector, columnIdentifiers);
-            }
-        } else { // directamente reemplaza el modelo de la tabla por los existentes en la caché
-            model.setDataVector(clientesAsVector, columnIdentifiers);
-        }
-
-    }
 
     /**
      * Carga los clientes en el caché para ser cargados en la tabla despues
@@ -210,12 +174,11 @@ public class ClienteService {
      * más desde la base de datos.
      * @throws NotEnoughPermissionsException si no hay permisos de lectura.
      */
-    public boolean obtenerClientes(Long lastId, Long rowsPerUpdate) throws NotEnoughPermissionsException {
+    public Vector<Vector> obtenerClientes(Long lastId, Long rowsPerUpdate) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("read")) {
             throw new NotEnoughPermissionsException("Sin permisos de lectura.");
         }
-        getClientes(lastId, rowsPerUpdate);
-        return true;
+        return getClientesAsVector(lastId, rowsPerUpdate);
     }
 
     /**

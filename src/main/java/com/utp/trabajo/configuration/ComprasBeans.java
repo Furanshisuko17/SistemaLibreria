@@ -2,7 +2,7 @@
 package com.utp.trabajo.configuration;
 
 import com.utp.trabajo.gui.view.compras.ListaComprasTab;
-import com.utp.trabajo.gui.view.compras.ProovedoresTab;
+import com.utp.trabajo.gui.view.compras.ProveedoresTab;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,8 @@ public class ComprasBeans {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public ProovedoresTab proveedoressTabPrototype() {
-        return new ProovedoresTab();
+    public ProveedoresTab proveedoressTabPrototype() {
+        return new ProveedoresTab();
     }
 
 }

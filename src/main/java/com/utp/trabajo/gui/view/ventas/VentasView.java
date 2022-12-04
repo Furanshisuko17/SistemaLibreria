@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view.ventas;
 
+import com.utp.trabajo.gui.view.clientes.ClientesTab;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
 import com.utp.trabajo.services.transaction.VentasService;
@@ -65,19 +66,12 @@ public class VentasView extends javax.swing.JInternalFrame {
         com.formdev.flatlaf.FlatLaf.updateUI();
         tabbedPane.add("Nueva venta", getNuevaVentaTabInstance());
         tabbedPane.add("Ventas", getVentasTabInstance());
-        tabbedPane.add("Clientes", getClientesTabInstance());
+        
         setVisible(true);
     }
 
     public void cerrarVentana() {
         tabbedPane.removeAll();
-    }
-
-    @Autowired
-    private ObjectFactory<ClientesTab> clientesTabObjectFactory;
-
-    public ClientesTab getClientesTabInstance() {
-        return clientesTabObjectFactory.getObject();
     }
 
     @Autowired

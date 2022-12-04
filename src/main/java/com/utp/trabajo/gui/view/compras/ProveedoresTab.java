@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
+public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
     DefaultTableModel defaultTableModelProveedores = new DefaultTableModel() {
         @Override
@@ -60,7 +60,7 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
     @Autowired
     private ProveedorService proveedoresService;
 
-    public ProovedoresTab() {
+    public ProveedoresTab() {
         initComponents();
         defaultTableModelProveedores.setColumnIdentifiers(columnNames);
         tablaProveedores.setModel(defaultTableModelProveedores);
@@ -200,11 +200,11 @@ public class ProovedoresTab extends org.jdesktop.swingx.JXPanel {
                     lastId = Long.parseLong(id.toString());
                 } catch (InterruptedException | ExecutionException ex) {
                     setIdle();
-                    Logger.getLogger(ProovedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     tableInformationLabel.setVisible(true);
                     //busyLabel.setBusy(false);
-                    //Logger.getLogger(ProovedoresTab.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(ProveedoresTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 setIdle();
                 reloadTableButton.setEnabled(true);

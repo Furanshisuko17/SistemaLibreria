@@ -1,5 +1,7 @@
 package com.utp.trabajo.gui.view;
 
+import com.utp.trabajo.gui.view.clientes.ClientesView;
+import com.utp.trabajo.gui.view.productos.ProductosView;
 import com.utp.trabajo.gui.view.almacen.AlmacenView;
 import com.utp.trabajo.gui.view.compras.ComprasView;
 import com.utp.trabajo.gui.view.ventas.VentasView;
@@ -50,6 +52,7 @@ public class MainView extends javax.swing.JFrame {
     public MainView() {
         defineUI();
         initComponents();
+        openEstadisticasWindowButton.setVisible(false);
         //toolBar.add(userButton);
         busyLabel.setEnabled(false);
         busyLabel.setBusy(true);
@@ -127,6 +130,8 @@ public class MainView extends javax.swing.JFrame {
         setIconImage(iconos.iconoPrincipal.getImage()); // Icono de la ventana principal
         openVentasWindowButton.setIcon(iconos.iconoVentas.derive(24, 24));
         openComprasWindowButton.setIcon(iconos.iconoCompras.derive(24, 24));
+        openProductosWindowButton.setIcon(iconos.iconoProducto.derive(24, 24));
+        openClientesWindowButton.setIcon(iconos.iconoCliente.derive(24, 24));
         openAlmacenWindowButton.setIcon(iconos.iconoAlmacen.derive(24, 24));
         openEstadisticasWindowButton.setIcon(iconos.iconoEstadisticas.derive(24, 24));
         openAdministracionWindowButton.setIcon(iconos.iconoAdministracion.derive(24, 24));
@@ -193,6 +198,8 @@ public class MainView extends javax.swing.JFrame {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         openVentasWindowButton = new javax.swing.JButton();
         openComprasWindowButton = new javax.swing.JButton();
+        openProductosWindowButton = new javax.swing.JButton();
+        openClientesWindowButton = new javax.swing.JButton();
         openAlmacenWindowButton = new javax.swing.JButton();
         openEstadisticasWindowButton = new javax.swing.JButton();
         openAdministracionWindowButton = new javax.swing.JButton();
@@ -540,7 +547,7 @@ public class MainView extends javax.swing.JFrame {
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 639, Short.MAX_VALUE)
+            .addGap(0, 853, Short.MAX_VALUE)
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -580,6 +587,36 @@ public class MainView extends javax.swing.JFrame {
             }
         });
         toolBar.add(openComprasWindowButton);
+
+        openProductosWindowButton.setText("Productos");
+        openProductosWindowButton.setFocusable(false);
+        openProductosWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openProductosWindowButton.setIconTextGap(2);
+        openProductosWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openProductosWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openProductosWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openProductosWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openProductosWindowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openProductosWindowButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(openProductosWindowButton);
+
+        openClientesWindowButton.setText("Clientes");
+        openClientesWindowButton.setFocusable(false);
+        openClientesWindowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openClientesWindowButton.setIconTextGap(2);
+        openClientesWindowButton.setMaximumSize(new java.awt.Dimension(91, 50));
+        openClientesWindowButton.setMinimumSize(new java.awt.Dimension(92, 50));
+        openClientesWindowButton.setPreferredSize(new java.awt.Dimension(92, 50));
+        openClientesWindowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openClientesWindowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openClientesWindowButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(openClientesWindowButton);
 
         openAlmacenWindowButton.setText("Almacén");
         openAlmacenWindowButton.setFocusable(false);
@@ -715,7 +752,7 @@ public class MainView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelPrincipal)
-            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
+            .addComponent(toolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1110,6 +1147,84 @@ public class MainView extends javax.swing.JFrame {
         resetCuentaWindow();
     }//GEN-LAST:event_cuentaWindowWindowClosing
 
+    private void openProductosWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProductosWindowButtonActionPerformed
+        ProductosView productosView = context.getBean(ProductosView.class);
+
+        productosView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openProductosWindowButton.setEnabled(true);
+                productosView.cerrarVentana();
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(productosView);
+        productosView.abrirVentana();
+        openProductosWindowButton.setEnabled(false);
+    }//GEN-LAST:event_openProductosWindowButtonActionPerformed
+
+    private void openClientesWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openClientesWindowButtonActionPerformed
+        ClientesView clientesView = context.getBean(ClientesView.class);
+
+        clientesView.addInternalFrameListener(new InternalFrameListener() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                openClientesWindowButton.setEnabled(true);
+                clientesView.cerrarVentana();
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+            }
+        });
+        panelPrincipal.add(clientesView);
+        clientesView.abrirVentana();
+        openClientesWindowButton.setEnabled(false);
+    }//GEN-LAST:event_openClientesWindowButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AutenticationPanelMain;
     private javax.swing.JPanel BottomPanel;
@@ -1164,9 +1279,11 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JTextField nombresField;
     private javax.swing.JButton openAdministracionWindowButton;
     private javax.swing.JButton openAlmacenWindowButton;
+    private javax.swing.JButton openClientesWindowButton;
     private javax.swing.JButton openComprasWindowButton;
     private javax.swing.JButton openEstadisticasWindowButton;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JButton openProductosWindowButton;
     private javax.swing.JButton openVentasWindowButton;
     private javax.swing.JDesktopPane panelPrincipal;
     private com.formdev.flatlaf.extras.components.FlatPasswordField passwordInput;

@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view.almacen;
 
+import com.utp.trabajo.gui.view.productos.ProductoTab;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
 import com.utp.trabajo.services.security.SecurityService;
@@ -33,7 +34,7 @@ public class AlmacenView extends javax.swing.JInternalFrame {
 
         tabbedPane.add("Marca del Producto", getMarcaTabInstance());
         tabbedPane.add("Tipo de Producto", getTipoTabInstance());
-        tabbedPane.add("Producto", getProductoTabInstance());
+        
         tabbedPane.add("Almacen", getTipoTabInstance());
         //Colocar tabs aquí
 
@@ -58,12 +59,6 @@ public class AlmacenView extends javax.swing.JInternalFrame {
         return TipoTabObjectFactory.getObject();
     }
 
-    @Autowired
-    private ObjectFactory<ProductoTab> ProductoTabObjectFactory;
-
-    public ProductoTab getProductoTabInstance() {
-        return ProductoTabObjectFactory.getObject();
-    }
 
     @Autowired
     private ObjectFactory<AlmacenTab> AlmacenTabObjectFactory;

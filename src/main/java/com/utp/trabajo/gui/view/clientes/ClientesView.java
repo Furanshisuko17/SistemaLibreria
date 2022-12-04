@@ -1,21 +1,14 @@
-package com.utp.trabajo.gui.view.compras;
+package com.utp.trabajo.gui.view.clientes;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.utp.trabajo.services.transaction.ComprasService;
-import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ComprasView extends javax.swing.JInternalFrame {
-
-    @Autowired
-    private ComprasService comprasService;
+public class ClientesView extends javax.swing.JInternalFrame {
 
     @Autowired
     private UtilService utilidades;
@@ -23,15 +16,27 @@ public class ComprasView extends javax.swing.JInternalFrame {
     @Autowired
     private IconService iconos;
 
-    public ComprasView() {
+    public ClientesView() {
         initComponents();
     }
-
+    
     @PostConstruct
     private void init() {
-        setFrameIcon(iconos.iconoCompras);
+        setFrameIcon(iconos.iconoCliente);
     }
 
+    public void abrirVentana() {
+        setVisible(false);
+        com.formdev.flatlaf.FlatLaf.updateUI();
+        tabbedPane.add("Clientes", getClientesTabInstance());
+        //Colocar tabs aquí
+        setVisible(true);
+    }
+
+    public void cerrarVentana() {
+        tabbedPane.removeAll();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -42,7 +47,7 @@ public class ComprasView extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Compras");
+        setTitle("Clientes");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,33 +63,12 @@ public class ComprasView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void abrirVentana() {
-        setVisible(false);
-        com.formdev.flatlaf.FlatLaf.updateUI();
-
-        //Colocar tabs aquí
-        tabbedPane.add("Compras", getListaComprasTabInstance());
-        tabbedPane.add("Proveedores", getProveedoresTabInstance());
-
-        setVisible(true);
-    }
-
-    public void cerrarVentana() {
-        tabbedPane.removeAll();
-    }
-
+    
     @Autowired
-    private ObjectFactory<ProveedoresTab> proveedoresTabObjectFactory;
+    private ObjectFactory<ClientesTab> clientesTabObjectFactory;
 
-    public ProveedoresTab getProveedoresTabInstance() {
-        return proveedoresTabObjectFactory.getObject();
-    }
-
-    @Autowired
-    private ObjectFactory<ListaComprasTab> listaComprasTabObjectFactory;
-
-    public ListaComprasTab getListaComprasTabInstance() {
-        return listaComprasTabObjectFactory.getObject();
+    public ClientesTab getClientesTabInstance() {
+        return clientesTabObjectFactory.getObject();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

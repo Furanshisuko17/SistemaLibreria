@@ -1,4 +1,4 @@
-package com.utp.trabajo.gui.view.almacen;
+package com.utp.trabajo.gui.view.productos;
 
 public class ProductoTab extends org.jdesktop.swingx.JXPanel {
 
