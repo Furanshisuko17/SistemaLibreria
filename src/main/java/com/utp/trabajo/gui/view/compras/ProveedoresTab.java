@@ -1,7 +1,7 @@
 package com.utp.trabajo.gui.view.compras;
 
 import com.utp.trabajo.services.security.SecurityService;
-import com.utp.trabajo.services.transaction.ProveedorService;
+import com.utp.trabajo.services.ProveedorService;
 import com.utp.trabajo.model.entities.Proveedor;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;

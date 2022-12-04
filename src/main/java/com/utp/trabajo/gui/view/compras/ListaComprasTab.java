@@ -2,7 +2,7 @@ package com.utp.trabajo.gui.view.compras;
 
 import com.utp.trabajo.model.entities.Compra;
 import com.utp.trabajo.model.entities.MetodoPago;
-import com.utp.trabajo.services.transaction.ComprasService;
+import com.utp.trabajo.services.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.math.BigInteger;

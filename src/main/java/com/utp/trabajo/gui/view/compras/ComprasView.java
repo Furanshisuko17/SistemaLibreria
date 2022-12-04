@@ -1,7 +1,7 @@
 package com.utp.trabajo.gui.view.compras;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.utp.trabajo.services.transaction.ComprasService;
+import com.utp.trabajo.services.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;

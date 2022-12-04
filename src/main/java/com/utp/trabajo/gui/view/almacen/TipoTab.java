@@ -5,7 +5,7 @@
 package com.utp.trabajo.gui.view.almacen;
 
 import com.utp.trabajo.model.entities.TipoProducto;
-import com.utp.trabajo.services.transaction.TipoProductoService;
+import com.utp.trabajo.services.TipoProductoService;
 import com.utp.trabajo.services.security.SecurityService;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;

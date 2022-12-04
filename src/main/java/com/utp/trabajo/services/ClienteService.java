@@ -3,7 +3,6 @@ package com.utp.trabajo.services;
 import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Cliente;
 import com.utp.trabajo.services.security.SecurityService;
-import com.utp.trabajo.services.transaction.ClienteTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
