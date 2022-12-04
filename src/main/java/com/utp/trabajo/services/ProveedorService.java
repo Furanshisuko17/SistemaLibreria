@@ -1,12 +1,13 @@
 package com.utp.trabajo.services;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.dao.ProveedorDao;
 import com.utp.trabajo.model.entities.Proveedor;
+import com.utp.trabajo.services.security.SecurityService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,16 @@ public class ProveedorService {
 
     @Autowired
     private ProveedorDao proveedorDao;
+    
+    @Autowired
+    private SecurityService securityService;
 
     @Transactional(readOnly = true)
-    public List<Proveedor> streamProveedores(Long lastId, Long limit) {
+    public List<Proveedor> streamProveedores(Long lastId, Long limit) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
         try ( Stream<Proveedor> streamedProveedores = proveedorDao.findByIdProveedorGreaterThan(lastId)) {
             return streamedProveedores.limit(limit)
                 .collect(Collectors.toList());
@@ -26,23 +34,36 @@ public class ProveedorService {
     }
 
     @Transactional(readOnly = true)
-    public Proveedor encontrarProveedorPorId(Long idProveedor) {
+    public Proveedor encontrarProveedorPorId(Long idProveedor) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
         return proveedorDao.findById(idProveedor).orElseThrow();
     }
 
     @Transactional
-    public void nuevoProveedor(Proveedor proveedor) {
+    public void nuevoProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("create")) {
+            throw new NotEnoughPermissionsException("Sin permisos de creación.");
+        }
         proveedorDao.save(proveedor);
 
     }
 
     @Transactional
-    public void actualizarProveedor(Proveedor proveedor) {
-
+    public void actualizarProveedor(Proveedor proveedor) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("edit")) {
+            throw new NotEnoughPermissionsException("Sin permisos de edición.");
+        }
+        
+        
     }
 
     @Transactional
-    public List<Proveedor> eliminarProveedor(List<Long> idsProveedor) {
+    public List<Proveedor> eliminarProveedor(List<Long> idsProveedor) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("delete")) {
+            throw new NotEnoughPermissionsException("Sin permisos de eliminación.");
+        }
         return proveedorDao.removeAllByIdProveedorIn(idsProveedor);
     }
 }

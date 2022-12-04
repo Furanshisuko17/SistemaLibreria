@@ -74,7 +74,6 @@ public class AuthService {
         Object rest = restartEndpoint.restart(); //partially working 
         System.out.println(rest);
         //SistemaLibreriaApplication.restart(); // not working, no workarounds were found 09/11/2022, 4:23PM
-
     }
 
     private boolean clearSession() {

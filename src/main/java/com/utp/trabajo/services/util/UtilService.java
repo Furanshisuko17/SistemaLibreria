@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UtilService {
     
-    
-    
     public FlatSVGIcon getIcon(String path) {
         FlatSVGIcon icon = new FlatSVGIcon(getClass().getResource("/icons/" + path + ".svg"));
         return icon;

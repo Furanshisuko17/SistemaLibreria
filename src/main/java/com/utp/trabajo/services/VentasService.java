@@ -1,8 +1,13 @@
 package com.utp.trabajo.services;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.dao.VentaDao;
+import com.utp.trabajo.model.entities.Cliente;
 import com.utp.trabajo.model.entities.Venta;
+import com.utp.trabajo.services.security.SecurityService;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,25 +18,66 @@ public class VentasService {
 
     @Autowired
     private VentaDao ventaDao;
+   
+    @Autowired
+    private SecurityService securityService;
+    
+    @Transactional(readOnly = true)
+    public List<Venta> streamVentas(Long lastId, Long limit) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
+        try ( Stream<Venta> streamedVentas = ventaDao.findByIdVentaGreaterThan(lastId)) {
+            return streamedVentas.limit(limit)
+                .collect(Collectors.toList());
+        }
+    }
 
     @Transactional(readOnly = true)
-    public DefaultTableModel listarVentas() {
-        List<Venta> ventas = ventaDao.findAll();
-
-        DefaultTableModel ventasReturned = new DefaultTableModel();
-        for (Venta venta : ventas) { //TODO: find better way to retrieve all data
-            Object[] values = new Object[9];
-            values[0] = venta.getIdVenta();
-            values[1] = venta.getFechaEmision();
-            values[2] = venta.getComprobante();
-            values[3] = venta.getIgv();
-            values[4] = venta.getMetodoPago();
-            values[5] = venta.getPrecioTotal();
-            values[6] = venta.getEmpleado();
-            values[7] = venta.getCliente();
-            ventasReturned.addRow(values);
+    public Venta encontrarVentaPorId(Long idVenta) throws NotEnoughPermissionsException {
+        
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
         }
-        return ventasReturned;
-
+        
+        return ventaDao.findById(idVenta).orElseThrow();
     }
+
+    @Transactional
+    public Venta nuevoCliente(Venta venta) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("create")) {
+            throw new NotEnoughPermissionsException("Sin permisos de creación.");
+        }
+        
+        return ventaDao.save(venta);
+    }
+
+    @Transactional
+    public Venta actualizarCliente(Venta venta) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("edit")) {
+            throw new NotEnoughPermissionsException("Sin permisos de edición.");
+        }
+        
+        return ventaDao.save(venta);
+    }
+
+    @Transactional
+    public List<Venta> eliminarClientes(List<Long> idsVenta) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("delete")) {
+            throw new NotEnoughPermissionsException("Sin permisos de eliminación.");
+        }
+        return ventaDao.removeAllByIdVentaIn(idsVenta);
+    }
+
+    @Transactional(readOnly = true)
+    public long contarVentas() throws NotEnoughPermissionsException {
+        
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
+        return ventaDao.count();
+    }
+    
 }

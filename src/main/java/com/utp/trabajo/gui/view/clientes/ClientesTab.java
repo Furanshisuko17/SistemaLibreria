@@ -65,7 +65,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private SecurityService securityService;
 
     @Autowired
-    private ClienteService clienteService; //TODO:  refactor!
+    private ClienteService clienteService;
 
     public ClientesTab() {
         initComponents();
@@ -164,9 +164,17 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setText("");
     }
 
-    private void addDataToTable(Vector<Vector> data) {
-        data.forEach(value -> {
-            defaultTableModelClientes.addRow(value);
+    private void addDataToTable(List<Cliente> data) {
+        data.forEach(cliente -> {
+            Vector vec = new Vector();
+            vec.add(cliente.getIdCliente());
+            vec.add(cliente.getNombre());
+            vec.add(cliente.getDireccion());
+            vec.add(cliente.getIdentificacion());
+            vec.add(cliente.getTelefono());
+            vec.add(cliente.getRazonSocial());
+            vec.add(cliente.getNumeroCompras());
+            defaultTableModelClientes.addRow(vec);
         });
     }
     
@@ -218,14 +226,14 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         };
-        SwingWorker obtenerClientesWorker = new SwingWorker<Vector<Vector>, Vector<Vector>>() {
+        SwingWorker obtenerClientesWorker = new SwingWorker<List<Cliente>, List<Cliente>>() {
             @Override
-            protected Vector<Vector> doInBackground() throws Exception {
+            protected List<Cliente> doInBackground() throws Exception {
                 // set lastId and configurable rowsPerUpdate if reloading just reload all data
                 if(reload) {
-                    return clienteService.obtenerClientes(lastId, (long) oldRowCount);   
+                    return clienteService.streamClientes(lastId, (long) oldRowCount);   
                 }
-                return clienteService.obtenerClientes(lastId, rowsPerUpdate); 
+                return clienteService.streamClientes(lastId, rowsPerUpdate); 
             }
 
             @Override
@@ -659,7 +667,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         if (idClientesSeleccionado.size() == 1) {
             Cliente clienteSeleccionado = null;
             try {
-                clienteSeleccionado = clienteService.obtenerClientePorId(idClientesSeleccionado.get(0));
+                clienteSeleccionado = clienteService.encontrarClientePorId(idClientesSeleccionado.get(0));
             } catch (NotEnoughPermissionsException ex) {
                 return;
             }
