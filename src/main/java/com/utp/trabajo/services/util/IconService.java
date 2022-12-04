@@ -22,24 +22,28 @@ public class IconService {
     public FlatSVGIcon iconoDarkMode;
     public FlatSVGIcon iconoCuenta;
     public FlatSVGIcon iconoLogout;
-
+    public FlatSVGIcon iconoProducto;
+    public FlatSVGIcon iconoCliente;
+    
     //public FlatSVGIcon icono;
     /**
      * Inicializa todos los iconos
      */
     @PostConstruct
     public void init() {
-        iconoPrincipal = utilService.getIcon("/icons/iconoPrincipal.svg", 64);
-        iconoVentas = utilService.getIcon("/icons/ventasIcono.svg", 16);
-        iconoCompras = utilService.getIcon("/icons/comprasIcono.svg", 16);
-        iconoAlmacen = utilService.getIcon("/icons/almacenIcono.svg", 16);
-        iconoEstadisticas = utilService.getIcon("/icons/estadisticasIcono.svg", 16);
-        iconoAdministracion = utilService.getIcon("/icons/administracionIcono.svg", 16);
-        iconoExit = utilService.getIcon("/icons/exit.svg", 16);
-        iconoLightMode = utilService.getIcon("/icons/lightMode.svg", 16);
-        iconoDarkMode = utilService.getIcon("/icons/darkMode.svg", 16);
-        iconoCuenta = utilService.getIcon("/icons/cuentaIcono.svg", 16);
-        iconoLogout = utilService.getIcon("/icons/logoutIcon.svg", 16);
+        iconoPrincipal = utilService.getIcon("iconoPrincipal", 64);
+        iconoVentas = utilService.getIcon("ventasIcono", 16);
+        iconoCompras = utilService.getIcon("comprasIcono", 16);
+        iconoAlmacen = utilService.getIcon("almacenIcono", 16);
+        iconoEstadisticas = utilService.getIcon("estadisticasIcono", 16);
+        iconoAdministracion = utilService.getIcon("administracionIcono", 16);
+        iconoExit = utilService.getIcon("exit", 16);
+        iconoLightMode = utilService.getIcon("lightMode", 16);
+        iconoDarkMode = utilService.getIcon("darkMode", 16);
+        iconoCuenta = utilService.getIcon("cuentaIcono", 16);
+        iconoLogout = utilService.getIcon("logoutIcon", 16);
+        iconoProducto = utilService.getIcon("productosIcono", 16);
+        iconoCliente = utilService.getIcon("clienteIcono", 16);
     }
 
 }
