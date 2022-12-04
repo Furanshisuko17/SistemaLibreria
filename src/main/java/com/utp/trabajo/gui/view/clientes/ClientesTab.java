@@ -4,6 +4,7 @@ import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Cliente;
 import com.utp.trabajo.services.ClienteService;
 import com.utp.trabajo.services.security.SecurityService;
+import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +164,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setEnabled(false);
         busyLabel.setText("");
     }
-
+    
     private void addDataToTable(List<Cliente> data) {
         data.forEach(cliente -> {
             Vector vec = new Vector();
@@ -177,7 +178,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             defaultTableModelClientes.addRow(vec);
         });
     }
-    
+
     private void updateTable(boolean reload) { //refactor!  DONE!
         tableInformationLabel.setVisible(false);
         if (!canRead) {
@@ -209,18 +210,22 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     int cantidadClientesTabla = defaultTableModelClientes.getRowCount();
                     contadorClientesLabel.setText("Mostrando: " + cantidadClientesTabla + "/" + cantidadClientesDatabase);
 
-                } catch (InterruptedException ex) {
+                }
+                catch (InterruptedException ex) {
                     try {
                         throw ex.getCause();
-                    } catch (NotEnoughPermissionsException e) {
+                    }
+                    catch (NotEnoughPermissionsException e) {
                         //Joption pane or do nothing!
-                    } catch (Throwable e) {
+                    }
+                    catch (Throwable e) {
                         System.out.println("impossible :");
                         e.printStackTrace();
                         System.out.println("impossible end");
                         return;
                     }
-                } catch (ExecutionException ex) {
+                }
+                catch (ExecutionException ex) {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -230,10 +235,10 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             @Override
             protected List<Cliente> doInBackground() throws Exception {
                 // set lastId and configurable rowsPerUpdate if reloading just reload all data
-                if(reload) {
-                    return clienteService.streamClientes(lastId, (long) oldRowCount);   
+                if (reload) {
+                    return clienteService.streamClientes(lastId, (long) oldRowCount);
                 }
-                return clienteService.streamClientes(lastId, rowsPerUpdate); 
+                return clienteService.streamClientes(lastId, rowsPerUpdate);
             }
 
             @Override
@@ -248,14 +253,17 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     var id = defaultTableModelClientes.getValueAt(lastRow, 0);
                     lastId = Long.parseLong(id.toString());
 
-                } catch (InterruptedException | ExecutionException ex) {
+                }
+                catch (InterruptedException | ExecutionException ex) {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                catch (ArrayIndexOutOfBoundsException ex) {
                     tableInformationLabel.setVisible(true);
                     //Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
-                //} catch (NotEnoughPermissionsException ex) {
+                    //} catch (NotEnoughPermissionsException ex) {
 
-                } finally {
+                }
+                finally {
                     setIdle();
                     reloadTableButton.setEnabled(true);
                     loadMoreButton.setEnabled(true);
@@ -298,6 +306,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         jSeparator2 = new javax.swing.JSeparator();
         cancelarCreacionClienteButton = new javax.swing.JButton();
         guardarClienteButton = new javax.swing.JButton();
+        nuevoClienteBusyLabel = new org.jdesktop.swingx.JXBusyLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
@@ -313,6 +322,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         nuevoClienteDialog.setTitle("Nuevo cliente");
         nuevoClienteDialog.setAlwaysOnTop(true);
         nuevoClienteDialog.setResizable(false);
+        nuevoClienteDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                nuevoClienteDialogWindowClosing(evt);
+            }
+        });
 
         nuevoClienteLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         nuevoClienteLabel.setText("Crear nuevo cliente");
@@ -375,8 +389,9 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                                 .addComponent(razonSocialLabel)
                                 .addGap(8, 8, 8)
                                 .addComponent(razonSocialField))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoClienteDialogLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
+                        .addComponent(nuevoClienteBusyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(guardarClienteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancelarCreacionClienteButton)))
@@ -385,7 +400,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         nuevoClienteDialogLayout.setVerticalGroup(
             nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(nuevoClienteLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -416,7 +431,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarCreacionClienteButton)
-                    .addComponent(guardarClienteButton))
+                    .addComponent(guardarClienteButton)
+                    .addComponent(nuevoClienteBusyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -450,7 +466,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -515,7 +531,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contadorClientesLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -551,35 +567,43 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         updateTable(false);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
+    private void clearNuevoClienteWindow() {
+        nombresField.setText("");
+        dniField.setText("");
+        telefonoField.setText("");
+        direccionField.setText("");
+        razonSocialField.setText("");
+    }
+    
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
         nuevoClienteDialog.setVisible(true);
     }//GEN-LAST:event_nuevoClienteButtonActionPerformed
 
-    //TODO: ↓ Refactor!
     private void eliminarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteButtonActionPerformed
         List<Long> selectedClientesId = getIdFromSelectedRows();
 
         int selectedOption = JOptionPane.showConfirmDialog(this,
-            "¿Desea eliminar " + (selectedClientesId.size() == 1 ? "1 cliente?" : (selectedClientesId.size() + " clientes?")),
-            selectedClientesId.size() == 1 ? "Eliminar un cliente" : "Eliminar varios clientes",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
+                "¿Desea eliminar " + (selectedClientesId.size() == 1 ? "1 cliente?" : (selectedClientesId.size() + " clientes?")),
+                selectedClientesId.size() == 1 ? "Eliminar un cliente" : "Eliminar varios clientes",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
         );
 
         if (selectedOption == JOptionPane.YES_OPTION) {
             List<Cliente> clientesEliminados = new ArrayList<>();
             try {
                 clientesEliminados = clienteService.eliminarClientes(selectedClientesId); //implementar swingworker
-            } catch (NotEnoughPermissionsException ex) {
+            }
+            catch (NotEnoughPermissionsException ex) {
                 // just pass?
             }
 
             if (!clientesEliminados.isEmpty()) {
-                    updateTable(true);
+                updateTable(true);
             } else {
                 JOptionPane.showMessageDialog(this,
-                    "Ocurrió un error al eliminar " + (selectedClientesId.size() == 1 ? "el cliente seleccionado." : "los clientes seleccionados."),
-                    "¡Error!", JOptionPane.ERROR_MESSAGE);
+                        "Ocurrió un error al eliminar " + (selectedClientesId.size() == 1 ? "el cliente seleccionado." : "los clientes seleccionados."),
+                        "¡Error!", JOptionPane.ERROR_MESSAGE);
             }
         } else if (selectedOption == JOptionPane.NO_OPTION) {
             //do nothing
@@ -587,8 +611,42 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     }//GEN-LAST:event_eliminarClienteButtonActionPerformed
 
+    private void cancelarCreacionCliente() {
+        boolean isBlank = true;
+
+        if (!nombresField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!dniField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!telefonoField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!direccionField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!razonSocialField.getText().isBlank()) {
+            isBlank = false;
+        }
+        
+        if (isBlank) {
+            nuevoClienteDialog.setVisible(false);
+        }else {
+            int ans = OptionPaneService.questionMessage(nuevoClienteDialog, "¿Desea salir sin guardar los cambios?", "Cambios sin guardar");
+            if (ans == JOptionPane.YES_OPTION) {
+                nuevoClienteDialog.setVisible(false);
+                clearNuevoClienteWindow();
+            }
+        }
+    }
+    
     private void cancelarCreacionClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionClienteButtonActionPerformed
-        nuevoClienteDialog.setVisible(false);//TODO: put a confirmation dialog
+        cancelarCreacionCliente();
     }//GEN-LAST:event_cancelarCreacionClienteButtonActionPerformed
 
     private void guardarClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarClienteButtonActionPerformed
@@ -614,7 +672,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         } else {
             try {
                 dni = Integer.parseInt(dniField.getText());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 dniField.putClientProperty("JComponent.outline", "error");
                 error = true;
                 //e.printStackTrace();
@@ -627,7 +686,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         } else {
             try {
                 telefono = Integer.parseInt(telefonoField.getText());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 telefonoField.putClientProperty("JComponent.outline", "error");
                 error = true;
                 //e.printStackTrace();
@@ -647,18 +707,44 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         if (error) {
             return;
         } else {
+            setBusy("Guardando cliente...");
             c.setIdentificacion(String.valueOf(dni));
             c.setNombre(nombresField.getText());
             c.setDireccion(direccionField.getText());
             c.setRazonSocial(razonSocialField.getText());
             c.setTelefono(String.valueOf(telefono));
             c.setNumeroCompras((long) 0);
-            try {
-                clienteService.nuevoCliente(c); // implementar swingworker //TODO: refactor!
-            } catch (NotEnoughPermissionsException ex) {
-                //Implementar un Jdialog o dejarlo así...
-            }
+            SwingWorker nuevoClienteWorker = new SwingWorker<Cliente, Cliente>() {
+                @Override
+                protected Cliente doInBackground() throws Exception {
+                    return clienteService.nuevoCliente(c); 
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get(); //maybe check if it was correctly added?
+                        setIdle();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoClienteDialog, "No dispone de permisos suficientes para poder crear un nuevo cliente.", "Sin permisos.");
+                            return;
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+            };
+            nuevoClienteWorker.execute();
+            clearNuevoClienteWindow();  
         }
+        
         nuevoClienteDialog.setVisible(false);
     }//GEN-LAST:event_guardarClienteButtonActionPerformed
 
@@ -666,14 +752,39 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         List<Long> idClientesSeleccionado = getIdFromSelectedRows();
         if (idClientesSeleccionado.size() == 1) {
             Cliente clienteSeleccionado = null;
-            try {
-                clienteSeleccionado = clienteService.encontrarClientePorId(idClientesSeleccionado.get(0));
-            } catch (NotEnoughPermissionsException ex) {
-                return;
-            }
+            SwingWorker editarClienteWorker = new SwingWorker<Cliente, Cliente>() {
+                @Override
+                protected Cliente doInBackground() throws Exception {
+                    return clienteService.encontrarClientePorId(idClientesSeleccionado.get(0));
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoClienteDialog, "No dispone de permisos suficientes para poder crear un nuevo cliente.", "Sin permisos.");
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+                
+            };
         } //TODO: Refactor and complete
     }//GEN-LAST:event_editarClienteButtonActionPerformed
 
+    private void nuevoClienteDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_nuevoClienteDialogWindowClosing
+        cancelarCreacionCliente();
+    }//GEN-LAST:event_nuevoClienteDialogWindowClosing
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarCreacionClienteButton;
@@ -691,6 +802,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JTextField nombresField;
     private javax.swing.JLabel nombresLabel;
+    private org.jdesktop.swingx.JXBusyLabel nuevoClienteBusyLabel;
     private javax.swing.JButton nuevoClienteButton;
     private javax.swing.JDialog nuevoClienteDialog;
     private javax.swing.JLabel nuevoClienteLabel;
