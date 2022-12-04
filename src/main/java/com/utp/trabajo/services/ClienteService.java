@@ -11,15 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Clase de transaccion para la entidad de Clientes Esta clase se comunica
- * directamente con la base de datos No está pensada para ser usada directamente
- * por las interfaces de usuario.
- *
- * @author Fran
- */
 @Service
-public class ClienteTransaction {
+public class ClienteService {
 
     @Autowired
     private ClienteDao clienteDao;
