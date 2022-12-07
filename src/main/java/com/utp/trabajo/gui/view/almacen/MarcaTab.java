@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view.almacen;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Marca;
 import com.utp.trabajo.services.MarcaService;
 import com.utp.trabajo.services.security.SecurityService;
@@ -426,7 +427,11 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
             c.setIdMarca((long) (id));
             c.setNombreMarca(nombreMarcaField.getText());
 
-            marcaService.nuevaMarca(c); // implementar swingworker
+            try {
+                marcaService.nuevaMarca(c); // implementar swingworker
+            } catch (NotEnoughPermissionsException ex) {
+                Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         nuevaMarcaDialog.setVisible(false);
     }//GEN-LAST:event_guardarMarcaButtonActionPerformed
@@ -444,7 +449,11 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
         for (Marca cliente : getSelectedRows()) {
             selectedMarcasId.add(cliente.getIdMarca());
         }
-        List<Marca> marcaEliminados = marcaService.eliminarMarca(selectedMarcasId);
+        try {
+            List<Marca> marcaEliminados = marcaService.eliminarMarca(selectedMarcasId);
+        } catch (NotEnoughPermissionsException ex) {
+            Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_eliminarMarcaButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

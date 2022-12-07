@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view.compras;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.Compra;
 import com.utp.trabajo.model.entities.MetodoPago;
 import com.utp.trabajo.services.ComprasService;
@@ -544,7 +545,11 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         for (Compra compra : getSelectedRows()) {
             selectedComprasId.add(compra.getIdCompra());
         }
-        //List<Compra> comprasEliminados = comprasService.eliminarCompra(selectedComprasId);
+        try {
+            List<Compra> comprasEliminados = comprasService.eliminarCompra(selectedComprasId);
+        } catch (NotEnoughPermissionsException ex) {
+            Logger.getLogger(ListaComprasTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         retrieveData(true);
     }//GEN-LAST:event_eliminarCompraButtonActionPerformed

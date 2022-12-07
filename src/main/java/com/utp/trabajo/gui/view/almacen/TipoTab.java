@@ -4,6 +4,7 @@
  */
 package com.utp.trabajo.gui.view.almacen;
 
+import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.entities.TipoProducto;
 import com.utp.trabajo.services.TipoProductoService;
 import com.utp.trabajo.services.security.SecurityService;
@@ -388,17 +389,19 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nuevoTipoButton)
-                    .addComponent(editarTipoButton)
-                    .addComponent(eliminarTipoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(eliminarTipoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nuevoTipoButton)
+                        .addComponent(editarTipoButton)))
                 .addGap(6, 6, 6)
                 .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loadMoreButton)
-                    .addComponent(reloadTableButton)
-                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(busyLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(loadMoreButton)
+                        .addComponent(reloadTableButton)))
                 .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -408,7 +411,11 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         for (TipoProducto cliente : getSelectedRows()) {
             selectedMarcasId.add(cliente.getIdTipoProducto());
         }
-        List<TipoProducto> marcaEliminados = tipoproductoService.eliminarTipoProducto(selectedMarcasId);
+        try {
+            List<TipoProducto> marcaEliminados = tipoproductoService.eliminarTipoProducto(selectedMarcasId);
+        } catch (NotEnoughPermissionsException ex) {
+            Logger.getLogger(TipoTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_eliminarTipoButtonActionPerformed
 
     private void nuevoTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoTipoButtonActionPerformed
@@ -457,7 +464,11 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             c.setIdTipoProducto((long) (id));
             c.setTipo(tipoField.getText());
 
-            tipoproductoService.nuevoTipoProducto(c); // implementar swingworker
+            try {
+                tipoproductoService.nuevoTipoProducto(c); // implementar swingworker
+            } catch (NotEnoughPermissionsException ex) {
+                Logger.getLogger(TipoTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         nuevoTipoDialog.setVisible(false);
     }//GEN-LAST:event_guardarTipoButtonActionPerformed
