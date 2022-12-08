@@ -1,8 +1,8 @@
 package com.utp.trabajo.gui.view.compras;
 
-public class TipoDistribucion extends org.jdesktop.swingx.JXPanel {
+public class DetalleCompra extends org.jdesktop.swingx.JXPanel {
     
-    public TipoDistribucion() {
+    public DetalleCompra() {
         initComponents();
     }
     
