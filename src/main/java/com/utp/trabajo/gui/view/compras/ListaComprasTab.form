@@ -161,11 +161,11 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="detalleCompraScrollPane" alignment="1" max="32767" attributes="0"/>
+              <Component id="detalleCompraScrollPane" alignment="0" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="231" max="32767" attributes="0"/>
+                  <EmptySpace pref="393" max="32767" attributes="0"/>
                   <Component id="detalleCompraLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="210" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="335" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -175,7 +175,8 @@
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Component id="detalleCompraLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="detalleCompraScrollPane" pref="456" max="32767" attributes="0"/>
+                  <Component id="detalleCompraScrollPane" pref="500" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -218,12 +219,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+              <Component id="estadoCompraScrollPane" alignment="1" pref="998" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="398" max="-2" attributes="0"/>
                   <Component id="estadoCompraLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="125" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
-              <Component id="estadoCompraScrollPane" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -232,7 +233,7 @@
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="estadoCompraLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="estadoCompraScrollPane" pref="281" max="32767" attributes="0"/>
+                  <Component id="estadoCompraScrollPane" pref="520" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -300,7 +301,7 @@
                       <Component id="editarCompraButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="eliminarCompraButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="135" max="32767" attributes="0"/>
+                      <EmptySpace pref="515" max="32767" attributes="0"/>
                       <Component id="DetallesCompraButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="VerEstadoCompraButton" min="-2" max="-2" attributes="0"/>
@@ -332,7 +333,7 @@
                   </Group>
                   <Component id="busyLabel" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="185" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -343,7 +344,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="661" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="1079" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Component id="scrollPane" alignment="0" pref="699" max="32767" attributes="0"/>
               </Group>
@@ -358,7 +359,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="442" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="501" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Component id="scrollPane" alignment="0" pref="442" max="32767" attributes="0"/>
               </Group>
