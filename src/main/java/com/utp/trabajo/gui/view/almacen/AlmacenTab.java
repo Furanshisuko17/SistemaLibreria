@@ -293,6 +293,13 @@ public class AlmacenTab extends javax.swing.JPanel {
 
         nuevoAlmacenDialog = new javax.swing.JDialog();
         guardarAlmacenButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator5 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
         nuevoAlmacenButton = new javax.swing.JButton();
         editarAlmacenButton = new javax.swing.JButton();
         eliminarAlmacenButton = new javax.swing.JButton();
@@ -306,21 +313,45 @@ public class AlmacenTab extends javax.swing.JPanel {
 
         guardarAlmacenButton.setText("Guardar");
 
+        jButton1.setText("jButton1");
+
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout nuevoAlmacenDialogLayout = new javax.swing.GroupLayout(nuevoAlmacenDialog.getContentPane());
         nuevoAlmacenDialog.getContentPane().setLayout(nuevoAlmacenDialogLayout);
         nuevoAlmacenDialogLayout.setHorizontalGroup(
             nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
-                .addContainerGap(242, Short.MAX_VALUE)
-                .addComponent(guardarAlmacenButton)
-                .addGap(86, 86, 86))
+            .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(319, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
+                        .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(guardarAlmacenButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)))
+                        .addGap(1, 1, 1))))
+            .addComponent(jSeparator5)
         );
         nuevoAlmacenDialogLayout.setVerticalGroup(
             nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
-                .addContainerGap(258, Short.MAX_VALUE)
-                .addComponent(guardarAlmacenButton)
-                .addGap(20, 20, 20))
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(guardarAlmacenButton)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18))
         );
 
         nuevoAlmacenButton.setText("Nuevo");
@@ -455,7 +486,14 @@ public class AlmacenTab extends javax.swing.JPanel {
     private javax.swing.JButton editarAlmacenButton;
     private javax.swing.JButton eliminarAlmacenButton;
     private javax.swing.JButton guardarAlmacenButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JButton nuevoAlmacenButton;
     private javax.swing.JDialog nuevoAlmacenDialog;
