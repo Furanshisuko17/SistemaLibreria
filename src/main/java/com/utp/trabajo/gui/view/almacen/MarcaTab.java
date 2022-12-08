@@ -300,6 +300,8 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                 .addGap(19, 19, 19))
         );
 
+        setPreferredSize(new java.awt.Dimension(626, 419));
+
         tablaMarca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -363,7 +365,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                         .addGap(18, 18, 18)
                         .addComponent(eliminarMarcaButton)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -375,7 +377,7 @@ public class MarcaTab extends org.jdesktop.swingx.JXPanel {
                     .addComponent(editarMarcaButton)
                     .addComponent(eliminarMarcaButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

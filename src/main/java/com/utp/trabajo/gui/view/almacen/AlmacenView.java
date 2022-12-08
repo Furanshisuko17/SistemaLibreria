@@ -35,7 +35,7 @@ public class AlmacenView extends javax.swing.JInternalFrame {
         tabbedPane.add("Marca del Producto", getMarcaTabInstance());
         tabbedPane.add("Tipo de Producto", getTipoTabInstance());
         
-        tabbedPane.add("Almacen", getTipoTabInstance());
+        tabbedPane.add("Almacen", getAlmacenTabInstance());
         //Colocar tabs aquí
 
         setVisible(true);
@@ -84,11 +84,11 @@ public class AlmacenView extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
         );
 
         pack();
