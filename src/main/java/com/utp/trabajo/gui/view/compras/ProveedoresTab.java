@@ -28,23 +28,13 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
             switch (columnIndex) {
                 case 0:
                     return Long.class;
-                case 1:
-                    return String.class;
-                case 2:
-                    return String.class;
-                case 3:
-                    return String.class; //maybe just String?
-                case 4:
-                    return Integer.class;
-                case 5:
-                    return String.class;
                 default:
                     return String.class;
             }
         }
     };
 
-    String[] columnNames = {"IdProveedor", "Nombre", "Direccion", "RUC", "Teléfono", "Tipo de comercio"};
+    String[] columnNames = {"ID", "Nombre", "Direccion", "RUC", "Teléfono", "Tipo de comercio"};
 
     ListSelectionModel selectionModel;
 
@@ -57,7 +47,7 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
     private long lastId = 0;
 
-    private long rowsPerUpdate = 10;
+    private long rowsPerUpdate = 100;
     @Autowired
     private SecurityService securityService;
 
@@ -158,14 +148,14 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setText("");
     }
     private void addDataToTable(List<Proveedor> data) {
-        data.forEach(cliente -> {
+        data.forEach(proveedor -> {
             Vector vec = new Vector();
-            vec.add(cliente.getIdProveedor());
-            vec.add(cliente.getNombre());
-            vec.add(cliente.getRuc());
-            vec.add(cliente.getDireccion());
-            vec.add(cliente.getTelefono());
-            vec.add(cliente.getTipoComercio());
+            vec.add(proveedor.getIdProveedor());
+            vec.add(proveedor.getNombre());
+            vec.add(proveedor.getRuc());
+            vec.add(proveedor.getDireccion());
+            vec.add(proveedor.getTelefono());
+            vec.add(proveedor.getTipoComercio());
             defaultTableModelProveedores.addRow(vec);
         });
     }
@@ -299,6 +289,8 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         guardarProveedorButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
+        scrollPane = new javax.swing.JScrollPane();
+        tablaProveedores = new org.jdesktop.swingx.JXTable();
         nuevoProveedorButton = new javax.swing.JButton();
         editarProveedorButton = new javax.swing.JButton();
         eliminarProveedorButton = new javax.swing.JButton();
@@ -306,8 +298,6 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
         loadMoreButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         contadorProveedoresLabel = new javax.swing.JLabel();
-        scrollPane = new javax.swing.JScrollPane();
-        tablaProveedores = new org.jdesktop.swingx.JXTable();
 
         nuevoProveedorDialog.setResizable(false);
         nuevoProveedorDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -430,7 +420,19 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
         tableInformationLabel.setText("Sin datos.");
 
+        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tablaProveedores.setColumnControlVisible(true);
+        scrollPane.setViewportView(tablaProveedores);
+
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -442,15 +444,19 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(tableInformationLabel)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 287, Short.MAX_VALUE)
+            .addGap(0, 333, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(tableInformationLabel)
                     .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
         );
 
         nuevoProveedorButton.setText("Nuevo");
@@ -493,17 +499,6 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
 
         contadorProveedoresLabel.setText("Cargando...");
 
-        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tablaProveedores.setColumnControlVisible(true);
-        scrollPane.setViewportView(tablaProveedores);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -522,26 +517,26 @@ public class ProveedoresTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(nuevoProveedorButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarProveedorButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(eliminarProveedorButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(contadorProveedoresLabel)
-                        .addGap(27, 27, 27))
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+                        .addComponent(contadorProveedoresLabel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nuevoProveedorButton)
-                    .addComponent(editarProveedorButton)
-                    .addComponent(eliminarProveedorButton)
-                    .addComponent(contadorProveedoresLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nuevoProveedorButton)
+                            .addComponent(editarProveedorButton)
+                            .addComponent(eliminarProveedorButton))
+                        .addGap(6, 6, 6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(contadorProveedoresLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jLayeredPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

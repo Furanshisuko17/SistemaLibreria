@@ -5,6 +5,7 @@ import com.utp.trabajo.services.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
+import java.beans.PropertyVetoException;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.ObjectFactory;
@@ -25,6 +26,10 @@ public class ComprasView extends javax.swing.JInternalFrame {
 
     public ComprasView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
 
     @PostConstruct

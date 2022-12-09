@@ -5,11 +5,13 @@ import com.utp.trabajo.model.entities.Cliente;
 import com.utp.trabajo.services.ClienteService;
 import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.OptionPaneService;
+import hu.akarnokd.rxjava3.swing.SwingObservable;
 import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -60,7 +62,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
     private long lastId = 0;
 
-    private long rowsPerUpdate = 10;
+    private long rowsPerUpdate = 100;
 
     @Autowired
     private SecurityService securityService;
@@ -71,8 +73,11 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     public ClientesTab() {
         initComponents();
         initTableClientes();
-
-        System.out.println("Clientes tab - Nueva instancia!");
+               
+        SwingObservable.document(searchField.getDocument())
+            .debounce(1, TimeUnit.SECONDS)
+            .map(documentEvent -> searchField.getText())
+            .subscribe(System.out::println);
     }
 
     @PostConstruct
@@ -114,7 +119,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
-        tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
         setIdle();
         eliminarClienteButton.setEnabled(false);
         editarClienteButton.setEnabled(false);
@@ -285,7 +290,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         }
         return idClientes;
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -318,6 +323,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         eliminarClienteButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         contadorClientesLabel = new javax.swing.JLabel();
+        searchField = new org.jdesktop.swingx.JXSearchField();
 
         nuevoClienteDialog.setTitle("Nuevo cliente");
         nuevoClienteDialog.setAlwaysOnTop(true);
@@ -466,7 +472,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -514,6 +520,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
         contadorClientesLabel.setText("Cargando...");
 
+        searchField.setPrompt("Buscar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -523,6 +531,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nuevoClienteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarClienteButton)
@@ -531,7 +541,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contadorClientesLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -546,7 +556,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(nuevoClienteButton)
                         .addComponent(editarClienteButton)
-                        .addComponent(eliminarClienteButton))
+                        .addComponent(eliminarClienteButton)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(contadorClientesLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
@@ -785,6 +796,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         cancelarCreacionCliente();
     }//GEN-LAST:event_nuevoClienteDialogWindowClosing
     
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarCreacionClienteButton;
@@ -810,6 +822,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JLabel razonSocialLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
+    private org.jdesktop.swingx.JXSearchField searchField;
     private org.jdesktop.swingx.JXTable tablaClientes;
     private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JTextField telefonoField;

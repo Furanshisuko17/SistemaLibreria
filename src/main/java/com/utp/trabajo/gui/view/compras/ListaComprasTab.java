@@ -5,10 +5,12 @@ import com.utp.trabajo.model.entities.Compra;
 import com.utp.trabajo.model.entities.MetodoPago;
 import com.utp.trabajo.services.ComprasService;
 import com.utp.trabajo.services.security.SecurityService;
+import com.utp.trabajo.services.util.DateTableCellRenderer;
 import java.awt.event.AdjustmentEvent;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -29,13 +31,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 case 0:
                     return Long.class;
                 case 1:
-                    return Timestamp.class;
+                    return Date.class;
                 case 2:
                     return String.class;
                 case 3:
                     return BigInteger.class;
                 case 4:
-                    return MetodoPago.class;
+                    return String.class;
                 case 5:
                     return BigInteger.class;
                 default:
@@ -43,7 +45,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
             }
         }
     };
-    String[] columnNames = {"IdCompra", "Fecha Compra", "Transporte", "Descuento", "Metodo Pago", "Precio Total"};
+    String[] columnNames = {"ID", "Fecha de compra", "Transporte", "Descuento", "Metodo de pago", "Precio total"};
 
     ListSelectionModel selectionModel;
     private boolean retrievingData = false;
@@ -63,8 +65,23 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
     public ListaComprasTab() {
         initComponents();
+        initTable();
+
+        nuevaCompraDialog.pack();
+        nuevaCompraDialog.setLocationRelativeTo(this);
+        System.out.println("Compras tab - Nueva instancia!");
+    }
+
+    @PostConstruct
+    public void init() {
+        checkPermissions();
+        retrieveData(false);
+    }
+    
+    private void initTable() {
         defaultTableModelCompras.setColumnIdentifiers(columnNames);
-        VerDetallesButton.setModel(defaultTableModelCompras);
+        tablaCompras.setModel(defaultTableModelCompras);
+        tablaCompras.getColumnModel().getColumn(1).setCellRenderer(new DateTableCellRenderer(true));
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
                 return;
@@ -78,7 +95,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
             }
         });
 
-        selectionModel = VerDetallesButton.getSelectionModel();
+        selectionModel = tablaCompras.getSelectionModel();
         selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
             if (!canDelete || !canEdit) {
                 return;
@@ -103,16 +120,6 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1.removeAll();
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
-
-        nuevaCompraDialog.pack();
-        nuevaCompraDialog.setLocationRelativeTo(this);
-        System.out.println("Compras tab - Nueva instancia!");
-    }
-
-    @PostConstruct
-    public void init() {
-        checkPermissions();
-        retrieveData(false);
     }
 
     private void checkPermissions() {
@@ -186,7 +193,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                         values[1] = compra.getFechaCompra();
                         values[2] = compra.getTransporte();
                         values[3] = compra.getDescuento();
-                        values[4] = compra.getMetodoPago();
+                        values[4] = compra.getMetodoPago().getMetodoPago();
                         values[5] = compra.getPrecioTotal();
                         defaultTableModelCompras.addRow(values);
                     }
@@ -218,7 +225,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         List<Compra> compras = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
             //System.out.println(i);
-            i = VerDetallesButton.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
+            i = tablaCompras.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
             Compra c = new Compra();
             c.setIdCompra((Long) defaultTableModelCompras.getValueAt(i, 0));
             c.setFechaCompra((Timestamp) defaultTableModelCompras.getValueAt(i, 1));
@@ -267,7 +274,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
-        VerDetallesButton = new org.jdesktop.swingx.JXTable();
+        tablaCompras = new org.jdesktop.swingx.JXTable();
         nuevaCompraButton = new javax.swing.JButton();
         editarCompraButton = new javax.swing.JButton();
         eliminarCompraButton = new javax.swing.JButton();
@@ -444,7 +451,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
         tableInformationLabel.setText("Sin datos.");
 
-        VerDetallesButton.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -452,8 +459,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
             }
         ));
-        VerDetallesButton.setColumnControlVisible(true);
-        scrollPane.setViewportView(VerDetallesButton);
+        tablaCompras.setColumnControlVisible(true);
+        scrollPane.setViewportView(tablaCompras);
 
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -462,7 +469,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1079, Short.MAX_VALUE)
+            .addGap(0, 778, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -473,7 +480,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 501, Short.MAX_VALUE)
+            .addGap(0, 349, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,7 +562,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(editarCompraButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(eliminarCompraButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 515, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
                         .addComponent(DetallesCompraButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(VerEstadoCompraButton)
@@ -580,7 +587,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(reloadButton)
                         .addComponent(loadMoreButton))
                     .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -678,7 +685,6 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DetallesCompraButton;
     private javax.swing.JTextField IdCompraField;
-    private org.jdesktop.swingx.JXTable VerDetallesButton;
     private javax.swing.JButton VerEstadoCompraButton;
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarNuevaCompraButton;
@@ -709,6 +715,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JTextField precioTotalField;
     private javax.swing.JButton reloadButton;
     private javax.swing.JScrollPane scrollPane;
+    private org.jdesktop.swingx.JXTable tablaCompras;
     private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JDialog verDetallesDialog;
     private javax.swing.JDialog verEstadoDialog;

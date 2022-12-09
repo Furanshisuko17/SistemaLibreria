@@ -5,6 +5,7 @@ import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
 import com.utp.trabajo.services.VentasService;
 import com.utp.trabajo.services.security.SecurityService;
+import java.beans.PropertyVetoException;
 import javax.annotation.PostConstruct;
 import javax.swing.UIManager;
 import org.springframework.beans.factory.ObjectFactory;
@@ -28,6 +29,10 @@ public class VentasView extends javax.swing.JInternalFrame {
 
     public VentasView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
 
     @PostConstruct
@@ -64,7 +69,7 @@ public class VentasView extends javax.swing.JInternalFrame {
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
-        tabbedPane.add("Nueva venta", getNuevaVentaTabInstance());
+        //tabbedPane.add("Nueva venta", getNuevaVentaTabInstance());
         tabbedPane.add("Ventas", getVentasTabInstance());
         
         setVisible(true);

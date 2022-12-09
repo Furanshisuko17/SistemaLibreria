@@ -74,7 +74,7 @@ public class AuthService {
         clearSession();
         Object off = shutdownEndpoint.shutdown(); 
         System.out.println(off);
-        //SistemaLibreriaApplication.restart(); // not working, no workarounds were found 09/11/2022, 4:23PM
+        //working but it just closes the app
     }
 
     private boolean clearSession() {

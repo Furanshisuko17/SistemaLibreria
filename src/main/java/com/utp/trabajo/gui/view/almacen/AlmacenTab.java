@@ -20,7 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AlmacenTab extends javax.swing.JPanel {
+public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
 
     DefaultTableModel defaultTableModelAlmacen = new DefaultTableModel() {
         @Override
@@ -29,24 +29,20 @@ public class AlmacenTab extends javax.swing.JPanel {
                 case 0:
                     return Long.class;
                 case 1:
-                    return Integer.class;
+                    return Long.class;
                 case 2:
                     return Integer.class;
                 case 3:
                     return Integer.class;
                 case 4:
-                    return Integer.class;
-                case 5:
                     return String.class;
-                case 6:
-                    return Integer.class;
                 default:
                     return String.class;
             }
         }
 
     };
-    String[] columnNames = {"ID", "Stock", "Stock Inicial", "Stock Minimo", "Columna", "Estanteria", "Fila"};
+    String[] columnNames = {"ID", "Stock", "Stock inicial", "Stock mínimo", "Ubicación"};
     
     ListSelectionModel selectionModel;
     private boolean canRead = true;
@@ -169,9 +165,7 @@ public class AlmacenTab extends javax.swing.JPanel {
             vec.add(almacen.getStock());
             vec.add(almacen.getStockInicial());
             vec.add(almacen.getStockMinimo());
-            vec.add(almacen.getColumna());
-            vec.add(almacen.getEstanteria());
-            vec.add(almacen.getFila());
+            vec.add(almacen.getEstanteria() + almacen.getColumna() + almacen.getFila());
             defaultTableModelAlmacen.addRow(vec);
         });
     }
@@ -383,14 +377,11 @@ public class AlmacenTab extends javax.swing.JPanel {
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollPane)
-                .addContainerGap())
+            .addComponent(scrollPane)
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
         );
 
         loadMoreButton.setText("Cargar más entradas");
@@ -420,9 +411,8 @@ public class AlmacenTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
                         .addComponent(loadMoreButton)
                         .addGap(18, 18, 18)
                         .addComponent(reloadTableButton)
@@ -432,9 +422,9 @@ public class AlmacenTab extends javax.swing.JPanel {
                             .addComponent(jLayeredPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(nuevoAlmacenButton)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(editarAlmacenButton)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(eliminarAlmacenButton)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
@@ -459,8 +449,8 @@ public class AlmacenTab extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(loadMoreButton)
                         .addComponent(reloadTableButton))
-                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                    .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(201, 201, 201)

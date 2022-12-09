@@ -1,6 +1,6 @@
 package com.utp.trabajo.gui.view.ventas;
 
-public class NuevaVentaTab extends javax.swing.JPanel {
+public class NuevaVentaTab extends org.jdesktop.swingx.JXPanel {
 
     public NuevaVentaTab() {
         initComponents();

@@ -1128,8 +1128,6 @@ public class MainView extends javax.swing.JFrame {
         closeAllInternalWindows();
         this.dispose();
         authService.logout();
-        //Thread.currentThread().interrupt();
-        //DONE: redo this by restarting the context application
         //TODO: low priority, place a loading window while logging out
     }//GEN-LAST:event_logoutButtonActionPerformed
 

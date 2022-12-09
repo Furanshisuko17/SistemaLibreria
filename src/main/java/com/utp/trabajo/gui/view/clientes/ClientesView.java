@@ -2,6 +2,7 @@ package com.utp.trabajo.gui.view.clientes;
 
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
+import java.beans.PropertyVetoException;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class ClientesView extends javax.swing.JInternalFrame {
 
     public ClientesView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
     
     @PostConstruct

@@ -4,6 +4,7 @@ import com.utp.trabajo.gui.view.productos.ProductoTab;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
 import com.utp.trabajo.services.security.SecurityService;
+import java.beans.PropertyVetoException;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,21 +22,26 @@ public class AlmacenView extends javax.swing.JInternalFrame {
 
     public AlmacenView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
 
     @PostConstruct
     private void init() {
         setFrameIcon(iconos.iconoAlmacen);
+        
     }
 
     public void abrirVentana() {
         setVisible(false);
         com.formdev.flatlaf.FlatLaf.updateUI();
 
-        tabbedPane.add("Marca del Producto", getMarcaTabInstance());
-        tabbedPane.add("Tipo de Producto", getTipoTabInstance());
+        tabbedPane.add("Almacén", getAlmacenTabInstance());
+        tabbedPane.add("Marcas", getMarcaTabInstance());
+        tabbedPane.add("Tipos de productos", getTipoTabInstance());
         
-        tabbedPane.add("Almacen", getAlmacenTabInstance());
         //Colocar tabs aquí
 
         setVisible(true);

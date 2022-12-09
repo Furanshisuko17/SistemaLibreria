@@ -2,6 +2,9 @@ package com.utp.trabajo.gui.view.productos;
 
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,16 @@ public class ProductosView extends javax.swing.JInternalFrame {
 
     public ProductosView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
     
     @PostConstruct
     private void init() {
         setFrameIcon(iconos.iconoProducto);
+        
     }
 
     public void abrirVentana() {

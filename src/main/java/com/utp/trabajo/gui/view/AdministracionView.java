@@ -3,6 +3,7 @@ package com.utp.trabajo.gui.view;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.UtilService;
+import java.beans.PropertyVetoException;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,10 @@ public class AdministracionView extends javax.swing.JInternalFrame {
 
     public AdministracionView() {
         initComponents();
+        try {
+            setMaximum(true);
+        } catch (PropertyVetoException ex) {
+        }
     }
 
     @PostConstruct

@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
-public class VentasTab extends javax.swing.JPanel {
+public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
     DefaultTableModel defaultTableModelVentas = new DefaultTableModel() {
         @Override
