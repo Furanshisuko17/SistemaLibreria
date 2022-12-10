@@ -237,7 +237,6 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         }
         return compras;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -383,35 +382,39 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
         detalleCompraTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "IDdetalleCompra", "Cantidad", "Fecha llegada", "Fecha salida", "Precio"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         detalleCompraScrollPane.setViewportView(detalleCompraTable);
 
         javax.swing.GroupLayout verDetallesDialogLayout = new javax.swing.GroupLayout(verDetallesDialog.getContentPane());
         verDetallesDialog.getContentPane().setLayout(verDetallesDialogLayout);
         verDetallesDialogLayout.setHorizontalGroup(
             verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(detalleCompraScrollPane)
+            .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verDetallesDialogLayout.createSequentialGroup()
-                .addContainerGap(393, Short.MAX_VALUE)
+                .addContainerGap(449, Short.MAX_VALUE)
                 .addComponent(detalleCompraLabel)
-                .addGap(335, 335, 335))
+                .addGap(394, 394, 394))
         );
         verDetallesDialogLayout.setVerticalGroup(
             verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(verDetallesDialogLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(detalleCompraLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -419,26 +422,31 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
         estadoCompraTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "ID estadoCompra", "Estado"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         estadoCompraScrollPane.setViewportView(estadoCompraTable);
 
         javax.swing.GroupLayout verEstadoDialogLayout = new javax.swing.GroupLayout(verEstadoDialog.getContentPane());
         verEstadoDialog.getContentPane().setLayout(verEstadoDialogLayout);
         verEstadoDialogLayout.setHorizontalGroup(
             verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 998, Short.MAX_VALUE)
-            .addGroup(verEstadoDialogLayout.createSequentialGroup()
-                .addGap(398, 398, 398)
+            .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verEstadoDialogLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(estadoCompraLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(112, 112, 112))
         );
         verEstadoDialogLayout.setVerticalGroup(
             verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +454,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addGap(15, 15, 15)
                 .addComponent(estadoCompraLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
+                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
         );
 
         tableInformationLabel.setText("Sin datos.");
@@ -675,6 +683,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     private void DetallesCompraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetallesCompraButtonActionPerformed
         // TODO add your handling code here:
         verDetallesDialog.setVisible(true);
+        int FilaSeleccionada=detalleCompraTable.getSelectedRow();
+        
     }//GEN-LAST:event_DetallesCompraButtonActionPerformed
 
     private void VerEstadoCompraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerEstadoCompraButtonActionPerformed
