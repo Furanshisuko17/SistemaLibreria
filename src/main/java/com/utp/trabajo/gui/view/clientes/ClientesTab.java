@@ -89,6 +89,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private void initTableClientes() {
         defaultTableModelClientes.setColumnIdentifiers(columnNames);
         tablaClientes.setModel(defaultTableModelClientes);
+        tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
+        
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
                 return;
@@ -119,7 +121,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         });
-        tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
         setIdle();
         eliminarClienteButton.setEnabled(false);
         editarClienteButton.setEnabled(false);
@@ -472,7 +473,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -541,7 +542,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contadorClientesLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

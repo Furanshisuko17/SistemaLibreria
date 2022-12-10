@@ -24,6 +24,7 @@ public class IconService {
     public FlatSVGIcon iconoLogout;
     public FlatSVGIcon iconoProducto;
     public FlatSVGIcon iconoCliente;
+    public FlatSVGIcon iconoNuevaVenta;
     
     //public FlatSVGIcon icono;
     /**
@@ -44,6 +45,7 @@ public class IconService {
         iconoLogout = utilService.getIcon("logoutIcon", 16);
         iconoProducto = utilService.getIcon("productosIcono", 16);
         iconoCliente = utilService.getIcon("clienteIcono", 16);
+        iconoNuevaVenta = utilService.getIcon("nuevaVentaIcono", 16);
     }
 
 }

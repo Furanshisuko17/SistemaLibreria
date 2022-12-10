@@ -1,7 +1,7 @@
 
 package com.utp.trabajo.configuration;
 
-import com.utp.trabajo.gui.view.ventas.NuevaVentaTab;
+import com.utp.trabajo.gui.view.ventas.NuevaVentaWindow;
 import com.utp.trabajo.gui.view.ventas.VentasTab;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,8 @@ public class VentasBeans {
     
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public NuevaVentaTab nuevaVentaTabPrototype() {
-        return new NuevaVentaTab();
+    public NuevaVentaWindow nuevaVentaTabPrototype() {
+        return new NuevaVentaWindow();
     }
 
     @Bean

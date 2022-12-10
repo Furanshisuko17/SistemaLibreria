@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 @org.springframework.stereotype.Component
-public class MainView extends javax.swing.JFrame {
+public class MainView extends org.jdesktop.swingx.JXFrame {
 
     //TODO: Implementar un menu principal
     @Autowired
