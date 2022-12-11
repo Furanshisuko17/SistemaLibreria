@@ -65,6 +65,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
 
     public ListaComprasTab() {
         initComponents();
+        //TABLA DE DETALLE COMPRA
+        DetalleCompra detalleCompraTable1=new DetalleCompra();
+        detalleCompraTable1.setVisible(true);
+        
+        //TABLA DE ESTADO COMPRA
+        EstadoCompra estadoCompraTable1=new EstadoCompra();
+        estadoCompraTable1.setVisible(true);
         initTable();
 
         nuevaCompraDialog.pack();
@@ -265,11 +272,29 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         verDetallesDialog = new javax.swing.JDialog();
         detalleCompraLabel = new javax.swing.JLabel();
         detalleCompraScrollPane = new javax.swing.JScrollPane();
-        detalleCompraTable = new org.jdesktop.swingx.JXTable();
+        detalleCompraTable2 = new org.jdesktop.swingx.JXTable();
+        jButton1 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        cantidadField = new javax.swing.JTextField();
+        idDetalleCompraField = new javax.swing.JTextField();
+        fechaLlegadaField = new javax.swing.JTextField();
+        fechaSalidaField = new javax.swing.JTextField();
+        precioField = new javax.swing.JTextField();
+        guardarDetallesButton = new javax.swing.JButton();
         verEstadoDialog = new javax.swing.JDialog();
         estadoCompraLabel = new javax.swing.JLabel();
         estadoCompraScrollPane = new javax.swing.JScrollPane();
-        estadoCompraTable = new org.jdesktop.swingx.JXTable();
+        estadoCompraTable2 = new org.jdesktop.swingx.JXTable();
+        jLabel12 = new javax.swing.JLabel();
+        idEstadoCompraField = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        estadoField = new javax.swing.JTextField();
+        agregarButton = new javax.swing.JButton();
+        pasarDatosButton = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
@@ -378,9 +403,9 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         );
 
         detalleCompraLabel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        detalleCompraLabel.setText("DETALLES DE LAS COMPRAS");
+        detalleCompraLabel.setText("EDITAR DETALLES");
 
-        detalleCompraTable.setModel(new javax.swing.table.DefaultTableModel(
+        detalleCompraTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -396,31 +421,109 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 return types [columnIndex];
             }
         });
-        detalleCompraScrollPane.setViewportView(detalleCompraTable);
+        detalleCompraScrollPane.setViewportView(detalleCompraTable2);
+
+        jButton1.setText("Transferir fila seleccionada a la otra tabla");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("IDdetalleCompra");
+
+        jLabel8.setText("Cantidad");
+
+        jLabel9.setText("Fecha de Llegada");
+
+        jLabel10.setText("Fecha de Salida");
+
+        jLabel11.setText("Precio");
+
+        guardarDetallesButton.setText("Guardar");
+        guardarDetallesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarDetallesButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout verDetallesDialogLayout = new javax.swing.GroupLayout(verDetallesDialog.getContentPane());
         verDetallesDialog.getContentPane().setLayout(verDetallesDialogLayout);
         verDetallesDialogLayout.setHorizontalGroup(
             verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verDetallesDialogLayout.createSequentialGroup()
-                .addContainerGap(449, Short.MAX_VALUE)
-                .addComponent(detalleCompraLabel)
-                .addGap(394, 394, 394))
+            .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                        .addComponent(guardarDetallesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(393, 393, 393))
+                    .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addGap(79, 79, 79)
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fechaLlegadaField)
+                            .addComponent(idDetalleCompraField)
+                            .addComponent(cantidadField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                                .addComponent(detalleCompraLabel)
+                                .addGap(394, 394, 394))
+                            .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11))
+                                .addGap(18, 18, 18)
+                                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fechaSalidaField)
+                                    .addComponent(precioField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                                .addGap(356, 356, 356))))))
         );
         verDetallesDialogLayout.setVerticalGroup(
             verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(verDetallesDialogLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(detalleCompraLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(detalleCompraLabel)
+                        .addGap(32, 32, 32)
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(fechaSalidaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(idDetalleCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(cantidadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(17, 17, 17)
+                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(fechaLlegadaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(precioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(guardarDetallesButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         estadoCompraLabel.setText("ESTADO DE LA COMPRA");
 
-        estadoCompraTable.setModel(new javax.swing.table.DefaultTableModel(
+        estadoCompraTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -436,7 +539,31 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 return types [columnIndex];
             }
         });
-        estadoCompraScrollPane.setViewportView(estadoCompraTable);
+        estadoCompraScrollPane.setViewportView(estadoCompraTable2);
+
+        jLabel12.setText("ID estadoCompra");
+
+        jLabel13.setText("Estado");
+
+        estadoField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoFieldActionPerformed(evt);
+            }
+        });
+
+        agregarButton.setText("Agregar");
+        agregarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarButtonActionPerformed(evt);
+            }
+        });
+
+        pasarDatosButton.setText("Pasar a la tabla general");
+        pasarDatosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasarDatosButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout verEstadoDialogLayout = new javax.swing.GroupLayout(verEstadoDialog.getContentPane());
         verEstadoDialog.getContentPane().setLayout(verEstadoDialogLayout);
@@ -447,14 +574,43 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(estadoCompraLabel)
                 .addGap(112, 112, 112))
+            .addGroup(verEstadoDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(verEstadoDialogLayout.createSequentialGroup()
+                        .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13))
+                        .addGap(18, 18, 18)
+                        .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(estadoField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(idEstadoCompraField))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(verEstadoDialogLayout.createSequentialGroup()
+                        .addComponent(agregarButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pasarDatosButton)))
+                .addContainerGap())
         );
         verEstadoDialogLayout.setVerticalGroup(
             verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(verEstadoDialogLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(estadoCompraLabel)
+                .addGap(25, 25, 25)
+                .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(idEstadoCompraField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
+                .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(estadoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregarButton)
+                    .addComponent(pasarDatosButton))
+                .addGap(18, 18, 18)
+                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tableInformationLabel.setText("Sin datos.");
@@ -536,14 +692,16 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setBusy(true);
         busyLabel.setPreferredSize(new java.awt.Dimension(22, 22));
 
-        DetallesCompraButton.setText("VER DETALLES");
+        DetallesCompraButton.setText("EDITAR DETALLES");
+        DetallesCompraButton.setActionCommand("EDITAR DETALLES");
         DetallesCompraButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DetallesCompraButtonActionPerformed(evt);
             }
         });
 
-        VerEstadoCompraButton.setText("VER ESTADO DE PRODUCTOS");
+        VerEstadoCompraButton.setText("EDITAR ESTADO DE PRODUCTO");
+        VerEstadoCompraButton.setActionCommand("EDITAR ESTADO DE PRODUCTOS");
         VerEstadoCompraButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VerEstadoCompraButtonActionPerformed(evt);
@@ -570,7 +728,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(editarCompraButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(eliminarCompraButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                         .addComponent(DetallesCompraButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(VerEstadoCompraButton)
@@ -683,38 +841,119 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     private void DetallesCompraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetallesCompraButtonActionPerformed
         // TODO add your handling code here:
         verDetallesDialog.setVisible(true);
-        int FilaSeleccionada=detalleCompraTable.getSelectedRow();
+        int FilaSeleccionada=detalleCompraTable2.getSelectedRow();
         
     }//GEN-LAST:event_DetallesCompraButtonActionPerformed
 
     private void VerEstadoCompraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerEstadoCompraButtonActionPerformed
         // TODO add your handling code here:
         verEstadoDialog.setVisible(true);
+        
     }//GEN-LAST:event_VerEstadoCompraButtonActionPerformed
+    //PARA EL BOTON DE PASAR DATOS A OTRA TABLA(detalle compra)
+    DefaultTableModel modelo1;
+    public void nuevaTablaDC(){
+        //AL PASAR LOS DATOS, LIMPIAMOS LA PRIMERA FILA
+        modelo1=new DefaultTableModel();
+        detalleCompraTable2.setModel(modelo1);
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int FilaSeleccionada=detalleCompraTable2.getSelectedRow();
+        if (FilaSeleccionada>=0) {
+            String Datos[]=new String[5];
+            Datos[0]=detalleCompraTable2.getValueAt(FilaSeleccionada,0).toString();
+            Datos[1]=detalleCompraTable2.getValueAt(FilaSeleccionada,1).toString();
+            Datos[2]=detalleCompraTable2.getValueAt(FilaSeleccionada,2).toString();
+            Datos[3]=detalleCompraTable2.getValueAt(FilaSeleccionada,3).toString();
+            Datos[4]=detalleCompraTable2.getValueAt(FilaSeleccionada,4).toString();
+            
+            DetalleCompra.modelo2.addRow(Datos);
+            modelo1.removeRow(FilaSeleccionada);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void guardarDetallesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarDetallesButtonActionPerformed
+        // TODO add your handling code here:
+        String IDdetalleCompra=idDetalleCompraField.getText();
+        String Cantidad=cantidadField.getText();
+        String FechaLlegada=fechaLlegadaField.getText();
+        String FechaSalida=fechaSalidaField.getText();
+        String Precio=precioField.getText();
+        String Datos[]={IDdetalleCompra,Cantidad,FechaLlegada,FechaSalida,Precio};
+        modelo1.addRow(Datos);
+    }//GEN-LAST:event_guardarDetallesButtonActionPerformed
+
+    private void estadoFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoFieldActionPerformed
+    //PARA EL BOTON DE PASAR DATOS A OTRA TABLA(detalle compra)
+    DefaultTableModel modelo4;
+    public void nuevaTablaEC(){
+        //AL PASAR LOS DATOS, LIMPIAMOS LA PRIMERA FILA
+        modelo1=new DefaultTableModel();
+        estadoCompraTable2.setModel(modelo4);
+    }
+    private void pasarDatosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarDatosButtonActionPerformed
+        // TODO add your handling code here:
+        int FilaSeleccionada=estadoCompraTable2.getSelectedRow();
+        if (FilaSeleccionada>=0) {
+            String Datos[]=new String[2];
+            Datos[0]=detalleCompraTable2.getValueAt(FilaSeleccionada,0).toString();
+            Datos[1]=detalleCompraTable2.getValueAt(FilaSeleccionada,1).toString();
+            
+            EstadoCompra.modelo3.addRow(Datos);
+            modelo4.removeRow(FilaSeleccionada);
+        }
+    }//GEN-LAST:event_pasarDatosButtonActionPerformed
+
+    private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
+        // TODO add your handling code here:
+        String IDestadoCompra=idEstadoCompraField.getText();
+        String Estado=estadoField.getText();
+        String Datos[]={IDestadoCompra,Estado};
+        modelo4.addRow(Datos);
+    }//GEN-LAST:event_agregarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DetallesCompraButton;
     private javax.swing.JTextField IdCompraField;
     private javax.swing.JButton VerEstadoCompraButton;
+    private javax.swing.JButton agregarButton;
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarNuevaCompraButton;
+    private javax.swing.JTextField cantidadField;
     private javax.swing.JTextField descuentoField;
     private javax.swing.JLabel detalleCompraLabel;
     private javax.swing.JScrollPane detalleCompraScrollPane;
-    private org.jdesktop.swingx.JXTable detalleCompraTable;
+    private org.jdesktop.swingx.JXTable detalleCompraTable2;
     private javax.swing.JButton editarCompraButton;
     private javax.swing.JButton eliminarCompraButton;
     private javax.swing.JLabel estadoCompraLabel;
     private javax.swing.JScrollPane estadoCompraScrollPane;
-    private org.jdesktop.swingx.JXTable estadoCompraTable;
+    private org.jdesktop.swingx.JXTable estadoCompraTable2;
+    private javax.swing.JTextField estadoField;
     private javax.swing.JTextField fechaCompraField;
+    private javax.swing.JTextField fechaLlegadaField;
+    private javax.swing.JTextField fechaSalidaField;
     private javax.swing.JButton guardarButton;
+    private javax.swing.JButton guardarDetallesButton;
+    private javax.swing.JTextField idDetalleCompraField;
+    private javax.swing.JTextField idEstadoCompraField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -722,6 +961,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JTextField metodoPagoField;
     private javax.swing.JButton nuevaCompraButton;
     private javax.swing.JDialog nuevaCompraDialog;
+    private javax.swing.JButton pasarDatosButton;
+    private javax.swing.JTextField precioField;
     private javax.swing.JTextField precioTotalField;
     private javax.swing.JButton reloadButton;
     private javax.swing.JScrollPane scrollPane;
