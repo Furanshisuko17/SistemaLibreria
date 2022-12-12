@@ -1,6 +1,8 @@
 
 package com.utp.trabajo.configuration;
 
+import com.utp.trabajo.gui.view.compras.DetalleCompra;
+import com.utp.trabajo.gui.view.compras.EstadoCompra;
 import com.utp.trabajo.gui.view.compras.ListaComprasTab;
 import com.utp.trabajo.gui.view.compras.ProveedoresTab;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -22,6 +24,17 @@ public class ComprasBeans {
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
     public ProveedoresTab proveedoressTabPrototype() {
         return new ProveedoresTab();
+    }
+    
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public DetalleCompra detalleCompraPrototype() {
+        return new DetalleCompra();
+    }
+    @Bean
+    @Scope(BeanDefinition.SCOPE_PROTOTYPE)
+    public EstadoCompra estadoCompraPrototype() {
+        return new EstadoCompra();
     }
 
 }

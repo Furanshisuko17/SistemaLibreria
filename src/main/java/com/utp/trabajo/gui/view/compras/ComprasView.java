@@ -91,6 +91,18 @@ public class ComprasView extends javax.swing.JInternalFrame {
     public ListaComprasTab getListaComprasTabInstance() {
         return listaComprasTabObjectFactory.getObject();
     }
+    @Autowired
+    private ObjectFactory<EstadoCompra> estadoCompraObjectFactory;
+
+    public EstadoCompra getEstadoCompraInstance() {
+        return estadoCompraObjectFactory.getObject();
+    }
+    @Autowired
+    private ObjectFactory<DetalleCompra> detalleCompraObjectFactory;
+
+    public DetalleCompra getDetalleCompraInstance() {
+        return detalleCompraObjectFactory.getObject();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tabbedPane;
