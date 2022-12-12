@@ -73,11 +73,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     public ClientesTab() {
         initComponents();
         initTableClientes();
-               
-        SwingObservable.document(searchField.getDocument())
-            .debounce(1, TimeUnit.SECONDS)
-            .map(documentEvent -> searchField.getText())
-            .subscribe(System.out::println);
     }
 
     @PostConstruct
@@ -311,6 +306,23 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         cancelarCreacionClienteButton = new javax.swing.JButton();
         guardarClienteButton = new javax.swing.JButton();
         nuevoClienteBusyLabel = new org.jdesktop.swingx.JXBusyLabel();
+        editarClienteDialog = new javax.swing.JDialog();
+        nuevoClienteLabel1 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        dniLabel1 = new javax.swing.JLabel();
+        nombresLabel1 = new javax.swing.JLabel();
+        dniField1 = new javax.swing.JTextField();
+        nombresField1 = new javax.swing.JTextField();
+        direccionLabel1 = new javax.swing.JLabel();
+        direccionField1 = new javax.swing.JTextField();
+        telefonoLabel1 = new javax.swing.JLabel();
+        telefonoField1 = new javax.swing.JTextField();
+        estadoCivilLabel1 = new javax.swing.JLabel();
+        estadoCivilField1 = new javax.swing.JTextField();
+        jSeparator4 = new javax.swing.JSeparator();
+        cancelarCreacionClienteButton1 = new javax.swing.JButton();
+        guardarClienteButton1 = new javax.swing.JButton();
+        nuevoClienteBusyLabel1 = new org.jdesktop.swingx.JXBusyLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
@@ -322,7 +334,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         eliminarClienteButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         contadorClientesLabel = new javax.swing.JLabel();
-        searchField = new org.jdesktop.swingx.JXSearchField();
 
         nuevoClienteDialog.setTitle("Nuevo cliente");
         nuevoClienteDialog.setAlwaysOnTop(true);
@@ -439,6 +450,121 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        editarClienteDialog.setTitle("Nuevo cliente");
+        editarClienteDialog.setAlwaysOnTop(true);
+        editarClienteDialog.setResizable(false);
+        editarClienteDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                editarClienteDialogWindowClosing(evt);
+            }
+        });
+
+        nuevoClienteLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        nuevoClienteLabel1.setText("Editar cliente #00");
+
+        dniLabel1.setText("DNI / RUC:");
+
+        nombresLabel1.setText("Nombres:");
+
+        direccionLabel1.setText("Direccion:");
+
+        telefonoLabel1.setText("Teléfono:");
+
+        estadoCivilLabel1.setText("Est. Civil:");
+
+        cancelarCreacionClienteButton1.setText("Cancelar");
+        cancelarCreacionClienteButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarCreacionClienteButton1ActionPerformed(evt);
+            }
+        });
+
+        guardarClienteButton1.setText("Guardar");
+        guardarClienteButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarClienteButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout editarClienteDialogLayout = new javax.swing.GroupLayout(editarClienteDialog.getContentPane());
+        editarClienteDialog.getContentPane().setLayout(editarClienteDialogLayout);
+        editarClienteDialogLayout.setHorizontalGroup(
+            editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator3)
+            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                                .addComponent(telefonoLabel1)
+                                .addGap(14, 14, 14)
+                                .addComponent(telefonoField1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                            .addComponent(nuevoClienteLabel1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarClienteDialogLayout.createSequentialGroup()
+                                .addComponent(dniLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dniField1))
+                            .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                                .addComponent(nombresLabel1)
+                                .addGap(11, 11, 11)
+                                .addComponent(nombresField1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(direccionLabel1)
+                            .addComponent(estadoCivilLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(estadoCivilField1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(direccionField1)))
+                    .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                        .addComponent(nuevoClienteBusyLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(guardarClienteButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelarCreacionClienteButton1)))
+                .addContainerGap())
+        );
+        editarClienteDialogLayout.setVerticalGroup(
+            editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(nuevoClienteLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dniLabel1)
+                            .addComponent(dniField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nombresLabel1)
+                            .addComponent(nombresField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(editarClienteDialogLayout.createSequentialGroup()
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(direccionLabel1)
+                            .addComponent(direccionField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(estadoCivilLabel1)
+                            .addComponent(estadoCivilField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefonoLabel1)
+                    .addComponent(telefonoField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editarClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarCreacionClienteButton1)
+                    .addComponent(guardarClienteButton1)
+                    .addComponent(nuevoClienteBusyLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         tableInformationLabel.setText("Sin datos.");
 
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -517,8 +643,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
         contadorClientesLabel.setText("Cargando...");
 
-        searchField.setPrompt("Buscar");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -528,8 +652,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nuevoClienteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarClienteButton)
@@ -553,8 +675,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(nuevoClienteButton)
                         .addComponent(editarClienteButton)
-                        .addComponent(eliminarClienteButton)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(eliminarClienteButton))
                     .addComponent(contadorClientesLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
@@ -792,37 +913,65 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private void nuevoClienteDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_nuevoClienteDialogWindowClosing
         cancelarCreacionCliente();
     }//GEN-LAST:event_nuevoClienteDialogWindowClosing
+
+    private void cancelarCreacionClienteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionClienteButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelarCreacionClienteButton1ActionPerformed
+
+    private void guardarClienteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarClienteButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guardarClienteButton1ActionPerformed
+
+    private void editarClienteDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_editarClienteDialogWindowClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarClienteDialogWindowClosing
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cancelarCreacionClienteButton;
+    private javax.swing.JButton cancelarCreacionClienteButton1;
     private javax.swing.JLabel contadorClientesLabel;
     private javax.swing.JTextField direccionField;
+    private javax.swing.JTextField direccionField1;
     private javax.swing.JLabel direccionLabel;
+    private javax.swing.JLabel direccionLabel1;
     private javax.swing.JTextField dniField;
+    private javax.swing.JTextField dniField1;
     private javax.swing.JLabel dniLabel;
+    private javax.swing.JLabel dniLabel1;
     private javax.swing.JButton editarClienteButton;
+    private javax.swing.JDialog editarClienteDialog;
     private javax.swing.JButton eliminarClienteButton;
     private javax.swing.JTextField estadoCivilField;
+    private javax.swing.JTextField estadoCivilField1;
     private javax.swing.JLabel estadoCivilLabel;
+    private javax.swing.JLabel estadoCivilLabel1;
     private javax.swing.JButton guardarClienteButton;
+    private javax.swing.JButton guardarClienteButton1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JTextField nombresField;
+    private javax.swing.JTextField nombresField1;
     private javax.swing.JLabel nombresLabel;
+    private javax.swing.JLabel nombresLabel1;
     private org.jdesktop.swingx.JXBusyLabel nuevoClienteBusyLabel;
+    private org.jdesktop.swingx.JXBusyLabel nuevoClienteBusyLabel1;
     private javax.swing.JButton nuevoClienteButton;
     private javax.swing.JDialog nuevoClienteDialog;
     private javax.swing.JLabel nuevoClienteLabel;
+    private javax.swing.JLabel nuevoClienteLabel1;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
-    private org.jdesktop.swingx.JXSearchField searchField;
     private org.jdesktop.swingx.JXTable tablaClientes;
     private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JTextField telefonoField;
+    private javax.swing.JTextField telefonoField1;
     private javax.swing.JLabel telefonoLabel;
+    private javax.swing.JLabel telefonoLabel1;
     // End of variables declaration//GEN-END:variables
 }

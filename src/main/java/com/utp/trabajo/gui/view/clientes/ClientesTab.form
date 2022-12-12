@@ -183,6 +183,187 @@
         </Component>
       </SubComponents>
     </Container>
+    <Container class="javax.swing.JDialog" name="editarClienteDialog">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Nuevo cliente"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
+        <Property name="resizable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="editarClienteDialogWindowClosing"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="ClientesTab_nuevoClienteDialog"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
+              <Component id="jSeparator4" alignment="1" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="telefonoLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                  <Component id="telefonoField1" pref="116" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="nuevoClienteLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="dniLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="dniField1" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="nombresLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                                  <Component id="nombresField1" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="direccionLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="estadoCivilLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="estadoCivilField1" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
+                              <Component id="direccionField1" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="nuevoClienteBusyLabel1" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="guardarClienteButton1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="cancelarCreacionClienteButton1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="nuevoClienteLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jSeparator3" min="-2" pref="3" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="dniLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dniField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="nombresLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="nombresField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="direccionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="direccionField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="estadoCivilLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="estadoCivilField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="telefonoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="telefonoField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jSeparator4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cancelarCreacionClienteButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="guardarClienteButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nuevoClienteBusyLabel1" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="nuevoClienteLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Editar cliente #00"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator3">
+        </Component>
+        <Component class="javax.swing.JLabel" name="dniLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="DNI / RUC:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="nombresLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nombres:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="dniField1">
+        </Component>
+        <Component class="javax.swing.JTextField" name="nombresField1">
+        </Component>
+        <Component class="javax.swing.JLabel" name="direccionLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Direccion:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="direccionField1">
+        </Component>
+        <Component class="javax.swing.JLabel" name="telefonoLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tel&#xe9;fono:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="telefonoField1">
+        </Component>
+        <Component class="javax.swing.JLabel" name="estadoCivilLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Est. Civil:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="estadoCivilField1">
+        </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator4">
+        </Component>
+        <Component class="javax.swing.JButton" name="cancelarCreacionClienteButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarCreacionClienteButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="guardarClienteButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Guardar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarClienteButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="org.jdesktop.swingx.JXBusyLabel" name="nuevoClienteBusyLabel1">
+        </Component>
+      </SubComponents>
+    </Container>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -204,8 +385,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLayeredPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="searchField" min="-2" pref="235" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="nuevoClienteButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="editarClienteButton" min="-2" max="-2" attributes="0"/>
@@ -235,7 +414,6 @@
                       <Component id="nuevoClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="editarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="eliminarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="contadorClientesLabel" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -361,11 +539,6 @@
     <Component class="javax.swing.JLabel" name="contadorClientesLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cargando..."/>
-      </Properties>
-    </Component>
-    <Component class="org.jdesktop.swingx.JXSearchField" name="searchField">
-      <Properties>
-        <Property name="prompt" type="java.lang.String" value="Buscar"/>
       </Properties>
     </Component>
   </SubComponents>

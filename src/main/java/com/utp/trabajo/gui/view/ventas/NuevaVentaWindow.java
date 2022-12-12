@@ -95,7 +95,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
     private String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Estado civil", "N° compras"};
     //TODO: set minimum and default sizes for each column
 
-    private JXFrame topFrame = (JXFrame) SwingUtilities.getWindowAncestor(this);
+    
     
     private ListSelectionModel clienteSelectionModel;
 
@@ -189,6 +189,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
         nuevoClienteDialog.setLocationRelativeTo(this);
         emptyCliente = new Cliente();
         emptyCliente.setIdCliente(1L);
+        
     }
 
     @PostConstruct
@@ -224,7 +225,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
         int totalProductos = 0;
         for (ProductoSeleccionado producto : productos) {
             totalProductos += producto.cantidad;
-        } // cant use forEach() LMFAO
+        } // cant use forEach() WHYY LMFAO
         cantidadProductos.setText(productos.size() + " ITEMS - TOTAL: " + totalProductos);
     }
 
@@ -1403,6 +1404,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
                     .map(producto -> producto.getProducto())
                     .collect(Collectors.toList());
                 productoService.actualizarProductos(collected);
+                clienteService.actualizarCliente(venta.getCliente());
                 return null;
             }
 
@@ -1410,7 +1412,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
             protected void done() {
                 try {
                     get();
-                    topFrame.dispose();
+                    closeWindow();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(NuevaVentaWindow.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
@@ -1425,18 +1427,21 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
     }//GEN-LAST:event_guardarVentaActionPerformed
 
     private void cerrarVentana() {
-        
         if(!productos.isEmpty()) {
             int answ = OptionPaneService.questionMessage(this, "¿Desea cerrar sin guardar?", "Cerrar sin guardar");
             if(answ == JOptionPane.YES_OPTION) {
-                topFrame.setVisible(false);
-                topFrame.dispose();
+                closeWindow();
             } 
         } else {
-            topFrame.setVisible(false);
-            topFrame.dispose();
+            closeWindow();
         }
         
+    }
+    
+    private void closeWindow() {
+        JXFrame topFrame = (JXFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.setVisible(false);
+        topFrame.dispose();
     }
     
     private void cancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarVentaActionPerformed

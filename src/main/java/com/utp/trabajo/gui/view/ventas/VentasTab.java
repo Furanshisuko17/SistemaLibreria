@@ -1,5 +1,6 @@
 package com.utp.trabajo.gui.view.ventas;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.gui.view.clientes.ClientesTab;
 import com.utp.trabajo.model.entities.Cliente;
@@ -11,15 +12,18 @@ import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.Frame;
 import java.awt.event.AdjustmentEvent;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
@@ -47,9 +51,11 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     };
 
     private String[] columnNames = {"ID", "Fecha de emisión", "Cliente", "Comprobante", "Total"};
-    
+
     ListSelectionModel selectionModel;
-    
+
+    private DefaultTableModel defaultTableModelDetalleVentas;
+
     private boolean canRead = true;
     private boolean canEdit = true;
     private boolean canDelete = true;
@@ -63,16 +69,17 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
     @Autowired
     private VentasService ventaService;
-    
+
     @Autowired
     private SecurityService securityService;
-    
+
     @Autowired
     private IconService iconService;
 
     public VentasTab() {
         initComponents();
         initTable();
+        initDialog();
     }
 
     @PostConstruct
@@ -80,16 +87,23 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         checkPermissions();
         updateTable(false);
     }
-    
+
+    private void initDialog() {
+        defaultTableModelDetalleVentas = (DefaultTableModel) detalleVentaTable.getModel();
+        totalVentaField.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_COMPONENT, new JLabel(" S/. "));
+        detallesVentaDialog.pack();
+        detallesVentaDialog.setLocationRelativeTo(this);
+    }
+
     private void initTable() {
         defaultTableModelVentas.setColumnIdentifiers(columnNames);
         tablaVentas.setModel(defaultTableModelVentas);
         tablaVentas.getColumnModel().getColumn(0).setMinWidth(2);
         tablaVentas.getColumnModel().getColumn(0).setMaxWidth(50);
         tablaVentas.getColumnModel().getColumn(0).setPreferredWidth(50);
-        
+
         tablaVentas.getColumnModel().getColumn(1).setCellRenderer(new DateTableCellRenderer(true));
-        
+
         scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
             if (retrievingData) {
                 return;
@@ -147,13 +161,13 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setEnabled(false);
         busyLabel.setText("");
     }
-    
+
     private void addDataToTable(List<Venta> data) {
         data.forEach(venta -> {
             Vector vec = new Vector();
             vec.add(venta.getIdVenta());
             vec.add(venta.getFechaEmision());
-            if(venta.getCliente().getIdCliente() == 1L) {
+            if (venta.getCliente().getIdCliente() == 1L) {
                 vec.add(venta.getCliente().getNombre());
             } else {
                 vec.add(venta.getCliente().getIdentificacion() + " - " + venta.getCliente().getNombre());
@@ -181,7 +195,7 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
             lastId = 0;
             setBusy("Recargando...");
         }
-        
+
         SwingWorker worker2 = new SwingWorker<Long, Long>() {
             @Override
             protected Long doInBackground() throws Exception {
@@ -195,22 +209,18 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                     int cantidadClientesTabla = defaultTableModelVentas.getRowCount();
                     contadorVentasLabel.setText("Mostrando: " + cantidadClientesTabla + "/" + cantidadClientesDatabase);
 
-                }
-                catch (InterruptedException ex) {
+                } catch (InterruptedException ex) {
                     try {
                         throw ex.getCause();
-                    }
-                    catch (NotEnoughPermissionsException e) {
+                    } catch (NotEnoughPermissionsException e) {
                         //Joption pane or do nothing!
-                    }
-                    catch (Throwable e) {
+                    } catch (Throwable e) {
                         System.out.println("impossible :");
                         e.printStackTrace();
                         System.out.println("impossible end");
                         return;
                     }
-                }
-                catch (ExecutionException ex) {
+                } catch (ExecutionException ex) {
                     Logger.getLogger(VentasTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -256,14 +266,27 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         }.execute();
     }
 
+    private void clearDialog() {
+        ventaTitleLabel.setText("Venta #00");
+        clienteField.setText("");
+        dniField.setText("");
+        numeroComprasField.setText("");
+        empleadoField.setText("");
+        fechaEmisionField.setText("");
+        totalVentaField.setText("");
+        metodoPagoField.setText("");
+        comprobanteField.setText("");
+        detalleVentaTable.removeAll();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         detallesVentaDialog = new javax.swing.JDialog();
-        jLabel1 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        ventaTitleLabel = new javax.swing.JLabel();
+        separator1 = new javax.swing.JSeparator();
+        scrollPane2 = new javax.swing.JScrollPane();
         detalleVentaTable = new org.jdesktop.swingx.JXTable();
         clienteField = new javax.swing.JTextField();
         clienteLabel = new javax.swing.JLabel();
@@ -281,8 +304,7 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         comprobanteLabel = new javax.swing.JLabel();
         totalVentaField = new javax.swing.JTextField();
         totalVentaLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jXTable1 = new org.jdesktop.swingx.JXTable();
+        cerrarDetalleVenta = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
@@ -295,10 +317,18 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         detallesVenta = new javax.swing.JButton();
 
         detallesVentaDialog.setTitle("Detalles de venta");
+        detallesVentaDialog.setModal(true);
+        detallesVentaDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        detallesVentaDialog.setResizable(false);
+        detallesVentaDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                detallesVentaDialogWindowClosing(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Venta #00");
+        ventaTitleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ventaTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ventaTitleLabel.setText("Venta #00");
 
         detalleVentaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -323,7 +353,9 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(detalleVentaTable);
+        detalleVentaTable.setEditable(false);
+        detalleVentaTable.getTableHeader().setReorderingAllowed(false);
+        scrollPane2.setViewportView(detalleVentaTable);
         if (detalleVentaTable.getColumnModel().getColumnCount() > 0) {
             detalleVentaTable.getColumnModel().getColumn(0).setMinWidth(5);
             detalleVentaTable.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -337,10 +369,13 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
             detalleVentaTable.getColumnModel().getColumn(4).setMaxWidth(100);
         }
 
+        clienteField.setEditable(false);
+
         clienteLabel.setText("Cliente");
 
         dniLabel.setText("DNI / RUC");
 
+        dniField.setEditable(false);
         dniField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dniFieldActionPerformed(evt);
@@ -349,26 +384,45 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
         numeroComprasLabel.setText("Nº de compras");
 
+        numeroComprasField.setEditable(false);
+
         empleadoLabel.setText("Empleado");
+
+        empleadoField.setEditable(false);
 
         fechaEmisionLabel.setText("Fecha de emisión");
 
+        fechaEmisionField.setEditable(false);
+
+        metodoPagoField.setEditable(false);
+
         metodoPagoLabel.setText("Método de pago");
+
+        comprobanteField.setEditable(false);
 
         comprobanteLabel.setText("Tipo de comprobante");
 
+        totalVentaField.setEditable(false);
+
         totalVentaLabel.setText("Total");
+
+        cerrarDetalleVenta.setText("Cerrar");
+        cerrarDetalleVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarDetalleVentaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout detallesVentaDialogLayout = new javax.swing.GroupLayout(detallesVentaDialog.getContentPane());
         detallesVentaDialog.getContentPane().setLayout(detallesVentaDialogLayout);
         detallesVentaDialogLayout.setHorizontalGroup(
             detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
+            .addComponent(separator1)
             .addGroup(detallesVentaDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(ventaTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(detallesVentaDialogLayout.createSequentialGroup()
                         .addGroup(detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(detallesVentaDialogLayout.createSequentialGroup()
@@ -406,16 +460,19 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                                         .addGroup(detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(empleadoLabel)
                                             .addComponent(empleadoField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(0, 31, Short.MAX_VALUE)))
+                        .addGap(0, 31, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detallesVentaDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cerrarDetalleVenta)))
                 .addContainerGap())
         );
         detallesVentaDialogLayout.setVerticalGroup(
             detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detallesVentaDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(ventaTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(separator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(detallesVentaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -454,22 +511,11 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                             .addComponent(comprobanteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(totalVentaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                .addComponent(scrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
+                .addComponent(cerrarDetalleVenta)
                 .addContainerGap())
         );
-
-        jXTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jXTable1);
 
         tableInformationLabel.setText("Sin datos.");
 
@@ -595,6 +641,16 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         updateTable(false);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
+    private long getselectedId() { // refactor! DONE!
+        List<Long> idVentas = new ArrayList<>();
+        for (int i : selectionModel.getSelectedIndices()) { //rows 
+            i = tablaVentas.convertRowIndexToModel(i);
+            // ↑ IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
+            idVentas.add((Long) defaultTableModelVentas.getValueAt(i, 0));
+        }
+        return idVentas.get(0);
+    }
+
     private void nuevoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoButtonActionPerformed
         JXFrame nuevaVentaDialog = new JXFrame("Nueva venta", false);
         nuevaVentaDialog.setIconImage(iconService.iconoNuevaVenta.getImage());
@@ -602,36 +658,94 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         nuevaVentaDialog.getContentPane().add(nuevaVenta);
         nuevaVentaDialog.setMinimumSize(new java.awt.Dimension(820, 520));
         nuevaVentaDialog.pack();
-        
+
         nuevaVentaDialog.setLocationRelativeTo(this);
         nuevaVentaDialog.setVisible(true);
         nuevaVentaDialog.setDefaultCloseOperation(JXFrame.DO_NOTHING_ON_CLOSE);
         nuevaVentaDialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                if(!nuevaVenta.getProductos().isEmpty()) {
+                if (!nuevaVenta.getProductos().isEmpty()) {
                     int answ = OptionPaneService.questionMessage(nuevaVentaDialog, "¿Desea cerrar sin guardar?", "Cerrar sin guardar");
-                    if(answ == JOptionPane.YES_OPTION) {
+                    if (answ == JOptionPane.YES_OPTION) {
                         nuevaVentaDialog.setVisible(false);
                         nuevaVentaDialog.dispose();
-                    } 
+                    }
                 } else {
                     nuevaVentaDialog.setVisible(false);
                     nuevaVentaDialog.dispose();
                 }
-            } 
+            }
         });
     }//GEN-LAST:event_nuevoButtonActionPerformed
 
     private void detallesVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detallesVentaActionPerformed
-        
+        long id = getselectedId();
+        setBusy("Cargando venta #" + id + "...");
+        new SwingWorker<Venta, Venta>() {
+            @Override
+            protected Venta doInBackground() throws Exception {
+                return ventaService.encontrarVentaPorId(id);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    Venta venta = get();
+                    DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.forLanguageTag("es-PE"));
+                    ventaTitleLabel.setText("Venta #" + venta.getIdVenta());
+                    clienteField.setText(venta.getCliente().getNombre());
+                    dniField.setText(venta.getCliente().getIdentificacion());
+                    numeroComprasField.setText("" + venta.getCliente().getNumeroCompras());
+                    empleadoField.setText(venta.getEmpleado().getNombres() + " " + venta.getEmpleado().getApellidos());
+                    fechaEmisionField.setText(formatter.format(venta.getFechaEmision()));
+                    totalVentaField.setText(venta.getPrecioTotal().toPlainString());
+                    metodoPagoField.setText(venta.getMetodoPago().getMetodoPago());
+                    comprobanteField.setText(venta.getComprobante().getNombreComprobante());
+                    venta.getDetallesVenta().forEach(detalleVenta -> {
+                        Vector rowData = new Vector();
+                        rowData.add(detalleVenta.getProducto().getIdProducto());
+                        rowData.add(detalleVenta.getProducto().getNombre() + " " + detalleVenta.getProducto().getMarca().getNombreMarca());
+                        rowData.add(detalleVenta.getCantidad());
+                        rowData.add(detalleVenta.getPrecioUnidad());
+                        rowData.add(detalleVenta.getTotal().toPlainString());
+                        defaultTableModelDetalleVentas.addRow(rowData);
+                    });
+                    setIdle();
+                    detallesVentaDialog.setVisible(true);
+                } catch (InterruptedException ex) {
+                } catch (ExecutionException ex) {
+                    try {
+                        throw ex.getCause();
+                    } catch (NotEnoughPermissionsException e) {
+                        OptionPaneService.errorMessage(detallesVentaDialog, "No dispone de permisos suficientes para poder crear un nuevo cliente.", "Sin permisos.");
+                    } catch (Throwable imp) {
+                        System.out.println("impossible!: \n");
+                        imp.printStackTrace();
+                        System.out.println("impossible end!: \n");
+                    }
+                } finally {
+                    setIdle();
+                }
+            }
+        }.execute();
     }//GEN-LAST:event_detallesVentaActionPerformed
 
     private void dniFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dniFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dniFieldActionPerformed
 
+    private void cerrarDetalleVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarDetalleVentaActionPerformed
+        detallesVentaDialog.setVisible(false);
+        clearDialog();
+    }//GEN-LAST:event_cerrarDetalleVentaActionPerformed
+
+    private void detallesVentaDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_detallesVentaDialogWindowClosing
+        clearDialog();
+    }//GEN-LAST:event_detallesVentaDialogWindowClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
+    private javax.swing.JButton cerrarDetalleVenta;
     private javax.swing.JTextField clienteField;
     private javax.swing.JLabel clienteLabel;
     private javax.swing.JTextField comprobanteField;
@@ -646,12 +760,7 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JLabel empleadoLabel;
     private javax.swing.JTextField fechaEmisionField;
     private javax.swing.JLabel fechaEmisionLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private org.jdesktop.swingx.JXTable jXTable1;
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JTextField metodoPagoField;
     private javax.swing.JLabel metodoPagoLabel;
@@ -660,10 +769,13 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JLabel numeroComprasLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JScrollPane scrollPane2;
+    private javax.swing.JSeparator separator1;
     private org.jdesktop.swingx.JXTable tablaVentas;
     private javax.swing.JLabel tableInformationLabel;
     private javax.swing.JTextField totalVentaField;
     private javax.swing.JLabel totalVentaLabel;
+    private javax.swing.JLabel ventaTitleLabel;
     // End of variables declaration//GEN-END:variables
 
     @Autowired
@@ -672,6 +784,5 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     public NuevaVentaWindow getNuevaVentaTabInstance() {
         return nuevaVentaWindowObjectFactory.getObject();
     }
-    
-}
 
+}

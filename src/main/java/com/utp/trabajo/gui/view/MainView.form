@@ -148,7 +148,7 @@
                   <Component id="Separator" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                      <Component id="busyLabel" min="-2" pref="117" max="-2" attributes="0"/>
+                      <Component id="busyLabel" min="-2" pref="152" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="loginButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
@@ -164,7 +164,7 @@
                           <Component id="loginButton" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="busyLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace pref="9" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -205,10 +205,10 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jSeparator3" max="32767" attributes="0"/>
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="datosPersonalesLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -222,16 +222,6 @@
                               <Component id="jScrollPane2" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                          <Component id="usuarioLabel" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="usuarioField" min="-2" pref="155" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                          <Component id="contrasenaLabel" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="contrasenaField" min="-2" pref="155" max="-2" attributes="0"/>
-                                      </Group>
                                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -285,19 +275,20 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="cerrarVentana" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="usuarioLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="usuarioField" min="-2" pref="155" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="aceptarButon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="cerrarVentana" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -310,8 +301,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="usuarioLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="usuarioField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="contrasenaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="contrasenaField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="jSeparator3" min="-2" pref="3" max="-2" attributes="0"/>
@@ -362,11 +351,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="cerrarVentana" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="aceptarButon" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="cerrarVentana" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -400,6 +385,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="direccionField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="org.jdesktop.swingx.JXDatePicker" name="fechaNacimientoDatePicker">
           <Properties>
@@ -454,6 +442,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="telefonoField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator3">
         </Component>
@@ -471,14 +462,10 @@
             <Property name="autoscrolls" type="boolean" value="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="contrasenaLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="usuarioField">
-        </Component>
-        <Component class="com.formdev.flatlaf.extras.components.FlatPasswordField" name="contrasenaField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -510,16 +497,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cerrarVentanaActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="?"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="aceptarButon">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Aceptar"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="maxCaracteresLabel">
           <Properties>
@@ -627,7 +604,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="userDetailsButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Configuraci&#xf3;n de la cuenta"/>
+                <Property name="text" type="java.lang.String" value="Informaci&#xf3;n de la cuenta"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userDetailsButtonActionPerformed"/>

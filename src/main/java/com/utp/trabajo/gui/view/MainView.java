@@ -53,6 +53,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
         defineUI();
         initComponents();
         openEstadisticasWindowButton.setVisible(false);
+        openAdministracionWindowButton.setVisible(false);
         //toolBar.add(userButton);
         busyLabel.setEnabled(false);
         busyLabel.setBusy(true);
@@ -109,6 +110,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                updateCharsLabel();
             }
         });
     }
@@ -183,15 +185,11 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         usuarioLabel = new javax.swing.JLabel();
-        contrasenaLabel = new javax.swing.JLabel();
         usuarioField = new javax.swing.JTextField();
-        contrasenaField = new com.formdev.flatlaf.extras.components.FlatPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionTextArea = new javax.swing.JTextArea();
         cerrarVentana = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        aceptarButon = new javax.swing.JButton();
         maxCaracteresLabel = new javax.swing.JLabel();
         panelPrincipal = new javax.swing.JDesktopPane();
         toolBar = new javax.swing.JToolBar();
@@ -306,7 +304,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
             .addComponent(Separator, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(BottomPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(loginButton)
                 .addGap(25, 25, 25))
@@ -319,7 +317,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 .addGroup(BottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(loginButton)
                     .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout loginPromptLayout = new javax.swing.GroupLayout(loginPrompt.getContentPane());
@@ -355,6 +353,8 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
         direccionLabel.setText("Dirección:");
 
+        direccionField.setEditable(false);
+
         fechaNacimientoDatePicker.setEditable(false);
         fechaNacimientoDatePicker.setPreferredSize(new java.awt.Dimension(143, 22));
 
@@ -375,13 +375,15 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
         telefonoLabel.setText("Teléfono:");
 
+        telefonoField.setEditable(false);
+
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Datos de inicio de sesión");
 
         usuarioLabel.setText("Usuario:");
         usuarioLabel.setAutoscrolls(true);
 
-        contrasenaLabel.setText("Contraseña:");
+        usuarioField.setEditable(false);
 
         jLabel3.setText("Descripción / biografía: ");
 
@@ -398,10 +400,6 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 cerrarVentanaActionPerformed(evt);
             }
         });
-
-        jButton2.setText("?");
-
-        aceptarButon.setText("Aceptar");
 
         maxCaracteresLabel.setText("500/500");
 
@@ -425,15 +423,6 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                             .addComponent(jScrollPane2)
                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(cuentaWindowLayout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(usuarioLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(34, 34, 34)
-                                        .addComponent(contrasenaLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(contrasenaField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel2)
                                     .addGroup(cuentaWindowLayout.createSequentialGroup()
                                         .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -471,16 +460,16 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(fechaNacimientoDatePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                     .addComponent(telefonoField))))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cerrarVentana))
+                            .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                .addComponent(usuarioLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(aceptarButon)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cerrarVentana)
-                .addContainerGap())
         );
         cuentaWindowLayout.setVerticalGroup(
             cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,9 +479,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 .addGap(6, 6, 6)
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(usuarioLabel)
-                    .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contrasenaLabel)
-                    .addComponent(contrasenaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
@@ -533,10 +520,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cerrarVentana)
-                    .addComponent(jButton2)
-                    .addComponent(aceptarButon))
+                .addComponent(cerrarVentana)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -731,7 +715,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
         menuBar.add(javax.swing.Box.createHorizontalGlue());
         userButton.setText("Usuario");
 
-        userDetailsButton.setText("Configuración de la cuenta");
+        userDetailsButton.setText("Información de la cuenta");
         userDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userDetailsButtonActionPerformed(evt);
@@ -814,6 +798,11 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
     private void setBusy() {
         busyLabel.setEnabled(true);
+    }
+    
+    private void setBusy(String message) {
+        busyLabel.setEnabled(true);
+        busyLabel.setText(message);
     }
 
     private void setIdle() {
@@ -1058,7 +1047,8 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         usernameInput.putClientProperty("JComponent.outline", "");
         passwordInput.putClientProperty("JComponent.outline", "");
-        setBusy();
+        informationLabel.setText("");
+        setBusy("Iniciando sesión...");
 
         String username = usernameInput.getText();
         if (username.isBlank()) {
@@ -1076,7 +1066,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
             return;
         }
 
-        SwingWorker swingWorker = new SwingWorker<Boolean, Boolean>() {
+        new SwingWorker<Boolean, Boolean>() {
             @Override
             protected Boolean doInBackground() throws Exception {
                 boolean logeo = authService.login(username, rawPassword);
@@ -1115,14 +1105,9 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                     loggedEmpleado = authService.getLoggedEmpleado();
                     userButton.setText(loggedEmpleado.getUsername());
                     initCuentaWindow();
-
-                } else {
-
                 }
             }
-        };
-
-        swingWorker.execute();
+        }.execute();
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void loginPromptWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_loginPromptWindowClosing
@@ -1240,15 +1225,12 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
     private com.formdev.flatlaf.extras.components.FlatSeparator Separator;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JButton aceptarButon;
     private javax.swing.JLabel apellidoLabel;
     private javax.swing.JTextField apellidosField;
     private javax.swing.JMenu appearanceButton;
     private javax.swing.ButtonGroup appearanceButtonGroup;
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JButton cerrarVentana;
-    private com.formdev.flatlaf.extras.components.FlatPasswordField contrasenaField;
-    private javax.swing.JLabel contrasenaLabel;
     private javax.swing.JDialog cuentaWindow;
     private javax.swing.JRadioButtonMenuItem darkModeButton;
     private javax.swing.JLabel datosPersonalesLabel;
@@ -1269,7 +1251,6 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
     private javax.swing.Box.Filler filler2;
     private javax.swing.JMenu helpMenu;
     private org.jdesktop.swingx.JXLabel informationLabel;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
