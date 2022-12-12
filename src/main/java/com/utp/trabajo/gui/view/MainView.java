@@ -337,7 +337,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 .addComponent(BottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        cuentaWindow.setTitle("Configuración de la cuenta");
+        cuentaWindow.setTitle("Información de la cuenta");
         cuentaWindow.setResizable(false);
         cuentaWindow.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -387,6 +387,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
         jLabel3.setText("Descripción / biografía: ");
 
+        descripcionTextArea.setEditable(false);
         descripcionTextArea.setColumns(20);
         descripcionTextArea.setLineWrap(true);
         descripcionTextArea.setRows(5);
@@ -421,6 +422,9 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(maxCaracteresLabel))
                             .addComponent(jScrollPane2)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cerrarVentana))
                             .addGroup(cuentaWindowLayout.createSequentialGroup()
                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
@@ -459,15 +463,11 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(fechaNacimientoDatePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(telefonoField))))))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cuentaWindowLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(cerrarVentana))
-                            .addGroup(cuentaWindowLayout.createSequentialGroup()
-                                .addComponent(usuarioLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(telefonoField)))))
+                                    .addGroup(cuentaWindowLayout.createSequentialGroup()
+                                        .addComponent(usuarioLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(usuarioField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );

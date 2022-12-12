@@ -4,8 +4,13 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="nuevoClienteDialog">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="0"/>
         <Property name="title" type="java.lang.String" value="Nuevo cliente"/>
         <Property name="alwaysOnTop" type="boolean" value="true"/>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="modalExclusionType" type="java.awt.Dialog$ModalExclusionType" editor="org.netbeans.modules.form.editors.EnumEditor">
+          <Value id="APPLICATION_EXCLUDE"/>
+        </Property>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -53,9 +58,8 @@
                               <Component id="direccionField" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="nuevoClienteBusyLabel" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="guardarClienteButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="cancelarCreacionClienteButton" min="-2" max="-2" attributes="0"/>
@@ -108,7 +112,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cancelarCreacionClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="guardarClienteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nuevoClienteBusyLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -179,14 +182,17 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarClienteButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="org.jdesktop.swingx.JXBusyLabel" name="nuevoClienteBusyLabel">
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="editarClienteDialog">
       <Properties>
-        <Property name="title" type="java.lang.String" value="Nuevo cliente"/>
+        <Property name="defaultCloseOperation" type="int" value="0"/>
+        <Property name="title" type="java.lang.String" value="Editar cliente"/>
         <Property name="alwaysOnTop" type="boolean" value="true"/>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="modalExclusionType" type="java.awt.Dialog$ModalExclusionType" editor="org.netbeans.modules.form.editors.EnumEditor">
+          <Value id="APPLICATION_EXCLUDE"/>
+        </Property>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -235,8 +241,7 @@
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="nuevoClienteBusyLabel1" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="guardarClienteButton1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="cancelarCreacionClienteButton1" min="-2" max="-2" attributes="0"/>
@@ -289,9 +294,8 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cancelarCreacionClienteButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="guardarClienteButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nuevoClienteBusyLabel1" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -359,8 +363,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarClienteButton1ActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="org.jdesktop.swingx.JXBusyLabel" name="nuevoClienteBusyLabel1">
         </Component>
       </SubComponents>
     </Container>
