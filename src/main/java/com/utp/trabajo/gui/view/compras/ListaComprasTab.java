@@ -77,6 +77,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         nuevaCompraDialog.pack();
         nuevaCompraDialog.setLocationRelativeTo(this);
         System.out.println("Compras tab - Nueva instancia!");
+        verDetallesDialog.pack();
+        verDetallesDialog.setLocationRelativeTo(this);
+        System.out.println("Detalles de compra - Nueva instancia!");
+        verEstadoDialog.pack();
+        verEstadoDialog.setLocationRelativeTo(this);
+        System.out.println("Estado de compra - Nueva instancia!");
+        
         
     }
 
@@ -481,11 +488,14 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                     .addComponent(fechaSalidaField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(137, 137, 137))
             .addComponent(jSeparator3)
-            .addComponent(detalleCompraScrollPane)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verDetallesDialogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(detalleCompraLabel)
                 .addGap(338, 338, 338))
+            .addGroup(verDetallesDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(detalleCompraScrollPane)
+                .addContainerGap())
         );
         verDetallesDialogLayout.setVerticalGroup(
             verDetallesDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,6 +534,8 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addComponent(detalleCompraScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        verEstadoDialog.setResizable(false);
 
         estadoCompraLabel.setText("ESTADO DE LA COMPRA");
 
@@ -573,14 +585,11 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         verEstadoDialog.getContentPane().setLayout(verEstadoDialogLayout);
         verEstadoDialogLayout.setHorizontalGroup(
             verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verEstadoDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(estadoCompraLabel)
-                .addGap(112, 112, 112))
+            .addComponent(jSeparator4)
             .addGroup(verEstadoDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(estadoCompraScrollPane)
                     .addGroup(verEstadoDialogLayout.createSequentialGroup()
                         .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
@@ -595,7 +604,10 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pasarDatosButton)))
                 .addContainerGap())
-            .addComponent(jSeparator4)
+            .addGroup(verEstadoDialogLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(estadoCompraLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         verEstadoDialogLayout.setVerticalGroup(
             verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,12 +624,13 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
                 .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(estadoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(verEstadoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarButton)
                     .addComponent(pasarDatosButton))
                 .addGap(18, 18, 18)
-                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(estadoCompraScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         tableInformationLabel.setText("Sin datos.");

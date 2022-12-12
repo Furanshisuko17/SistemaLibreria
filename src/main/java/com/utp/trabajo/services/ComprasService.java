@@ -2,6 +2,7 @@ package com.utp.trabajo.services;
 
 import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
 import com.utp.trabajo.model.dao.CompraDao;
+import com.utp.trabajo.model.dao.EstadoCompraDao;
 import com.utp.trabajo.model.entities.Compra;
 import com.utp.trabajo.services.security.SecurityService;
 import java.util.List;
@@ -16,6 +17,8 @@ public class ComprasService {
 
     @Autowired
     private CompraDao compraDao;
+    @Autowired
+    private EstadoCompraDao estadocompraDao;
     
     @Autowired
     private SecurityService securityService;
@@ -65,5 +68,16 @@ public class ComprasService {
         
         return compraDao.removeAllByIdCompraIn(idsCompra);
     }
+    @Transactional(readOnly = true)
+    public long contarCompras() throws NotEnoughPermissionsException {
+        
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
+        return compraDao.count();
+    }
+    
+    
 
 }
