@@ -21,18 +21,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLayeredPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="searchField" min="-2" pref="235" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="nuevoButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="editarButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="eliminarButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="92" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="contadorVentasLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="busyLabel" max="32767" attributes="0"/>
+                      <Component id="busyLabel" pref="403" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="loadMoreButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -46,15 +40,15 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="nuevoButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="editarButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="eliminarButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="searchField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Component id="contadorVentasLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="contadorVentasLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nuevoButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLayeredPane1" max="32767" attributes="0"/>
@@ -140,28 +134,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadMoreButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="editarButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Editar"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="nuevoButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nuevo"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevoButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="eliminarButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Eliminar"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="eliminarButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="org.jdesktop.swingx.JXBusyLabel" name="busyLabel">
@@ -178,11 +156,6 @@
     <Component class="javax.swing.JLabel" name="contadorVentasLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cargando..."/>
-      </Properties>
-    </Component>
-    <Component class="org.jdesktop.swingx.JXSearchField" name="searchField">
-      <Properties>
-        <Property name="prompt" type="java.lang.String" value="Buscar"/>
       </Properties>
     </Component>
   </SubComponents>

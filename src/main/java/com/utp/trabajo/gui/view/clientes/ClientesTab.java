@@ -48,7 +48,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         }
 
     };
-    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Razón social", "N° compras"};
+    String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Estado civil", "N° compras"};
     //TODO: set minimum and default sizes for each column
 
     ListSelectionModel selectionModel;
@@ -105,6 +105,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         });
         selectionModel = tablaClientes.getSelectionModel();
         selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
+            
             if (!canDelete || !canEdit) {
                 return;
             }
@@ -179,7 +180,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             vec.add(cliente.getDireccion());
             vec.add(cliente.getIdentificacion());
             vec.add(cliente.getTelefono());
-            vec.add(cliente.getRazonSocial());
+            vec.add(cliente.getEstadoCivil());
             vec.add(cliente.getNumeroCompras());
             defaultTableModelClientes.addRow(vec);
         });
@@ -307,8 +308,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         direccionField = new javax.swing.JTextField();
         telefonoLabel = new javax.swing.JLabel();
         telefonoField = new javax.swing.JTextField();
-        razonSocialLabel = new javax.swing.JLabel();
-        razonSocialField = new javax.swing.JTextField();
+        estadoCivilLabel = new javax.swing.JLabel();
+        estadoCivilField = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         cancelarCreacionClienteButton = new javax.swing.JButton();
         guardarClienteButton = new javax.swing.JButton();
@@ -346,7 +347,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
 
         telefonoLabel.setText("Teléfono:");
 
-        razonSocialLabel.setText("Raz. social:");
+        estadoCivilLabel.setText("Est. Civil:");
 
         cancelarCreacionClienteButton.setText("Cancelar");
         cancelarCreacionClienteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -388,14 +389,12 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                                 .addComponent(nombresField)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
-                                .addComponent(direccionLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(direccionField, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
-                            .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
-                                .addComponent(razonSocialLabel)
-                                .addGap(8, 8, 8)
-                                .addComponent(razonSocialField))))
+                            .addComponent(direccionLabel)
+                            .addComponent(estadoCivilLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(estadoCivilField, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(direccionField)))
                     .addGroup(nuevoClienteDialogLayout.createSequentialGroup()
                         .addComponent(nuevoClienteBusyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
@@ -427,8 +426,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                             .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(razonSocialLabel)
-                            .addComponent(razonSocialField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(estadoCivilLabel)
+                            .addComponent(estadoCivilField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(nuevoClienteDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefonoLabel)
@@ -584,7 +583,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         dniField.setText("");
         telefonoField.setText("");
         direccionField.setText("");
-        razonSocialField.setText("");
+        estadoCivilField.setText("");
     }
     
     private void nuevoClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoClienteButtonActionPerformed
@@ -642,7 +641,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             isBlank = false;
         }
 
-        if (!razonSocialField.getText().isBlank()) {
+        if (!estadoCivilField.getText().isBlank()) {
             isBlank = false;
         }
         
@@ -666,7 +665,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
         dniField.putClientProperty("JComponent.outline", "");
         telefonoField.putClientProperty("JComponent.outline", "");
         direccionField.putClientProperty("JComponent.outline", "");
-        razonSocialField.putClientProperty("JComponent.outline", "");
+        estadoCivilField.putClientProperty("JComponent.outline", "");
         //TODO: reemplazar razon social por un combobox
         Cliente c = new Cliente();
         int dni = 0;
@@ -711,8 +710,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             error = true;
         }
 
-        if (razonSocialField.getText().isBlank()) {
-            razonSocialField.putClientProperty("JComponent.outline", "error");
+        if (estadoCivilField.getText().isBlank()) {
+            estadoCivilField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
 
@@ -723,7 +722,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             c.setIdentificacion(String.valueOf(dni));
             c.setNombre(nombresField.getText());
             c.setDireccion(direccionField.getText());
-            c.setRazonSocial(razonSocialField.getText());
+            c.setEstadoCivil(estadoCivilField.getText());
             c.setTelefono(String.valueOf(telefono));
             c.setNumeroCompras((long) 0);
             SwingWorker nuevoClienteWorker = new SwingWorker<Cliente, Cliente>() {
@@ -808,6 +807,8 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JLabel dniLabel;
     private javax.swing.JButton editarClienteButton;
     private javax.swing.JButton eliminarClienteButton;
+    private javax.swing.JTextField estadoCivilField;
+    private javax.swing.JLabel estadoCivilLabel;
     private javax.swing.JButton guardarClienteButton;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -819,8 +820,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JButton nuevoClienteButton;
     private javax.swing.JDialog nuevoClienteDialog;
     private javax.swing.JLabel nuevoClienteLabel;
-    private javax.swing.JTextField razonSocialField;
-    private javax.swing.JLabel razonSocialLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
     private org.jdesktop.swingx.JXSearchField searchField;

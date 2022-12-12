@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductoDao extends JpaRepository<Producto, Long> {
     
     Stream<Producto> findByIdProductoGreaterThan(Long lastId);
+    
+    List<Producto> findByNombreIgnoreCaseContaining(String nombre);
 
     List<Producto> removeAllByIdProductoIn(Iterable<? extends Long> ids);
 

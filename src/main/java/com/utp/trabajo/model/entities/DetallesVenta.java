@@ -1,7 +1,9 @@
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,9 +36,9 @@ public class DetallesVenta implements Serializable {
     private Producto producto;
 
     @Column(precision = 12, scale = 2)
-    private BigInteger precioUnidad;
+    private BigDecimal precioUnidad;
 
     @Column(precision = 12, scale = 2)
-    private BigInteger total;
+    private BigDecimal total;
     //Total se calcula en el programa
 }

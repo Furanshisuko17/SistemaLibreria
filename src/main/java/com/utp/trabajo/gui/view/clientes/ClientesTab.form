@@ -44,16 +44,13 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="direccionLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="direccionField" pref="121" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="razonSocialLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                                  <Component id="razonSocialField" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="direccionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="estadoCivilLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="estadoCivilField" min="-2" pref="121" max="-2" attributes="0"/>
+                              <Component id="direccionField" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
@@ -95,8 +92,8 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="razonSocialLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="razonSocialField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="estadoCivilLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="estadoCivilField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -157,12 +154,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="telefonoField">
         </Component>
-        <Component class="javax.swing.JLabel" name="razonSocialLabel">
+        <Component class="javax.swing.JLabel" name="estadoCivilLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Raz. social:"/>
+            <Property name="text" type="java.lang.String" value="Est. Civil:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="razonSocialField">
+        <Component class="javax.swing.JTextField" name="estadoCivilField">
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator2">
         </Component>

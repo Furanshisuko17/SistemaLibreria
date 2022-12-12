@@ -1,6 +1,7 @@
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Venta implements Serializable {
 
     private Timestamp fechaEmision;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.PERSIST)
     private List<DetallesVenta> detallesVenta;
 
     @OneToOne
@@ -42,7 +43,7 @@ public class Venta implements Serializable {
     private BigInteger igv;
 
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigInteger precioTotal;
+    private BigDecimal precioTotal;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "idEmpleado", referencedColumnName = "idEmpleado")

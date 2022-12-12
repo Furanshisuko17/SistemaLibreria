@@ -8,7 +8,7 @@ public class DetalleCompra extends org.jdesktop.swingx.JXPanel {
 
     public DetalleCompra() {
         initComponents();
-        modelo2 = new DefaultTableModel(); // error corregido
+        modelo2 = new DefaultTableModel(); // error corregido 
         modelo2.addColumn("ID detalle de la compra");
         modelo2.addColumn("Cantidad");
         modelo2.addColumn("Fecha de llegada");

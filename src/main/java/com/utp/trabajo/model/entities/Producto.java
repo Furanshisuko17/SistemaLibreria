@@ -2,6 +2,7 @@ package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Producto implements Serializable {
     @JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
     private TipoProducto tipoProducto;
 
-    @OneToOne(mappedBy = "producto")
+    @OneToOne(mappedBy = "producto", cascade = CascadeType.MERGE)
     private Almacen almacen;
 
     @Column(length = 400)

@@ -1,7 +1,9 @@
 package com.utp.trabajo.gui.view.ventas;
 
 import com.utp.trabajo.model.entities.Venta;
+import com.utp.trabajo.services.security.SecurityService;
 import com.utp.trabajo.services.util.IconService;
+import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXFrame;
@@ -43,10 +46,18 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     };
 
     private boolean canRead = true;
+    private boolean canEdit = true;
+    private boolean canDelete = true;
+    private boolean canCreate = true;
+
+    private boolean retrievingData = false;
 
     private long lastId = 0;
 
-    private long limit = 100;
+    private long rowsPerUpdate = 100;
+
+    @Autowired
+    private SecurityService securityService;
     
     @Autowired
     private IconService iconService;
@@ -61,21 +72,42 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     }
 
     private void checkPermissions() {
+        List<String> permissions = securityService.getPermissions();
+
+        //read, create, edit, delete
+        if (!permissions.contains("read")) {
+            canRead = false;
+            loadMoreButton.setEnabled(false);
+            reloadTableButton.setEnabled(false);
+        }
+        if (!permissions.contains("create")) {
+            canCreate = false;
+            nuevoButton.setEnabled(false);
+//            guardarButton.setEnabled(false);
+        }
+        if (!permissions.contains("delete")) {
+            canDelete = false;
+            eliminarButton.setEnabled(false);
+        }
+        if (!permissions.contains("edit")) {
+            canEdit = false;
+            editarButton.setEnabled(false);
+        }
 
     }
 
     private void setBusy() {
-        //busyLabel.setEnabled(true);
+        busyLabel.setEnabled(true);
     }
 
     private void setBusy(String message) {
-        //busyLabel.setEnabled(true);
-        //busyLabel.setText(message);
+        busyLabel.setEnabled(true);
+        busyLabel.setText(message);
     }
 
     private void setIdle() {
-        //busyLabel.setEnabled(false);
-        //busyLabel.setText("");
+        busyLabel.setEnabled(false);
+        busyLabel.setText("");
     }
 
     private void retrieveData(boolean reload) {
@@ -121,12 +153,9 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         tablaClientes = new org.jdesktop.swingx.JXTable();
         reloadTableButton = new javax.swing.JButton();
         loadMoreButton = new javax.swing.JButton();
-        editarButton = new javax.swing.JButton();
         nuevoButton = new javax.swing.JButton();
-        eliminarButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         contadorVentasLabel = new javax.swing.JLabel();
-        searchField = new org.jdesktop.swingx.JXSearchField();
 
         tableInformationLabel.setText("Sin datos.");
 
@@ -180,13 +209,6 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
             }
         });
 
-        editarButton.setText("Editar");
-        editarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editarButtonActionPerformed(evt);
-            }
-        });
-
         nuevoButton.setText("Nuevo");
         nuevoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,19 +216,10 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
             }
         });
 
-        eliminarButton.setText("Eliminar");
-        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarButtonActionPerformed(evt);
-            }
-        });
-
         busyLabel.setBusy(true);
         busyLabel.setPreferredSize(new java.awt.Dimension(22, 22));
 
         contadorVentasLabel.setText("Cargando...");
-
-        searchField.setPrompt("Buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -217,17 +230,11 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nuevoButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(editarButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(eliminarButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contadorVentasLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(busyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loadMoreButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -237,14 +244,13 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(nuevoButton)
-                        .addComponent(editarButton)
-                        .addComponent(eliminarButton)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(contadorVentasLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(contadorVentasLabel))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nuevoButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -264,10 +270,6 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
-    private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
-        
-    }//GEN-LAST:event_editarButtonActionPerformed
-
     private void nuevoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoButtonActionPerformed
         JXFrame nuevaVentaDialog = new JXFrame("Nueva venta", false);
         nuevaVentaDialog.setIconImage(iconService.iconoNuevaVenta.getImage());
@@ -277,25 +279,32 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         
         nuevaVentaDialog.setLocationRelativeTo(this);
         nuevaVentaDialog.setVisible(true);
-        nuevaVentaDialog.setDefaultCloseOperation(JXFrame.DISPOSE_ON_CLOSE);
-        
+        nuevaVentaDialog.setDefaultCloseOperation(JXFrame.DO_NOTHING_ON_CLOSE);
+        nuevaVentaDialog.setMinimumSize(new java.awt.Dimension(800, 520));
+        nuevaVentaDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                if(!nuevaVenta.getProductos().isEmpty()) {
+                    int answ = OptionPaneService.questionMessage(nuevaVentaDialog, "¿Desea cerrar sin guardar?", "Cerrar sin guardar");
+                    if(answ == JOptionPane.YES_OPTION) {
+                        nuevaVentaDialog.setVisible(false);
+                        nuevaVentaDialog.dispose();
+                    } 
+                } else {
+                    nuevaVentaDialog.setVisible(false);
+                    nuevaVentaDialog.dispose();
+                }
+            } 
+        });
     }//GEN-LAST:event_nuevoButtonActionPerformed
-
-    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
-        
-    }//GEN-LAST:event_eliminarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JLabel contadorVentasLabel;
-    private javax.swing.JButton editarButton;
-    private javax.swing.JButton eliminarButton;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JButton nuevoButton;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
-    private org.jdesktop.swingx.JXSearchField searchField;
     private org.jdesktop.swingx.JXTable tablaClientes;
     private javax.swing.JLabel tableInformationLabel;
     // End of variables declaration//GEN-END:variables

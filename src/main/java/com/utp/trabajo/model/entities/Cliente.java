@@ -30,8 +30,8 @@ public class Cliente implements Serializable {
     @Column(length = 20)
     private String telefono;
 
-    @Column(nullable = false)
-    private String razonSocial;
+    @Column(nullable = true)
+    private String estadoCivil;
 
     @Column(nullable = true)
     private Long numeroCompras; //cantidad de compras que ha hecho el cliente

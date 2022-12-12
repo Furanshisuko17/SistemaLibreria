@@ -42,6 +42,16 @@ public class ProductoService {
         
         return productoDao.findById(idProducto).orElseThrow();
     }
+    
+    @Transactional(readOnly = true)
+    public List<Producto> encontrarProductosPorNombre(String nombre) throws NotEnoughPermissionsException {
+        
+        if (!securityService.getPermissions().contains("read")) {
+            throw new NotEnoughPermissionsException("Sin permisos de lectura.");
+        }
+        
+        return productoDao.findByNombreIgnoreCaseContaining(nombre);
+    }
 
     @Transactional
     public Producto nuevoProducto(Producto producto) throws NotEnoughPermissionsException {
@@ -50,6 +60,15 @@ public class ProductoService {
         }
         
         return productoDao.save(producto);
+    }
+    
+    @Transactional
+    public List<Producto> actualizarProductos(List<Producto> productos) throws NotEnoughPermissionsException {
+        if (!securityService.getPermissions().contains("create")) {
+            throw new NotEnoughPermissionsException("Sin permisos de edicion.");
+        }
+        
+        return productoDao.saveAll(productos);
     }
 
     @Transactional

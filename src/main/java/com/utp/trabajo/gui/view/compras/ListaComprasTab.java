@@ -77,6 +77,7 @@ public class ListaComprasTab extends org.jdesktop.swingx.JXPanel {
         nuevaCompraDialog.pack();
         nuevaCompraDialog.setLocationRelativeTo(this);
         System.out.println("Compras tab - Nueva instancia!");
+        
     }
 
     @PostConstruct

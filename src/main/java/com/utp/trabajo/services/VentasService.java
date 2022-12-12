@@ -45,7 +45,7 @@ public class VentasService {
     }
 
     @Transactional
-    public Venta nuevoCliente(Venta venta) throws NotEnoughPermissionsException {
+    public Venta nuevaVenta(Venta venta) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("create")) {
             throw new NotEnoughPermissionsException("Sin permisos de creación.");
         }
@@ -54,7 +54,7 @@ public class VentasService {
     }
 
     @Transactional
-    public Venta actualizarCliente(Venta venta) throws NotEnoughPermissionsException {
+    public Venta actualizarVenta(Venta venta) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("edit")) {
             throw new NotEnoughPermissionsException("Sin permisos de edición.");
         }
@@ -63,7 +63,7 @@ public class VentasService {
     }
 
     @Transactional
-    public List<Venta> eliminarClientes(List<Long> idsVenta) throws NotEnoughPermissionsException {
+    public List<Venta> eliminarVenta(List<Long> idsVenta) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("delete")) {
             throw new NotEnoughPermissionsException("Sin permisos de eliminación.");
         }

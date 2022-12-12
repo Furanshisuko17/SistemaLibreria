@@ -1,6 +1,7 @@
 package com.utp.trabajo.model.entities;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Almacen implements Serializable {
     @Column(nullable = false)
     private int stockMinimo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
     @MapsId
     private Producto producto;

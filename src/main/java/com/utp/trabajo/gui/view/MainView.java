@@ -542,6 +542,11 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de ventas - Librería El Estudiante");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -1222,6 +1227,10 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
         clientesView.abrirVentana();
         openClientesWindowButton.setEnabled(false);
     }//GEN-LAST:event_openClientesWindowButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AutenticationPanelMain;
