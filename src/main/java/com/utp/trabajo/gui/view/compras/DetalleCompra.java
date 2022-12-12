@@ -3,27 +3,30 @@ package com.utp.trabajo.gui.view.compras;
 import javax.swing.table.DefaultTableModel;
 
 public class DetalleCompra extends org.jdesktop.swingx.JXPanel {
+
     public static DefaultTableModel modelo2;
+
     public DetalleCompra() {
         initComponents();
+        modelo2 = new DefaultTableModel(); // error corregido
         modelo2.addColumn("ID detalle de la compra");
         modelo2.addColumn("Cantidad");
         modelo2.addColumn("Fecha de llegada");
         modelo2.addColumn("Fecha de salida");
         modelo2.addColumn("Precio");
         detalleCompraTable1.setModel(modelo2);
-        
-       //ABRIMOS LA OTRA TABLA
-        ListaComprasTab detalleCompraTable2=new ListaComprasTab();
-       detalleCompraTable2.setVisible(true);
+
+        //ABRIMOS LA OTRA TABLA
+        ListaComprasTab detalleCompraTable2 = new ListaComprasTab();
+        detalleCompraTable2.setVisible(true);
     }
-    
-    public void nuevaTabla(){
-        modelo2=new DefaultTableModel();
+
+    public void nuevaTabla() {
+        modelo2 = new DefaultTableModel();
         detalleCompraTable1.setModel(modelo2);
     }
-    
-    
+
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
