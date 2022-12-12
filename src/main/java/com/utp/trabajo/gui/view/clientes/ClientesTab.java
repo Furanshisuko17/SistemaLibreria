@@ -260,17 +260,14 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                     var id = defaultTableModelClientes.getValueAt(lastRow, 0);
                     lastId = Long.parseLong(id.toString());
 
-                }
-                catch (InterruptedException | ExecutionException ex) {
+                } catch (InterruptedException | ExecutionException ex) {
                     Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                catch (ArrayIndexOutOfBoundsException ex) {
+                } catch (ArrayIndexOutOfBoundsException ex) {
                     tableInformationLabel.setVisible(true);
                     //Logger.getLogger(ClientesTab.class.getName()).log(Level.SEVERE, null, ex);
                     //} catch (NotEnoughPermissionsException ex) {
 
-                }
-                finally {
+                } finally {
                     setIdle();
                     reloadTableButton.setEnabled(true);
                     loadMoreButton.setEnabled(true);

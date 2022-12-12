@@ -32,7 +32,7 @@ public class Venta implements Serializable {
 
     private Timestamp fechaEmision;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<DetallesVenta> detallesVenta;
 
     @OneToOne

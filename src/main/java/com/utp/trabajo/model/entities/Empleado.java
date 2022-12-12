@@ -24,7 +24,7 @@ public class Empleado implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmpleado;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRol", referencedColumnName = "idRol", nullable = true)
     private RolAcceso rolAcceso;
 
@@ -49,7 +49,7 @@ public class Empleado implements Serializable {
     @Column(length = 500)
     private String descripcion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "idArea", referencedColumnName = "idArea")
     private Area area;
 
