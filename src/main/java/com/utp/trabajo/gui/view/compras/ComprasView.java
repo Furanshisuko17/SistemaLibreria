@@ -68,8 +68,10 @@ public class ComprasView extends javax.swing.JInternalFrame {
         com.formdev.flatlaf.FlatLaf.updateUI();
 
         //Colocar tabs aquí
-        //tabbedPane.add("Compras", getListaComprasTabInstance());
+        tabbedPane.add("Compras", getListaComprasTabInstance());
         tabbedPane.add("Proveedores", getProveedoresTabInstance());
+        tabbedPane.add("Detalle de Compras", getDetalleCompraInstance());
+        tabbedPane.add("Estado de Compras", getEstadoCompraInstance());
 
         setVisible(true);
     }
