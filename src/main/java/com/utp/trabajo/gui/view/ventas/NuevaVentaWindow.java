@@ -196,6 +196,27 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
 //        checkPermissions();
 //        updateTable(false); // mover hacia un listener que verifique que se ha abierto el jPanel
         initSearchButtons();
+        new SwingWorker<Cliente, Cliente>() {
+            @Override
+            protected Cliente doInBackground() throws Exception {
+                setBusy("Cargando...");
+                return clienteService.encontrarClientePorId(1L);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    emptyCliente = get();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(NuevaVentaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(NuevaVentaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    setIdle();
+                }
+            }
+            
+        }.execute();
     }
 
     private void updateTotal() {
@@ -1290,7 +1311,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
         total = total.setScale(2, RoundingMode.HALF_UP);
         
         selectedProducto.getAlmacen().setStock(selectedProducto.getAlmacen().getStock() - cantidad);
-        
+        selectedProducto.setFechaUltimaVenta(new Timestamp(new Date().getTime()));
         Producto printableProducto = selectedProducto;
         printableProducto.getAlmacen().setProducto(null);
         Utils.prettyPrintObject(printableProducto);
@@ -1348,8 +1369,10 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
 
         if (isClienteSelected()) {
             venta.setCliente(selectedCliente);
+            selectedCliente.setNumeroCompras(selectedCliente.getNumeroCompras() + 1L);
         } else {
             venta.setCliente(emptyCliente);
+            emptyCliente.setNumeroCompras(emptyCliente.getNumeroCompras() + 1L);
         }
 
         venta.setEmpleado(securityService.getLoggedEmpleado());

@@ -336,7 +336,7 @@ public class ProductoTab extends org.jdesktop.swingx.JXPanel {
         tableProductos.setEditable(false);
         scrollPane.setViewportView(tableProductos);
 
-        tableInformationLabel.setText("jLabel1");
+        tableInformationLabel.setText("Sin datos.");
 
         layeredPane.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         layeredPane.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);

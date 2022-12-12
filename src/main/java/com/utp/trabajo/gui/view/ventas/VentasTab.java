@@ -2,10 +2,13 @@ package com.utp.trabajo.gui.view.ventas;
 
 import com.utp.trabajo.model.entities.Venta;
 import com.utp.trabajo.services.security.SecurityService;
+import com.utp.trabajo.services.util.DateTableCellRenderer;
 import com.utp.trabajo.services.util.IconService;
 import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.Frame;
+import java.awt.event.AdjustmentEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -13,7 +16,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXFrame;
 import org.springframework.beans.factory.ObjectFactory;
@@ -21,14 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
-    DefaultTableModel defaultTableModelVentas = new DefaultTableModel() {
+    private DefaultTableModel defaultTableModelVentas = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             switch (columnIndex) {
                 case 0:
                     return Long.class;
                 case 1:
-                    return String.class;
+                    return Date.class;
                 case 2:
                     return String.class;
                 case 3:
@@ -45,6 +50,10 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         }
     };
 
+    private String[] columnNames = {"ID", "Fecha de emisión", "Cliente", "Comprobante", "Cantidad de ítems", "Total"};
+    
+    ListSelectionModel selectionModel;
+    
     private boolean canRead = true;
     private boolean canEdit = true;
     private boolean canDelete = true;
@@ -64,11 +73,48 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
     public VentasTab() {
         initComponents();
+        initTable();
     }
 
     @PostConstruct
     public void init() {
+        updateTable(false);
+    }
+    
+    private void initTable() {
+        defaultTableModelVentas.setColumnIdentifiers(columnNames);
+        tablaVentas.setModel(defaultTableModelVentas);
+        tablaVentas.getColumnModel().getColumn(0).setPreferredWidth(50);
+        
+        tablaVentas.getColumnModel().getColumn(1).setCellRenderer(new DateTableCellRenderer(true));
+        
+        scrollPane.getVerticalScrollBar().addAdjustmentListener((AdjustmentEvent e) -> {
+            if (retrievingData) {
+                return;
+            }
+            int maxValue = scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getVisibleAmount();
+            int currentValue = scrollPane.getVerticalScrollBar().getValue();
+            float fraction = (float) currentValue / (float) maxValue;
+            if (fraction > 0.999f) {
+                updateTable(false);
+                System.out.println("Scroll bar is near the bottom");
+            }
+        });
+        selectionModel = tablaVentas.getSelectionModel();
+        selectionModel.addListSelectionListener((ListSelectionEvent e) -> {
+            if (selectionModel.getSelectedItemsCount() == 1) {
+                detallesVenta.setEnabled(true);
+            } else {
+                detallesVenta.setEnabled(false);
+            }
 
+        });
+        setIdle();
+        detallesVenta.setEnabled(false);
+
+        jLayeredPane1.removeAll();
+        jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER, 0);
+        jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER, -1);
     }
 
     private void checkPermissions() {
@@ -85,15 +131,6 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
             nuevoButton.setEnabled(false);
 //            guardarButton.setEnabled(false);
         }
-        if (!permissions.contains("delete")) {
-            canDelete = false;
-            eliminarButton.setEnabled(false);
-        }
-        if (!permissions.contains("edit")) {
-            canEdit = false;
-            editarButton.setEnabled(false);
-        }
-
     }
 
     private void setBusy() {
@@ -110,7 +147,7 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         busyLabel.setText("");
     }
 
-    private void retrieveData(boolean reload) {
+    private void updateTable(boolean reload) {
         if (!canRead) {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
@@ -150,16 +187,17 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         tableInformationLabel = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
-        tablaClientes = new org.jdesktop.swingx.JXTable();
+        tablaVentas = new org.jdesktop.swingx.JXTable();
         reloadTableButton = new javax.swing.JButton();
         loadMoreButton = new javax.swing.JButton();
         nuevoButton = new javax.swing.JButton();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         contadorVentasLabel = new javax.swing.JLabel();
+        detallesVenta = new javax.swing.JButton();
 
         tableInformationLabel.setText("Sin datos.");
 
-        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -167,9 +205,9 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
             }
         ));
-        tablaClientes.setColumnControlVisible(true);
-        tablaClientes.setEditable(false);
-        scrollPane.setViewportView(tablaClientes);
+        tablaVentas.setColumnControlVisible(true);
+        tablaVentas.setEditable(false);
+        scrollPane.setViewportView(tablaVentas);
 
         jLayeredPane1.setLayer(tableInformationLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(scrollPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -221,6 +259,8 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
 
         contadorVentasLabel.setText("Cargando...");
 
+        detallesVenta.setText("Detalles");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -231,6 +271,8 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                     .addComponent(jLayeredPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(detallesVenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contadorVentasLabel))
                     .addGroup(layout.createSequentialGroup()
@@ -250,7 +292,9 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(contadorVentasLabel))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(nuevoButton)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nuevoButton)
+                            .addComponent(detallesVenta))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -300,12 +344,13 @@ public class VentasTab extends org.jdesktop.swingx.JXPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
     private javax.swing.JLabel contadorVentasLabel;
+    private javax.swing.JButton detallesVenta;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JButton nuevoButton;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
-    private org.jdesktop.swingx.JXTable tablaClientes;
+    private org.jdesktop.swingx.JXTable tablaVentas;
     private javax.swing.JLabel tableInformationLabel;
     // End of variables declaration//GEN-END:variables
 

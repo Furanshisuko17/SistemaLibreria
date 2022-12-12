@@ -49,10 +49,10 @@ public class Venta implements Serializable {
     @JoinColumn(nullable = false, name = "idEmpleado", referencedColumnName = "idEmpleado")
     private Empleado empleado; //references empleado//
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(nullable = false, name = "idCliente", referencedColumnName = "idCliente")
     private Cliente cliente;	//references cliente
-
+    
     @ManyToOne
     @JoinColumn(nullable = false, name = "idMetodoPagoVenta", referencedColumnName = "idMetodoPago")
     private MetodoPago metodoPago;

@@ -22,6 +22,8 @@
                   <Component id="jLayeredPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="nuevoButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="detallesVenta" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="contadorVentasLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -47,7 +49,10 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="nuevoButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="nuevoButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="detallesVenta" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -105,7 +110,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="org.jdesktop.swingx.JXTable" name="tablaClientes">
+            <Component class="org.jdesktop.swingx.JXTable" name="tablaVentas">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="0" rowCount="0"/>
@@ -156,6 +161,11 @@
     <Component class="javax.swing.JLabel" name="contadorVentasLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cargando..."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="detallesVenta">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Detalles"/>
       </Properties>
     </Component>
   </SubComponents>
