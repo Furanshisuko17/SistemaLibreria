@@ -275,6 +275,50 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
         }
         return idClientes;
     }
+     private void clearNuevoAlmacenWindow() {
+        stockField.setText("");
+        stockinicialField.setText("");
+        stockminimoField.setText("");
+        columnaField.setText("");
+        estanteriaField.setText("");
+        filaField.setText("");
+    }
+     private void cancelarCreacionAlmacen() {
+        boolean isBlank = true;
+
+        if (!stockField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!stockinicialField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!stockminimoField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!columnaField.getText().isBlank()) {
+            isBlank = false;
+        }
+
+        if (!estanteriaField.getText().isBlank()) {
+            isBlank = false;
+        }
+         if (!filaField.getText().isBlank()) {
+            isBlank = false;
+        }
+        
+        if (isBlank) {
+            nuevoAlmacenDialog.setVisible(false);
+        }else {
+            int ans = OptionPaneService.questionMessage(nuevoAlmacenDialog, "¿Desea salir sin guardar los cambios?", "Cambios sin guardar");
+            if (ans == JOptionPane.YES_OPTION) {
+                nuevoAlmacenDialog.setVisible(false);
+                clearNuevoAlmacenWindow();
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -287,10 +331,22 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
 
         nuevoAlmacenDialog = new javax.swing.JDialog();
         guardarAlmacenButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        cancelarCreacionClienteButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
+        nuevoClienteLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        stockField = new javax.swing.JTextField();
+        stockinicialField = new javax.swing.JTextField();
+        stockminimoField = new javax.swing.JTextField();
+        columnaField = new javax.swing.JTextField();
+        estanteriaField = new javax.swing.JTextField();
+        filaField = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
@@ -306,46 +362,122 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
         tableInformationLabel = new javax.swing.JLabel();
 
         guardarAlmacenButton.setText("Guardar");
+        guardarAlmacenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarAlmacenButtonActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("jButton1");
+        cancelarCreacionClienteButton.setText("Cancelar");
+        cancelarCreacionClienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarCreacionClienteButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("jLabel1");
+        nuevoClienteLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        nuevoClienteLabel.setText("Crear nuevo Almacen");
+
+        jLabel2.setText("Stock");
+
+        jLabel3.setText("Stock Inicial");
+
+        jLabel4.setText("Stock Minimo");
+
+        jLabel5.setText("Columna");
+
+        jLabel6.setText("Estanteria");
+
+        jLabel7.setText("Fila");
+
+        stockField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout nuevoAlmacenDialogLayout = new javax.swing.GroupLayout(nuevoAlmacenDialog.getContentPane());
         nuevoAlmacenDialog.getContentPane().setLayout(nuevoAlmacenDialogLayout);
         nuevoAlmacenDialogLayout.setHorizontalGroup(
             nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(guardarAlmacenButton)
+                .addGap(26, 26, 26)
+                .addComponent(cancelarCreacionClienteButton)
+                .addGap(21, 21, 21))
+            .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
                     .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(319, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
+                        .addComponent(nuevoClienteLabel)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(stockinicialField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(stockField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(stockminimoField))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(guardarAlmacenButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)))
-                        .addGap(1, 1, 1))))
-            .addComponent(jSeparator5)
+                                .addComponent(jLabel7)
+                                .addGap(102, 102, 102))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
+                                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                                        .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(estanteriaField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(columnaField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(nuevoAlmacenDialogLayout.createSequentialGroup()
+                                        .addComponent(filaField, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2)))
+                                .addGap(26, 26, 26))))
+                    .addComponent(jSeparator5)))
         );
         nuevoAlmacenDialogLayout.setVerticalGroup(
             nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoAlmacenDialogLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(22, 22, 22)
+                .addComponent(nuevoClienteLabel)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(stockField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(columnaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(stockinicialField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estanteriaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel7)
+                        .addComponent(filaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stockminimoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(nuevoAlmacenDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarAlmacenButton)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18))
+                    .addComponent(cancelarCreacionClienteButton))
+                .addGap(22, 22, 22))
         );
 
         nuevoAlmacenButton.setText("Nuevo");
@@ -356,8 +488,18 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
         });
 
         editarAlmacenButton.setText("Editar");
+        editarAlmacenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarAlmacenButtonActionPerformed(evt);
+            }
+        });
 
         eliminarAlmacenButton.setText("Eliminar");
+        eliminarAlmacenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarAlmacenButtonActionPerformed(evt);
+            }
+        });
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -471,13 +613,181 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
         updateTable(true);
     }//GEN-LAST:event_loadMoreButtonActionPerformed
 
+    private void stockFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockFieldActionPerformed
+
+    private void cancelarCreacionClienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCreacionClienteButtonActionPerformed
+        cancelarCreacionAlmacen();
+    }//GEN-LAST:event_cancelarCreacionClienteButtonActionPerformed
+
+    private void eliminarAlmacenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarAlmacenButtonActionPerformed
+           List<Long> selectedProctoId = getIdFromSelectedRows();
+
+        int selectedOption = JOptionPane.showConfirmDialog(this,
+                "¿Desea eliminar " + (selectedProctoId.size() == 1 ? "1 producto?" : (selectedProctoId.size() + " productos?")),
+                selectedProctoId.size() == 1 ? "Eliminar un producto" : "Eliminar varios productos",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            List<Almacen> clientesEliminados = new ArrayList<>();
+            try {
+                clientesEliminados = almacenService.eliminarAlmacen(selectedProctoId); //implementar swingworker
+            }
+            catch (NotEnoughPermissionsException ex) {
+                // just pass?
+            }
+
+            if (!clientesEliminados.isEmpty()) {
+                updateTable(true);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Ocurrió un error al eliminar " + (selectedProctoId.size() == 1 ? "el producto seleccionado." : "los productos seleccionados."),
+                        "¡Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (selectedOption == JOptionPane.NO_OPTION) {
+            //do nothing
+        }
+    }//GEN-LAST:event_eliminarAlmacenButtonActionPerformed
+
+    private void editarAlmacenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarAlmacenButtonActionPerformed
+         List<Long> idProductosSeleccionado = getIdFromSelectedRows();
+        if (idProductosSeleccionado.size() == 1) {
+            Almacen ProductoSeleccionado = null;
+            SwingWorker editarAlmaceneWorker = new SwingWorker<Almacen, Almacen>() {
+                @Override
+                protected Almacen doInBackground() throws Exception {
+                    return almacenService.encontrarAlmacenPorId(idProductosSeleccionado.get(0));
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoAlmacenDialog, "No dispone de permisos suficientes para poder crear un nuevo producto en almacen.", "Sin permisos.");
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+                
+            };
+        } //TODO: Refactor and complete
+    }//GEN-LAST:event_editarAlmacenButtonActionPerformed
+
+    private void guardarAlmacenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarAlmacenButtonActionPerformed
+        stockField.putClientProperty("JComponent.outline", "");
+        stockinicialField.putClientProperty("JComponent.outline", "");
+        stockminimoField.putClientProperty("JComponent.outline", "");
+        columnaField.putClientProperty("JComponent.outline", "");
+        estanteriaField.putClientProperty("JComponent.outline", "");
+        filaField.putClientProperty("JComponent.outline", "");
+       
+        Almacen a = new Almacen();
+        
+        boolean error = false;
+
+        if (stockField.getText().isBlank()) {
+            stockField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+
+        if (stockinicialField.getText().isBlank()) {
+            stockinicialField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+
+        if (stockminimoField.getText().isBlank()) {
+            stockminimoField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+        
+         if (columnaField.getText().isBlank()) {
+            columnaField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+
+          if (estanteriaField.getText().isBlank()) {
+            estanteriaField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+
+           if (filaField.getText().isBlank()) {
+            filaField.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+
+
+        if (error) {
+            return;
+        } else {
+            setBusy("Guardando cliente...");
+           a.setStock(Long.getLong(stockField.getText()));
+           a.setStockInicial(Integer.parseInt(stockinicialField.getText()));
+           a.setStockMinimo(Integer.parseInt(stockminimoField.getText()));
+           a.setColumna(Integer.parseInt(columnaField.getText()));
+           a.setEstanteria(estanteriaField.getText());
+           a.setFila(Integer.parseInt(filaField.getText()));
+           
+            SwingWorker nuevoAlmacenWorker = new SwingWorker<Almacen, Almacen>() {
+                @Override
+                protected Almacen doInBackground() throws Exception {
+                    return almacenService.nuevoAlmacen(a); 
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get(); //maybe check if it was correctly added?
+                        setIdle();
+                    }
+                    catch (InterruptedException ex) {}
+                    catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            OptionPaneService.errorMessage(nuevoAlmacenDialog, "No dispone de permisos suficientes para poder crear un nuevo cliente.", "Sin permisos.");
+                            return;
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    }
+                }
+            };
+            nuevoAlmacenWorker.execute();
+            clearNuevoAlmacenWindow();  
+        }
+        
+        nuevoAlmacenDialog.setVisible(false);
+    }//GEN-LAST:event_guardarAlmacenButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
+    private javax.swing.JButton cancelarCreacionClienteButton;
+    private javax.swing.JTextField columnaField;
     private javax.swing.JButton editarAlmacenButton;
     private javax.swing.JButton eliminarAlmacenButton;
+    private javax.swing.JTextField estanteriaField;
+    private javax.swing.JTextField filaField;
     private javax.swing.JButton guardarAlmacenButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -487,8 +797,12 @@ public class AlmacenTab extends org.jdesktop.swingx.JXPanel {
     private javax.swing.JButton loadMoreButton;
     private javax.swing.JButton nuevoAlmacenButton;
     private javax.swing.JDialog nuevoAlmacenDialog;
+    private javax.swing.JLabel nuevoClienteLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JTextField stockField;
+    private javax.swing.JTextField stockinicialField;
+    private javax.swing.JTextField stockminimoField;
     private org.jdesktop.swingx.JXTable tablaAlmacen;
     private javax.swing.JLabel tableInformationLabel;
     // End of variables declaration//GEN-END:variables

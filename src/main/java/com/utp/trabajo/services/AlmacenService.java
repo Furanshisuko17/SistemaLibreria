@@ -61,11 +61,11 @@ public class AlmacenService {
     }
 
     @Transactional
-    public List<Almacen> eliminarAlmacen(List<Long> idsCliente) throws NotEnoughPermissionsException {
+    public List<Almacen> eliminarAlmacen(List<Long> idsProducto) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("delete")) {
             throw new NotEnoughPermissionsException("Sin permisos de eliminación.");
         }
-        return almacenDao.removeAllByIdProductoIn(idsCliente);
+        return almacenDao.removeAllByIdProductoIn(idsProducto);
     }
 
     @Transactional(readOnly = true)
