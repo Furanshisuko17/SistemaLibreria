@@ -807,6 +807,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
     private void setIdle() {
         busyLabel.setEnabled(false);
+        busyLabel.setText("");
     }
 
     private void resetUI() {
@@ -1095,7 +1096,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                         imp.printStackTrace();
                         System.out.println("impossible end!: \n");
                     }
-                }
+                } 
                 if (logeoExitoso) {
                     passwordInput.putClientProperty("JComponent.outline", "");
                     usernameInput.putClientProperty("JComponent.outline", "");

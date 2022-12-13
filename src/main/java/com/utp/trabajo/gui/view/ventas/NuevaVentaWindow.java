@@ -95,8 +95,6 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
     private String[] columnNames = {"ID", "Nombre", "Dirección", "DNI/RUC", "Teléfono", "Estado civil", "N° compras"};
     //TODO: set minimum and default sizes for each column
 
-    
-    
     private ListSelectionModel clienteSelectionModel;
 
     private boolean retrievingData = false;
@@ -163,7 +161,6 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
 
     private BigDecimal totalCompra;
 
-    //private JPopupMenu popupMenu = new JPopupMenu("Productos encontrados ↓");
     private JButton searchProductButton;
     private ButtonGroup buscarProductoButtonGroup;
     private JToggleButton findByIdButton;
@@ -581,7 +578,6 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
                 protected void done() {
                     try {
                         Producto producto = get();
-                        searchProductButton.setIcon(iconService.iconoBusquedaEncontrada);
                         popupMenu.removeAll();
                         popupMenu.add(producto.getIdProducto() + " - " + producto.getNombre() + " " + producto.getMarca().getNombreMarca() + " - Stock: " + producto.getAlmacen().getStock())
                             .addActionListener(new ActionListener() {
@@ -593,6 +589,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
                         popupMenu.pack();
                         popupMenu.show(productoSearchField, 0, productoSearchField.getHeight() + 2);
                         productoSearchField.requestFocusInWindow();
+                        searchProductButton.setIcon(iconService.iconoBusquedaEncontrada);
                     } catch (InterruptedException ex) {
                     } catch (ExecutionException ex) {
                         try {
@@ -640,7 +637,6 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
                     List<Producto> productos = null;
                     try {
                         productos = get();
-                        searchProductButton.setIcon(iconService.iconoBusquedaEncontrada);
                         popupMenu.removeAll();
                         productos.forEach(producto -> {
                             popupMenu.add(producto.getIdProducto() + " - " + producto.getNombre() + " " + producto.getMarca().getNombreMarca() + " - Stock: " + producto.getAlmacen().getStock())
@@ -654,6 +650,7 @@ public class NuevaVentaWindow extends org.jdesktop.swingx.JXPanel {
                         popupMenu.pack();
                         popupMenu.show(productoSearchField, 0, productoSearchField.getHeight() + 2);
                         productoSearchField.requestFocusInWindow();
+                        searchProductButton.setIcon(iconService.iconoBusquedaEncontrada);
                     } catch (InterruptedException ex) {
                     } catch (ExecutionException ex) {
                         try {

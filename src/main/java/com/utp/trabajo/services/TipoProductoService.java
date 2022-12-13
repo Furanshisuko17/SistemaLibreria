@@ -48,19 +48,20 @@ public class TipoProductoService {
     }
 
     @Transactional
-    public void nuevoTipoProducto(TipoProducto tipoproducto) throws NotEnoughPermissionsException {
+    public TipoProducto nuevoTipoProducto(TipoProducto tipoproducto) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("create")) {
             throw new NotEnoughPermissionsException("Sin permisos de creación.");
         }
-        tipoproductoDao.save(tipoproducto);
+        return tipoproductoDao.save(tipoproducto);
 
     }
 
     @Transactional
-    public void actualizarTipoProducto(TipoProducto tipoproducto) throws NotEnoughPermissionsException {
+    public TipoProducto actualizarTipoProducto(TipoProducto tipoproducto) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("edit")) {
             throw new NotEnoughPermissionsException("Sin permisos de edición.");
         }
+        return tipoproductoDao.save(tipoproducto);
     }
 
     @Transactional

@@ -192,7 +192,6 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             setBusy("Sin permisos suficientes para leer datos.");
             return;
         }
-
         setBusy("Cargando...");
         reloadTableButton.setEnabled(false);
         loadMoreButton.setEnabled(false);
@@ -238,7 +237,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
             }
 
         };
-        SwingWorker obtenerClientesWorker = new SwingWorker<List<Cliente>, List<Cliente>>() {
+        new SwingWorker<List<Cliente>, List<Cliente>>() {
             @Override
             protected List<Cliente> doInBackground() throws Exception {
                 // set lastId and configurable rowsPerUpdate if reloading just reload all data
@@ -275,9 +274,7 @@ public class ClientesTab extends org.jdesktop.swingx.JXPanel {
                 }
                 worker2.execute();
             }
-        };
-        obtenerClientesWorker.execute();
-
+        }.execute();
     }
 
     private List<Long> getIdFromSelectedRows() { // refactor! DONE!

@@ -43,20 +43,19 @@ public class MarcaService {
     }
 
     @Transactional
-    public void nuevaMarca(Marca marca) throws NotEnoughPermissionsException {
+    public Marca nuevaMarca(Marca marca) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("create")) {
             throw new NotEnoughPermissionsException("Sin permisos de creación.");
         }
-        
-        marcaDao.save(marca);
-
+        return marcaDao.save(marca);
     }
 
     @Transactional
-    public void actualizarMarca(Marca marca) throws NotEnoughPermissionsException {
+    public Marca actualizarMarca(Marca marca) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("edit")) {
             throw new NotEnoughPermissionsException("Sin permisos de edición.");
         }
+        return marcaDao.save(marca);
     }
 
     @Transactional

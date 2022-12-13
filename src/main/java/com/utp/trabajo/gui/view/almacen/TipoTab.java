@@ -1,9 +1,11 @@
 package com.utp.trabajo.gui.view.almacen;
 
 import com.utp.trabajo.exception.security.NotEnoughPermissionsException;
+import com.utp.trabajo.model.entities.Marca;
 import com.utp.trabajo.model.entities.TipoProducto;
 import com.utp.trabajo.services.TipoProductoService;
 import com.utp.trabajo.services.security.SecurityService;
+import com.utp.trabajo.services.util.OptionPaneService;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
@@ -27,8 +30,6 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             switch (columnIndex) {
                 case 0:
                     return Long.class;
-                case 1:
-                    return String.class;
                 default:
                     return String.class;
             }
@@ -37,6 +38,8 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
     String[] columnNames = {"ID", "Tipo de Producto"};
 
     ListSelectionModel selectionModel;
+    
+    private TipoProducto selectedTipo = null;
 
     private boolean canEdit = true;
     private boolean canDelete = true;
@@ -75,12 +78,6 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             if (!canDelete || !canEdit) {
                 return;
             }
-            if (!selectionModel.isSelectionEmpty()) {
-                eliminarTipoButton.setEnabled(true);
-            } else {
-                eliminarTipoButton.setEnabled(false);
-            }
-
             if (selectionModel.getSelectedItemsCount() == 1) {
                 editarTipoButton.setEnabled(true);
             } else {
@@ -89,10 +86,11 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
 
         });
         setIdle();
-        eliminarTipoButton.setEnabled(false);
         editarTipoButton.setEnabled(false);
         nuevoTipoDialog.pack();
         nuevoTipoDialog.setLocationRelativeTo(this);
+        editarTipoDialog.pack();
+        editarTipoDialog.setLocationRelativeTo(this);
         System.out.println("Clientes tab - Nueva instancia!");
     }
 
@@ -114,10 +112,7 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             nuevoTipoButton.setEnabled(false);
             guardarTipoButton.setEnabled(false);
         }
-        if (!permissions.contains("delete")) {
-            canDelete = false;
-            eliminarTipoButton.setEnabled(false);
-        }
+
         if (!permissions.contains("edit")) {
             canEdit = false;
             editarTipoButton.setEnabled(false);
@@ -148,17 +143,19 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         reloadTableButton.setEnabled(false);
         loadMoreButton.setEnabled(false);
         retrievingData = true;
-
+        int oldRowCount = defaultTableModelTipoProducto.getRowCount();
         if (reload) {
             defaultTableModelTipoProducto.setRowCount(0);
             lastId = 0;
             setBusy("Recargando...");
         }
-
-        SwingWorker worker = new SwingWorker<List<TipoProducto>, List<TipoProducto>>() {
+        new SwingWorker<List<TipoProducto>, List<TipoProducto>>() {
             @Override
             protected List<TipoProducto> doInBackground() throws Exception {
-                return tipoproductoService.streamTipoProducto(lastId, limit); // set lastId and configurable limit
+                if (reload) {
+                    return tipoproductoService.streamTipoProducto(lastId, (long) oldRowCount);
+                }
+                return tipoproductoService.streamTipoProducto(lastId, limit); 
             }
 
             @Override
@@ -187,29 +184,19 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
                 loadMoreButton.setEnabled(true);
                 retrievingData = false;
             }
-        };
-        worker.execute();
+        }.execute();
     }
 
-    private List<TipoProducto> getSelectedRows() {
-        List<TipoProducto> TipoProducto = new ArrayList<>();
+    private long getSelectedId() {
+        List<Long> ids = new ArrayList<>();
         for (int i : selectionModel.getSelectedIndices()) { //rows 
             //System.out.println(i);
             i = tablaTipoTab.convertRowIndexToModel(i); //IMPORTANTISIMO, en caso de que la tabla esté ordenada por alguna columna, esto devolvera siempre la fila seleccionada.
-            TipoProducto c = new TipoProducto();
-            c.setIdTipoProducto((Long) defaultTableModelTipoProducto.getValueAt(i, 0));
-            c.setTipo((String) defaultTableModelTipoProducto.getValueAt(i, 1));
-
-            TipoProducto.add(c);
+            ids.add((Long) defaultTableModelTipoProducto.getValueAt(i, 0));
         }
-        return TipoProducto;
+        return ids.get(0);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,24 +204,41 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         nuevoTipoDialog = new javax.swing.JDialog();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        nuevaMarcaLabel = new javax.swing.JLabel();
+        nuevoTipoLabel = new javax.swing.JLabel();
         guardarTipoButton = new javax.swing.JButton();
         cancelarTipoButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        idField = new javax.swing.JTextField();
         tipoField = new javax.swing.JTextField();
+        editarTipoDialog = new javax.swing.JDialog();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        editarTipoLabel = new javax.swing.JLabel();
+        guardarEdicionTipoButton = new javax.swing.JButton();
+        cancelarEdicionTipoButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        tipoFieldEditar = new javax.swing.JTextField();
         scrollPane = new javax.swing.JScrollPane();
         tablaTipoTab = new org.jdesktop.swingx.JXTable();
         busyLabel = new org.jdesktop.swingx.JXBusyLabel(new java.awt.Dimension(22, 22));
         nuevoTipoButton = new javax.swing.JButton();
         editarTipoButton = new javax.swing.JButton();
-        eliminarTipoButton = new javax.swing.JButton();
         loadMoreButton = new javax.swing.JButton();
         reloadTableButton = new javax.swing.JButton();
 
-        nuevaMarcaLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        nuevaMarcaLabel.setText("Nuevo Tipo");
+        nuevoTipoDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        nuevoTipoDialog.setTitle("Nuevo tipo de producto");
+        nuevoTipoDialog.setAlwaysOnTop(true);
+        nuevoTipoDialog.setModal(true);
+        nuevoTipoDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        nuevoTipoDialog.setResizable(false);
+        nuevoTipoDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                nuevoTipoDialogWindowClosing(evt);
+            }
+        });
+
+        nuevoTipoLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        nuevoTipoLabel.setText("Nuevo tipo de producto");
 
         guardarTipoButton.setText("Guardar");
         guardarTipoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -250,8 +254,6 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             }
         });
 
-        jLabel1.setText("ID:");
-
         jLabel2.setText("Tipo de Producto:");
 
         tipoField.addActionListener(new java.awt.event.ActionListener() {
@@ -265,52 +267,116 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         nuevoTipoDialogLayout.setHorizontalGroup(
             nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
-                        .addComponent(nuevaMarcaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 158, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoTipoDialogLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(guardarTipoButton)
-                        .addGap(29, 29, 29)
-                        .addComponent(cancelarTipoButton)))
-                .addContainerGap())
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(27, 27, 27)
-                .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(idField)
-                    .addComponent(tipoField, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                    .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nuevoTipoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(guardarTipoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelarTipoButton))
+                    .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tipoField, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         nuevoTipoDialogLayout.setVerticalGroup(
             nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(nuevoTipoDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(nuevaMarcaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(nuevoTipoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
                 .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(tipoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(nuevoTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarTipoButton)
                     .addComponent(guardarTipoButton))
-                .addGap(32, 32, 32))
+                .addGap(6, 6, 6))
+        );
+
+        editarTipoDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        editarTipoDialog.setTitle("Nuevo tipo de producto");
+        editarTipoDialog.setAlwaysOnTop(true);
+        editarTipoDialog.setModal(true);
+        editarTipoDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        editarTipoDialog.setResizable(false);
+        editarTipoDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                editarTipoDialogWindowClosing(evt);
+            }
+        });
+
+        editarTipoLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        editarTipoLabel.setText("Editar tipo de producto #00");
+
+        guardarEdicionTipoButton.setText("Guardar");
+        guardarEdicionTipoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarEdicionTipoButtonActionPerformed(evt);
+            }
+        });
+
+        cancelarEdicionTipoButton.setText("Cancelar");
+        cancelarEdicionTipoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarEdicionTipoButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Tipo de producto:");
+
+        javax.swing.GroupLayout editarTipoDialogLayout = new javax.swing.GroupLayout(editarTipoDialog.getContentPane());
+        editarTipoDialog.getContentPane().setLayout(editarTipoDialogLayout);
+        editarTipoDialogLayout.setHorizontalGroup(
+            editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(editarTipoDialogLayout.createSequentialGroup()
+                .addGroup(editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarTipoDialogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(guardarEdicionTipoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelarEdicionTipoButton))
+                    .addGroup(editarTipoDialogLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editarTipoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                            .addGroup(editarTipoDialogLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tipoFieldEditar)))))
+                .addContainerGap())
+        );
+        editarTipoDialogLayout.setVerticalGroup(
+            editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editarTipoDialogLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(editarTipoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(tipoFieldEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(editarTipoDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarEdicionTipoButton)
+                    .addComponent(guardarEdicionTipoButton))
+                .addGap(6, 6, 6))
         );
 
         setPreferredSize(new java.awt.Dimension(626, 419));
@@ -323,6 +389,7 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
 
             }
         ));
+        tablaTipoTab.setEditable(false);
         scrollPane.setViewportView(tablaTipoTab);
 
         busyLabel.setBusy(true);
@@ -336,11 +403,9 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         });
 
         editarTipoButton.setText("Editar");
-
-        eliminarTipoButton.setText("Eliminar");
-        eliminarTipoButton.addActionListener(new java.awt.event.ActionListener() {
+        editarTipoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarTipoButtonActionPerformed(evt);
+                editarTipoButtonActionPerformed(evt);
             }
         });
 
@@ -364,8 +429,8 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addComponent(busyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(loadMoreButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reloadTableButton)
@@ -378,8 +443,6 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
                         .addComponent(nuevoTipoButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editarTipoButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(eliminarTipoButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(6, 6, 6))
         );
@@ -389,10 +452,9 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoTipoButton)
-                    .addComponent(editarTipoButton)
-                    .addComponent(eliminarTipoButton))
+                    .addComponent(editarTipoButton))
                 .addGap(6, 6, 6)
-                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(busyLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -403,18 +465,6 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void eliminarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTipoButtonActionPerformed
-        List<Long> selectedMarcasId = new ArrayList();
-        for (TipoProducto cliente : getSelectedRows()) {
-            selectedMarcasId.add(cliente.getIdTipoProducto());
-        }
-        try {
-            List<TipoProducto> marcaEliminados = tipoproductoService.eliminarTipoProducto(selectedMarcasId);
-        } catch (NotEnoughPermissionsException ex) {
-            Logger.getLogger(TipoTab.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_eliminarTipoButtonActionPerformed
-
     private void nuevoTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoTipoButtonActionPerformed
         nuevoTipoDialog.setVisible(true);
     }//GEN-LAST:event_nuevoTipoButtonActionPerformed
@@ -424,50 +474,56 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
     }//GEN-LAST:event_tipoFieldActionPerformed
 
     private void cancelarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarTipoButtonActionPerformed
-        nuevoTipoDialog.setVisible(false); // TODO add your handling code here:
+        verifyEmptyNuevoTipo();
     }//GEN-LAST:event_cancelarTipoButtonActionPerformed
 
     private void guardarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarTipoButtonActionPerformed
-        idField.putClientProperty("JComponent.outline", "");
         tipoField.putClientProperty("JComponent.outline", "");
 
-        //TODO: reemplazar razon social por un combobox
-        TipoProducto c = new TipoProducto();
-        int id = 0;
-        int telefono = 0;
+        TipoProducto tp = new TipoProducto();
         boolean error = false;
 
         if (tipoField.getText().isBlank()) {
             tipoField.putClientProperty("JComponent.outline", "error");
             error = true;
         }
-
-        if (idField.getText().isBlank()) {
-            idField.putClientProperty("JComponent.outline", "error");
-            error = true;
-        } else {
-            try {
-                id = Integer.parseInt(idField.getText());
-            } catch (Exception e) {
-                idField.putClientProperty("JComponent.outline", "error");
-                error = true;
-                e.printStackTrace();
-            }
-        }
-
+        
         if (error) {
             return;
         } else {
-            c.setIdTipoProducto((long) (id));
-            c.setTipo(tipoField.getText());
+            setBusy("Guardando nuevo tipo de producto...");
+            tp.setTipo(tipoField.getText());
+            
+            new SwingWorker<TipoProducto, TipoProducto>(){
+                @Override
+                protected TipoProducto doInBackground() throws Exception {
+                    return tipoproductoService.nuevoTipoProducto(tp);
+                }
 
-            try {
-                tipoproductoService.nuevoTipoProducto(c); // implementar swingworker
-            } catch (NotEnoughPermissionsException ex) {
-                Logger.getLogger(TipoTab.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                @Override
+                protected void done() {
+                    try {
+                        get();
+                        nuevoTipoDialog.setVisible(false);
+                    } catch (InterruptedException ex) {
+                    } catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, e);
+                            return;
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    } finally {
+                        setIdle();
+                    }
+                }
+                
+            }.execute();
         }
-        nuevoTipoDialog.setVisible(false);
     }//GEN-LAST:event_guardarTipoButtonActionPerformed
 
     private void loadMoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMoreButtonActionPerformed
@@ -478,24 +534,155 @@ public class TipoTab extends org.jdesktop.swingx.JXPanel {
         retrieveData(true);
     }//GEN-LAST:event_reloadTableButtonActionPerformed
 
+    private void guardarEdicionTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarEdicionTipoButtonActionPerformed
+        tipoFieldEditar.putClientProperty("JComponent.outline", "");
+        
+        TipoProducto tp = selectedTipo;
+        boolean error = false;
+        
+        if (tipoFieldEditar.getText().isBlank()) {
+            tipoFieldEditar.putClientProperty("JComponent.outline", "error");
+            error = true;
+        }
+        
+        if (tipoFieldEditar.getText().equals(selectedTipo.getTipo())) {
+            editarTipoDialog.setVisible(false);
+            return;
+        }
+
+        if (error) {
+            return;
+        } else {
+            setBusy("Actualizando tipo de producto...");
+            tp.setTipo(tipoFieldEditar.getText());
+            
+            new SwingWorker<TipoProducto, TipoProducto>(){
+                @Override
+                protected TipoProducto doInBackground() throws Exception {
+                    return tipoproductoService.actualizarTipoProducto(tp);
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        get();
+                        editarTipoDialog.setVisible(false);
+                    } catch (InterruptedException ex) {
+                    } catch (ExecutionException ex) {
+                        try {
+                            throw ex.getCause();
+                        } catch (NotEnoughPermissionsException e) {
+                            Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, e);
+                            return;
+                        } catch (Throwable imp) {
+                            System.out.println("impossible!: \n");
+                            imp.printStackTrace();
+                            System.out.println("impossible end!: \n");
+                        }
+                    } finally {
+                        setIdle();
+                    }
+                }
+                
+            }.execute();
+        }
+    }//GEN-LAST:event_guardarEdicionTipoButtonActionPerformed
+
+    private void cancelarEdicionTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarEdicionTipoButtonActionPerformed
+        verifyUnchangedEditarTipo();
+    }//GEN-LAST:event_cancelarEdicionTipoButtonActionPerformed
+
+    private void editarTipoDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_editarTipoDialogWindowClosing
+        verifyUnchangedEditarTipo();
+    }//GEN-LAST:event_editarTipoDialogWindowClosing
+
+    private void nuevoTipoDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_nuevoTipoDialogWindowClosing
+        verifyEmptyNuevoTipo();
+    }//GEN-LAST:event_nuevoTipoDialogWindowClosing
+
+    private void editarTipoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarTipoButtonActionPerformed
+        final long selectedId = getSelectedId();
+        setBusy("Cargando tipo de producto #" + selectedId);
+        
+        new SwingWorker<TipoProducto, TipoProducto>() {
+            @Override
+            protected TipoProducto doInBackground() throws Exception {
+                return tipoproductoService.encontrarTipoProductoPorId(selectedId);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    TipoProducto tp = get();
+                    editarTipoLabel.setText("Editar tipo de producto #" + tp.getIdTipoProducto());
+                    tipoFieldEditar.setText(tp.getTipo());
+                    selectedTipo = tp;
+                    setIdle();
+                    editarTipoDialog.setVisible(true);
+                } catch (InterruptedException ex) {
+                } catch (ExecutionException ex) {
+                    try {
+                        throw ex.getCause();
+                    } catch (NotEnoughPermissionsException e) {
+                        Logger.getLogger(MarcaTab.class.getName()).log(Level.SEVERE, null, e);
+                        return;
+                    } catch (Throwable imp) {
+                        System.out.println("impossible!: \n");
+                        imp.printStackTrace();
+                        System.out.println("impossible end!: \n");
+                    }
+                } finally {
+                    setIdle();
+                }
+            }
+        }.execute();
+    }//GEN-LAST:event_editarTipoButtonActionPerformed
+
+    private void verifyEmptyNuevoTipo() {
+        if(tipoField.getText().isEmpty()){
+            nuevoTipoDialog.setVisible(false);
+        } else {
+            int answ = OptionPaneService.questionMessage(nuevoTipoDialog, "¿Desea cerrar sin guardar?", "Cerrar sin guardar");
+            if (answ == JOptionPane.YES_OPTION) {
+                nuevoTipoDialog.setVisible(false);
+            }
+        }
+    }
+    
+    private void verifyUnchangedEditarTipo() {
+        if(tipoFieldEditar.getText().equals(selectedTipo.getTipo())){
+            editarTipoDialog.setVisible(false);
+        } else {
+            int answ = OptionPaneService.questionMessage(editarTipoDialog, "¿Desea cerrar sin guardar?", "Cerrar sin guardar");
+            if (answ == JOptionPane.YES_OPTION) {
+                editarTipoDialog.setVisible(false);
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdesktop.swingx.JXBusyLabel busyLabel;
+    private javax.swing.JButton cancelarEdicionTipoButton;
     private javax.swing.JButton cancelarTipoButton;
     private javax.swing.JButton editarTipoButton;
-    private javax.swing.JButton eliminarTipoButton;
+    private javax.swing.JDialog editarTipoDialog;
+    private javax.swing.JLabel editarTipoLabel;
+    private javax.swing.JButton guardarEdicionTipoButton;
     private javax.swing.JButton guardarTipoButton;
-    private javax.swing.JTextField idField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JButton loadMoreButton;
-    private javax.swing.JLabel nuevaMarcaLabel;
     private javax.swing.JButton nuevoTipoButton;
     private javax.swing.JDialog nuevoTipoDialog;
+    private javax.swing.JLabel nuevoTipoLabel;
     private javax.swing.JButton reloadTableButton;
     private javax.swing.JScrollPane scrollPane;
     private org.jdesktop.swingx.JXTable tablaTipoTab;
     private javax.swing.JTextField tipoField;
+    private javax.swing.JTextField tipoFieldEditar;
     // End of variables declaration//GEN-END:variables
 }
