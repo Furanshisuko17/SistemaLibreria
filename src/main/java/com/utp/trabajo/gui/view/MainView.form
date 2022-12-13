@@ -347,7 +347,7 @@
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="maxCaracteresLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="cerrarVentana" min="-2" max="-2" attributes="0"/>
@@ -363,6 +363,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nombresField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="apellidoLabel">
           <Properties>
@@ -370,6 +373,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="apellidosField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -377,6 +383,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="dniField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="direccionLabel">
           <Properties>

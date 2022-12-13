@@ -347,9 +347,15 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
 
         nombreLabel.setText("Nombres:");
 
+        nombresField.setEditable(false);
+
         apellidoLabel.setText("Apellidos:");
 
+        apellidosField.setEditable(false);
+
         jLabel1.setText("DNI:");
+
+        dniField.setEditable(false);
 
         direccionLabel.setText("Dirección:");
 
@@ -517,7 +523,7 @@ public class MainView extends org.jdesktop.swingx.JXFrame {
                 .addGroup(cuentaWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(maxCaracteresLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(cerrarVentana)

@@ -72,7 +72,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public Producto actualizarCliente(Producto producto) throws NotEnoughPermissionsException {
+    public Producto actualizarProducto(Producto producto) throws NotEnoughPermissionsException {
         if (!securityService.getPermissions().contains("edit")) {
             throw new NotEnoughPermissionsException("Sin permisos de edición.");
         }

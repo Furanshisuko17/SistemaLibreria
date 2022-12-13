@@ -36,7 +36,7 @@ public class Producto implements Serializable {
     @JoinColumn(nullable = false, name = "idTipoProducto", referencedColumnName = "idTipoProducto")
     private TipoProducto tipoProducto;
 
-    @OneToOne(mappedBy = "producto", cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "producto", cascade = CascadeType.ALL)
     private Almacen almacen;
 
     @Column(length = 400)
