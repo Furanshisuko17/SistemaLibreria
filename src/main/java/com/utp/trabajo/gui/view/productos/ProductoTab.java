@@ -466,8 +466,7 @@ public class ProductoTab extends org.jdesktop.swingx.JXPanel {
         contadorLabel = new javax.swing.JLabel();
 
         nuevoProductoDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        nuevoProductoDialog.setTitle("Editar almacén del producto");
-        nuevoProductoDialog.setAlwaysOnTop(true);
+        nuevoProductoDialog.setTitle("Nuevo producto");
         nuevoProductoDialog.setModal(true);
         nuevoProductoDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         nuevoProductoDialog.setResizable(false);
@@ -676,7 +675,7 @@ public class ProductoTab extends org.jdesktop.swingx.JXPanel {
         );
 
         editarProductoDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        editarProductoDialog.setTitle("Editar almacén del producto");
+        editarProductoDialog.setTitle("Editar producto");
         editarProductoDialog.setAlwaysOnTop(true);
         editarProductoDialog.setModal(true);
         editarProductoDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
